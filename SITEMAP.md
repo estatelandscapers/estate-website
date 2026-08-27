@@ -14,7 +14,7 @@ version Google currently has indexed.
 ```
 /                                   Front door — choose commercial or residential
 │
-├── /commercial/                    NSW-wide · contractor language · REQUEST A TENDER
+├── /commercial/                    NSW & QLD · contractor language · REQUEST A TENDER
 │   ├── /builders-developers/
 │   ├── /councils-government/
 │   ├── /strata-body-corporate/
@@ -112,7 +112,7 @@ on turf and planting.
 | Nav | Sectors · Capabilities · The Estate Standard · About · Contact | Services · The Estate Standard · Process · About · Contact |
 | CTA | REQUEST A TENDER | GET A QUOTE |
 | Reviews | Not shown | Shown |
-| Service area | NSW | Sydney |
+| Service area | NSW & QLD | Sydney |
 
 Both keep a small "switch" control back to the front door, and both footers carry the
 Infra Landscapers link — two of the three agreed civil handoffs, the third being the

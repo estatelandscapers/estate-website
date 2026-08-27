@@ -41,7 +41,7 @@ empty.
 ## Build stages
 
 1. ✅ Sitemap + front door
-2. Residential landing + commercial landing
+2. ✅ Residential landing + commercial landing
 3. Service page templates, Estate Standard, About
 4. Forms → Railway quote tool → OneDrive → acknowledgement emails
 5. Remaining service pages, Insights, garden care, contact, 404, legal, schema, redirects
