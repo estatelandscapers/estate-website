@@ -37,6 +37,7 @@ version Google currently has indexed.
 │   ├── /landscape-design/
 │   ├── /irrigation/
 │   ├── /garden-care/               Year-round care guide + product links
+│   ├── /landscaping-<suburb>/       ×10 area pages — organic + Google Ads landing
 │   └── /quote/                     Qualification gate → enquiry form
 │
 ├── /the-estate-standard/           How you build, and why it costs what it costs
@@ -54,7 +55,7 @@ version Google currently has indexed.
 └── /sitemap.xml                    Generated at build, submitted to Search Console
 ```
 
-**32 pages at launch**, plus articles and the empty projects structure.
+**42 pages at launch**, plus articles and the empty projects structure.
 
 ---
 
@@ -79,27 +80,38 @@ project goes live.
 
 ---
 
-## Suburb pages — proposed, not built yet
+## Area pages — confirmed, built in Stage 5
 
-For a Sydney trade these are usually the highest-return pages, and they have to sit in
-the URL structure from the beginning because changing URLs after Google learns them costs
-you the ranking. Proposed pattern:
+Two jobs, one structure. These pages carry local organic search, and they double as the
+landing pages Google Ads needs — an ad for "landscaper Kellyville" that lands on a
+generic homepage gets a poor Quality Score and costs more per click than the same ad
+landing on a Kellyville page.
 
 ```
 /residential/landscaping-kellyville/
 /residential/landscaping-rouse-hill/
 /residential/landscaping-castle-hill/
-…
+/residential/landscaping-bella-vista/
+/residential/landscaping-baulkham-hills/
+/residential/landscaping-box-hill/
+/residential/landscaping-marsden-park/
+/residential/landscaping-north-kellyville/
+/residential/landscaping-glenwood/
+/residential/landscaping-schofields/
 ```
 
-Roughly ten across the Hills District and North West, each with genuinely local content —
-soil conditions, council requirements, actual jobs done there — not the same page with
-the suburb name swapped. Google has been demoting the swap-the-name version for years.
+Ten to start, all in the Hills District and North West where the work already is. Each
+needs genuinely local content — soil and drainage conditions, the relevant council,
+projects actually completed there — not one template with the suburb name swapped.
+Google has demoted the swapped-name version for years, and it reads as spam to a human
+too.
 
-Build them in Stage 5. **Say if you'd rather not**, and I'll leave the pattern out of the
-structure entirely rather than half-build it.
+**For Google Ads specifically:** these same URLs work as ad destinations. If you later
+want ad-only landing pages with a different message and no site navigation, those sit at
+`/lp/<campaign>/` and are excluded from the sitemap and blocked from indexing, so they
+never compete with the organic pages.
 
----
+Suburb list is a starting proposal — send a different ten and I will use yours.
 
 ## Navigation
 
