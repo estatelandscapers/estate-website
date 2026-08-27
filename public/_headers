@@ -1,0 +1,12 @@
+# ⚠️ REMOVE THIS FILE AT DNS CUTOVER (brief §64)
+# While the site lives on a *.workers.dev staging URL it must stay out of Google —
+# otherwise the staging copy competes with the real domain for the same content.
+# Deleting this file is the last step before go-live.
+/*
+  X-Robots-Tag: noindex, nofollow
+
+# Security headers — these stay permanently.
+/*
+  X-Content-Type-Options: nosniff
+  Referrer-Policy: strict-origin-when-cross-origin
+  X-Frame-Options: SAMEORIGIN
