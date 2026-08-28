@@ -48,6 +48,9 @@ for (const f of walk(path.join(SRC, 'pages'))) {
   };
   let html = c.raw ? render(body, vars) : render(layout, vars);
   html = html.replace('</html>', '<!-- estate build ' + STAMP + ' · ' + c.path + ' -->\n</html>');
+  if (!global.__built) global.__built = new Set();
+  if (global.__built.has(c.path)) throw new Error('DUPLICATE PAGE PATH: ' + c.path + ' built twice (second source: ' + f + ')');
+  global.__built.add(c.path);
   const out = c.path.endsWith('.html')
     ? path.join(OUT, c.path.replace(/^\//, ''))
     : path.join(OUT, c.path.replace(/^\//, ''), 'index.html');
@@ -57,6 +60,9 @@ for (const f of walk(path.join(SRC, 'pages'))) {
   if (!c.path.endsWith('.html') && !c.noindex) SITEMAP_PATHS.push(c.path);
   n++;
 }
+// ---- sanity: the build must contain a homepage, and no two pages may share a path
+if (!fs.existsSync(path.join(OUT, 'index.html')))
+  throw new Error('BUILD FAILED SANITY CHECK: public/index.html was not produced — the homepage is missing.');
 SITEMAP_PATHS.sort();
 const today = new Date().toISOString().slice(0, 10);
 fs.writeFileSync(path.join(OUT, 'sitemap.xml'),

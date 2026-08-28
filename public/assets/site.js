@@ -18,13 +18,42 @@
   links.addEventListener('click', function (e) { if (e.target.closest('a')) setOpen(false); });
 })();
 
-// Mark the current page in the navigation
+// Navigation highlighting.
+// Plain page links: marked when you're ON that page. Anchor links (Services,
+// Process): scrollspy — lit only while their section is actually in view.
 (function () {
   var here = location.pathname.replace(/\/+$/, '/') || '/';
-  document.querySelectorAll('.nav-links a').forEach(function (a) {
+  if (!here.endsWith('/')) here += '/';
+  var links = [].slice.call(document.querySelectorAll('.nav-links a'));
+
+  // 1. Same-page anchor links become spies; other links get page marking.
+  var spies = [];
+  links.forEach(function (a) {
     var href = a.getAttribute('href') || '';
-    if (href.split('#')[0] === here) a.setAttribute('aria-current', 'page');
+    var path = href.split('#')[0];
+    var hash = href.indexOf('#') > -1 ? href.split('#')[1] : '';
+    if (hash && (path === here || path === '')) {
+      var t = document.getElementById(hash);
+      if (t) spies.push({ a: a, t: t });
+    } else if (!hash && path === here) {
+      a.setAttribute('aria-current', 'page');
+    }
   });
+
+  // 2. Scrollspy: a section is "current" while it occupies the reading band
+  //    near the top of the viewport; leaving it clears the highlight.
+  if (spies.length && 'IntersectionObserver' in window) {
+    function clear() { spies.forEach(function (s) { s.a.removeAttribute('aria-current'); }); }
+    var io = new IntersectionObserver(function (entries) {
+      entries.forEach(function (e) {
+        var m = spies.filter(function (s) { return s.t === e.target; })[0];
+        if (!m) return;
+        if (e.isIntersecting) { clear(); m.a.setAttribute('aria-current', 'location'); }
+        else if (m.a.hasAttribute('aria-current')) { m.a.removeAttribute('aria-current'); }
+      });
+    }, { rootMargin: '-15% 0px -65% 0px' });
+    spies.forEach(function (s) { io.observe(s.t); });
+  }
 })();
 
 // Current year in the footer
