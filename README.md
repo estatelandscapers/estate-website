@@ -43,7 +43,7 @@ build/deploy setting:
 - [ ] Replace photo slots (search `PHOTO SLOT` in src/pages)
 - [ ] Swap PNG logos for SVG when vector artwork is available
 - [ ] DNS cutover per `estate-dns-zone-reference.md`
-- [ ] Generate and submit sitemap.xml (Stage 5 build step)
+- [ ] Submit sitemap.xml in Search Console (see INTEGRATION-SETUP.md §8)
 
 ## Build stages
 
@@ -53,8 +53,8 @@ build/deploy setting:
       The Estate Standard · About · branded 404
 4. ✅ Forms → Railway quote tool → OneDrive → acknowledgement emails
    (tool-side code ships in estate-quote-app-DEPLOY.zip — deploy both together)
-5. Remaining service pages, area pages ×10, Insights, garden care, contact, legal,
-   sitemap.xml, redirects
+5. ✅ All service + sector pages, area pages ×10, capabilities, Insights ×3,
+      garden care, contact, privacy, terms, projects (noindex), sitemap.xml auto-generated
 6. Mobile QA, Core Web Vitals, accessibility
 7. DNS cutover
 

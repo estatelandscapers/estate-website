@@ -29,6 +29,8 @@ const walk = d => fs.readdirSync(d, { withFileTypes: true })
   .flatMap(e => e.isDirectory() ? walk(path.join(d, e.name)) : [path.join(d, e.name)]);
 
 const layout = read(path.join(SRC, 'layout.html'));
+const STAMP = new Date().toISOString().slice(0, 16) + 'Z';
+const SITEMAP_PATHS = [];
 let n = 0;
 for (const f of walk(path.join(SRC, 'pages'))) {
   const s = read(f);
@@ -40,16 +42,25 @@ for (const f of walk(path.join(SRC, 'pages'))) {
     TITLE: c.title || '', DESC: c.description || '', PATH: c.path,
     PAGE_URL: 'https://www.estatelandscapers.com.au' + c.path,
     NAV: c.nav ? '{{include nav-' + c.nav + '}}' : '',
+    ROBOTS: c.noindex ? '<meta name="robots" content="noindex">' : '',
     FOOTER: c.footer ? '{{include footer-' + c.footer + '}}' : '',
     BODY: body
   };
-  const html = c.raw ? render(body, vars) : render(layout, vars);
+  let html = c.raw ? render(body, vars) : render(layout, vars);
+  html = html.replace('</html>', '<!-- estate build ' + STAMP + ' · ' + c.path + ' -->\n</html>');
   const out = c.path.endsWith('.html')
     ? path.join(OUT, c.path.replace(/^\//, ''))
     : path.join(OUT, c.path.replace(/^\//, ''), 'index.html');
   fs.mkdirSync(path.dirname(out), { recursive: true });
   fs.writeFileSync(out, html);
   console.log('built ' + c.path);
+  if (!c.path.endsWith('.html') && !c.noindex) SITEMAP_PATHS.push(c.path);
   n++;
 }
-console.log(n + ' pages built into public/');
+SITEMAP_PATHS.sort();
+const today = new Date().toISOString().slice(0, 10);
+fs.writeFileSync(path.join(OUT, 'sitemap.xml'),
+  '<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n' +
+  SITEMAP_PATHS.map(p => '  <url><loc>https://www.estatelandscapers.com.au' + p + '</loc><lastmod>' + today + '</lastmod></url>').join('\n') +
+  '\n</urlset>\n');
+console.log(n + ' pages built into public/ · sitemap.xml: ' + SITEMAP_PATHS.length + ' URLs');
