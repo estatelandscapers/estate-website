@@ -51,7 +51,8 @@ build/deploy setting:
 2. ✅ Residential landing + commercial landing
 3. ✅ Modular build system · retaining-walls + builders-developers templates ·
       The Estate Standard · About · branded 404
-4. Forms → Railway quote tool → OneDrive → acknowledgement emails
+4. ✅ Forms → Railway quote tool → OneDrive → acknowledgement emails
+   (tool-side code ships in estate-quote-app-DEPLOY.zip — deploy both together)
 5. Remaining service pages, area pages ×10, Insights, garden care, contact, legal,
    sitemap.xml, redirects
 6. Mobile QA, Core Web Vitals, accessibility
