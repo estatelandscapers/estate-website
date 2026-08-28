@@ -3,9 +3,27 @@
   var btn = document.querySelector('.nav-toggle');
   var links = document.getElementById('nav-links');
   if (!btn || !links) return;
-  btn.addEventListener('click', function () {
-    var open = links.classList.toggle('open');
+  function setOpen(open) {
+    links.classList.toggle('open', open);
     btn.setAttribute('aria-expanded', open ? 'true' : 'false');
+    document.body.style.overflow = open ? 'hidden' : '';
+  }
+  btn.addEventListener('click', function () { setOpen(!links.classList.contains('open')); });
+  document.addEventListener('keydown', function (e) {
+    if (e.key === 'Escape' && links.classList.contains('open')) { setOpen(false); btn.focus(); }
+  });
+  document.addEventListener('click', function (e) {
+    if (links.classList.contains('open') && !links.contains(e.target) && !btn.contains(e.target)) setOpen(false);
+  });
+  links.addEventListener('click', function (e) { if (e.target.closest('a')) setOpen(false); });
+})();
+
+// Mark the current page in the navigation
+(function () {
+  var here = location.pathname.replace(/\/+$/, '/') || '/';
+  document.querySelectorAll('.nav-links a').forEach(function (a) {
+    var href = a.getAttribute('href') || '';
+    if (href.split('#')[0] === here) a.setAttribute('aria-current', 'page');
   });
 })();
 

@@ -12,6 +12,10 @@
 <meta property="og:description" content="Send your landscape drawings, civil set and program. Priced submission back, with SWMS, ITPs and insurances ready before works commence. Uploads to 100 MB.">
 <meta property="og:url" content="https://www.estatelandscapers.com.au/commercial/tender/">
 <meta property="og:locale" content="en_AU">
+<meta property="og:image" content="https://www.estatelandscapers.com.au/assets/og-image.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta name="twitter:card" content="summary_large_image">
 <meta name="theme-color" content="#1E5BFF">
 <link rel="icon" type="image/png" sizes="32x32" href="/assets/favicon-32.png">
 <link rel="icon" type="image/png" sizes="192x192" href="/assets/icon-192.png">
@@ -65,6 +69,17 @@
       have. We'll come back with a priced submission, and a straight answer if the dates
       don't work.</p>
 
+
+    <noscript>
+      <div class="panel" style="margin-top:18px">
+        <h3>This form needs JavaScript — but email works just as well.</h3>
+        <p>Send your name, phone, suburb, rough budget and the project and scope (plus any
+           plans or photos) to
+           <a href="mailto:enquiry@estatelandscapers.com.au" style="color:var(--blue);font-weight:700">enquiry@estatelandscapers.com.au</a>
+           and we'll call you the same business day.</p>
+      </div>
+    </noscript>
+
     <form id="enquiry" data-audience="commercial" novalidate>
       <div class="steppanel on">
         <div class="f2">
@@ -90,6 +105,37 @@
             <input id="t-phone" name="phone" type="tel" inputmode="tel" autocomplete="tel">
           </div>
         </div>
+        <fieldset class="field">
+          <legend>Is this a tender, or a live project?</legend>
+          <div class="chips" data-for="projectStatus" role="group" aria-label="Project status">
+            <button type="button" class="chip" aria-pressed="false" data-v="Tender">Tender</button>
+            <button type="button" class="chip" aria-pressed="false" data-v="Live project">Live project — access opening</button>
+          </div>
+          <input type="hidden" id="projectStatus" name="projectStatus" data-req="Tender or live — it changes how fast we move.">
+          <p class="err">Tender or live — it changes how fast we move.</p>
+        </fieldset>
+
+        <div class="f2">
+          <div class="field">
+            <label for="t-pname">Project name <span class="opt">optional</span></label>
+            <input id="t-pname" name="projectName" placeholder="e.g. Stage 3, Riverbank Estate">
+          </div>
+          <div class="field">
+            <label for="t-principal">Principal / builder <span class="opt">optional</span></label>
+            <input id="t-principal" name="principal" autocomplete="organization">
+          </div>
+        </div>
+        <div class="f2">
+          <div class="field">
+            <label for="t-close">Tender close date <span class="opt">optional</span></label>
+            <input id="t-close" name="tenderClose" type="date">
+          </div>
+          <div class="field">
+            <label for="t-comm">Estimated commencement <span class="opt">optional</span></label>
+            <input id="t-comm" name="commencement" placeholder="e.g. Nov 2026">
+          </div>
+        </div>
+
         <div class="f2">
           <div class="field">
             <label for="t-jobtype">Project type</label>
@@ -233,5 +279,5 @@
 
 <script src="/assets/site.js" defer></script>
 </body>
-<!-- estate build 2026-08-28T09:57Z · /commercial/tender/ -->
+<!-- estate build 2026-08-28T14:53Z · /commercial/tender/ -->
 </html>

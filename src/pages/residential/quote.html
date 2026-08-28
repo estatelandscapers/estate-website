@@ -14,13 +14,24 @@
     <p class="sub">Three quick steps. We call the same business day, and your itemised
       quote arrives within 48 hours of the site visit.</p>
 
+
+    <noscript>
+      <div class="panel" style="margin-top:18px">
+        <h3>This form needs JavaScript — but email works just as well.</h3>
+        <p>Send your name, phone, suburb, rough budget and what you're planning (plus any
+           plans or photos) to
+           <a href="mailto:enquiry@estatelandscapers.com.au" style="color:var(--blue);font-weight:700">enquiry@estatelandscapers.com.au</a>
+           and we'll call you the same business day.</p>
+      </div>
+    </noscript>
+
     <form id="enquiry" data-audience="residential" novalidate>
       <p class="stepbar"><span>Step <b id="stepnum">1</b> of 3</span></p>
 
       <!-- STEP 1 — the project -->
       <div class="steppanel on">
-        <div class="field">
-          <label>What kind of project is it?</label>
+        <fieldset class="field">
+          <legend>What kind of project is it?</legend>
           <div class="chips" data-for="jobType" role="group" aria-label="Project type">
             <button type="button" class="chip" aria-pressed="false" data-v="New build landscaping package">New build</button>
             <button type="button" class="chip" aria-pressed="false" data-v="Knockdown-rebuild package">Knockdown-rebuild</button>
@@ -32,7 +43,7 @@
           </div>
           <input type="hidden" id="jobType" name="jobType" data-req="Pick the closest fit.">
           <p class="err">Pick the closest fit.</p>
-        </div>
+        </fieldset>
 
         <div class="f2">
           <div class="field">
@@ -62,7 +73,7 @@
         <div id="declined" class="panel" style="display:none">
           <h3>That one's for our maintenance partners.</h3>
           <p>Our crews build landscapes rather than maintain them, so mowing, hedging,
-             repairs and projects under $25,000 aren't work we can do justice to. We'd
+             repairs and projects below our usual package threshold aren't work we can do justice to. We'd
              rather say so now than leave you waiting.</p>
           <p><b>We can still help:</b> email us and we'll introduce you to a vetted
              maintenance contractor — no cost, no catch.</p>

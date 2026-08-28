@@ -1,10 +1,9 @@
 User-agent: *
 Allow: /
 
-# AI search and answer engines — explicitly allowed.
-# These are the crawlers that decide whether Estate Landscapers is quoted when
-# someone asks an AI assistant for a landscaper. Blocking them removes the site
-# from those answers entirely. Remove a line here to opt that engine out.
+# AI search and answer engine crawlers — allowed. Allowing them permits these
+# services to read and use the site's content; it does not guarantee inclusion
+# in any answers. Remove a line to opt that engine out.
 User-agent: GPTBot
 Allow: /
 

@@ -10,17 +10,26 @@
   var OK_EXT = /\.(pdf|zip|jpe?g|png|heic|heif|webp|dwg|docx?|xlsx?)$/i;
 
   function ev(name, params) { try { if (typeof gtag === 'function') gtag('event', name, params || {}); } catch (e) {} }
+
+  // Live region: announces step changes, errors and upload progress to screen readers.
+  var live = document.createElement('div');
+  live.className = 'sr-only'; live.setAttribute('aria-live', 'polite');
+  form.appendChild(live);
+  function say(t) { live.textContent = ''; setTimeout(function () { live.textContent = t; }, 60); }
   ev(AUD === 'commercial' ? 'tender_started' : 'quote_started');
 
   // ---- steps ----
   var panels = [].slice.call(form.querySelectorAll('.steppanel'));
   var cur = 0;
+  var stepNames = ['About the project', 'Your contact details', 'Files and message'];
   function show(i) {
     cur = i;
     panels.forEach(function (p, n) { p.classList.toggle('on', n === i); });
     var bar = document.getElementById('stepnum');
     if (bar) bar.textContent = (i + 1);
     window.scrollTo({ top: form.getBoundingClientRect().top + window.scrollY - 90, behavior: 'smooth' });
+    var p = panels[i]; if (p) { p.setAttribute('tabindex', '-1'); p.focus({ preventScroll: true }); }
+    if (panels.length > 1) say('Step ' + (i + 1) + ' of ' + panels.length + ': ' + (stepNames[i] || ''));
   }
   function bad(el, msg) {
     var f = el.closest('.field'); if (!f) return;
@@ -34,12 +43,28 @@
 
   function validPanel(p) {
     clearBad(p);
-    var ok = true;
+    var ok = true, firstBad = null;
     p.querySelectorAll('[data-req]').forEach(function (el) {
-      if (!el.value.trim()) { bad(el, el.dataset.req); ok = false; }
+      if (!el.value.trim()) { bad(el, el.dataset.req); ok = false; firstBad = firstBad || el; }
     });
     var em = p.querySelector('input[type="email"]');
-    if (em && em.value && !/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(em.value)) { bad(em, 'That email doesn\u2019t look right.'); ok = false; }
+    if (em && em.value) {
+      if (!/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(em.value)) { bad(em, 'That email doesn\u2019t look right.'); ok = false; firstBad = firstBad || em; }
+      else {
+        var m = em.value.toLowerCase().match(/@(gmial|gamil|gmal|hotmial|outlok|yaho|gnail)\./);
+        if (m) { bad(em, 'Did you mean a common provider? Double-check the spelling after the @.'); ok = false; firstBad = firstBad || em; }
+      }
+    }
+    var ph = p.querySelector('input[type="tel"]');
+    if (ph && ph.value.trim()) {
+      var d = ph.value.replace(/[\s()\-]/g, '');
+      if (!/^(\+?61|0)[2-478]\d{8}$/.test(d)) { bad(ph, 'That doesn\u2019t look like an Australian number \u2014 check the digits.'); ok = false; firstBad = firstBad || ph; }
+    }
+    if (!ok) {
+      var n = p.querySelectorAll('.field.bad').length;
+      say(n + (n === 1 ? ' field needs' : ' fields need') + ' attention.');
+      if (firstBad) firstBad.focus();
+    }
     return ok;
   }
 
@@ -171,6 +196,20 @@
     var body = { audience: AUD, files: files.map(function (f) { return { name: f.name, size: f.size }; }) };
     ['name', 'phone', 'email', 'suburb', 'address', 'jobType', 'budget', 'timeline', 'message', 'company', 'website']
       .forEach(function (k) { var el = form.querySelector('[name="' + k + '"]'); if (el) body[k] = el.value; });
+    // Commercial extras: composed into fields the tool already stores, so the
+    // estimator sees them structured at the top of the lead.
+    function val(n) { var el = form.querySelector('[name="' + n + '"]'); return el ? el.value.trim() : ''; }
+    if (AUD === 'commercial') {
+      var head = [];
+      if (val('projectStatus')) head.push('Status: ' + val('projectStatus'));
+      if (val('projectName')) head.push('Project: ' + val('projectName'));
+      if (val('principal')) head.push('Principal/builder: ' + val('principal'));
+      if (head.length) body.message = head.join(' \u00b7 ') + '\n\n' + (body.message || '');
+      var tl = [];
+      if (val('tenderClose')) tl.push('Tender closes ' + val('tenderClose'));
+      if (val('commencement')) tl.push('commencement ' + val('commencement'));
+      if (tl.length) body.timeline = ((body.timeline || '') + ' \u00b7 ' + tl.join(' \u00b7 ')).replace(/^ \u00b7 /, '');
+    }
     try {
       body.page = sessionStorage.getItem('el_landing') || location.pathname;
       body.utm = JSON.parse(sessionStorage.getItem('el_utm') || '{}');
@@ -182,6 +221,7 @@
 
     function finish(ref, note) {
       ev(AUD === 'commercial' ? 'tender_submitted' : 'quote_submitted', { files: files.length });
+      say('Enquiry sent successfully.');
       form.style.display = 'none';
       var done = document.getElementById('done');
       var refEl = document.getElementById('doneref');
@@ -221,6 +261,7 @@
         var v = Math.min(100, Math.round(sent / total * 100));
         if (barI) barI.style.width = v + '%';
         if (pct) pct.textContent = 'file ' + Math.min(i + 1, files.length) + ' of ' + files.length + ' \u00b7 ' + v + '%';
+        if (v % 25 === 0) say('Uploading, ' + v + ' percent.');
       }
       function next() {
         if (i >= files.length) {

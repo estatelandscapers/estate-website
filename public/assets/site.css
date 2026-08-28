@@ -356,3 +356,12 @@ a.card:hover{border-color:var(--blue);transform:translateY(-2px)}
 .fd-door .lab svg{flex:none;transition:transform .18s}
 .fd-door:hover .lab svg{transform:translateX(5px)}
 .fd-door:focus-visible{outline:3px solid var(--blue);outline-offset:-3px}
+
+/* ---------------- a11y additions ---------------- */
+.sr-only{position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap;border:0}
+fieldset{border:0;padding:0;margin:0;min-width:0}
+legend{display:block;font-size:10.5px;font-weight:800;letter-spacing:.14em;text-transform:uppercase;margin-bottom:7px;padding:0}
+.nav-links a[aria-current="page"]{color:var(--blue);font-weight:800}
+.creds span{font-size:9.5px}
+.err-summary{display:none;border:1px solid #C22;border-radius:10px;background:#FDF2F2;color:#8a1f1f;padding:12px 14px;font-size:.85rem;margin-top:16px}
+.err-summary.on{display:block}
