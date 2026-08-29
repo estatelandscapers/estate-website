@@ -392,9 +392,13 @@ legend{display:block;font-size:10.5px;font-weight:800;letter-spacing:.14em;text-
 .fdh-soc a{color:#000;display:inline-flex;width:21px;height:21px}
 .fdh-soc a:hover{color:var(--blue)}
 .fdh-soc svg{width:100%;height:100%}
-.fdh-band{height:var(--bandh, clamp(300px,48vh,540px));margin-top:clamp(20px,3.5vh,36px);
-  background:url('/assets/img/hero-home.jpg?g4') center 66%/cover no-repeat;will-change:height}
-@media (max-width:700px){.fdh-band{--bandmin:38vh;background-position:center 62%}}
+.fdh-reveal{margin-top:clamp(20px,3.5vh,36px)}
+.fdh-band{--bmin:clamp(300px,48vh,540px);height:var(--bmin);
+  background:url('/assets/img/hero-home.jpg?g4') center 66%/cover no-repeat}
+.fdh-reveal.on{height:190vh}
+.fdh-reveal.on .fdh-sticky{position:sticky;top:0;height:100vh;overflow:hidden}
+.fdh-reveal.on .fdh-band{height:calc(var(--bmin) + (100vh - var(--bmin)) * var(--p,0));will-change:height}
+@media (max-width:700px){.fdh-band{--bmin:38vh;background-position:center 62%}}
 @media (max-width:700px){
   .fdh-top .r span{display:none}
   .fdh-main h1{font-size:clamp(1.7rem,8vw,2.2rem)}

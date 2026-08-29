@@ -111,30 +111,24 @@
   } catch (e) {}
 })();
 
-// Hero band scroll-reveal: as the band approaches the top of the viewport it
-// inflates toward full height — the scroll "feeds" the image — then releases
-// and scrolls past. Reversible; disabled for reduced-motion.
+// Hero band pinned reveal: the image pins at the top and scroll drives it from
+// band height to full viewport, then the page releases and scrolls past it.
+// Progressive: without JS (or with reduced-motion) the band is simply static.
 (function () {
+  var reveal = document.querySelector('.fdh-reveal');
   var band = document.querySelector('.fdh-band');
-  if (!band) return;
+  if (!reveal || !band) return;
   if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+  reveal.classList.add('on');
   var ticking = false;
-  function minH(vh) {
-    var m = Math.min(vh * 0.48, 540);
-    if (window.innerWidth <= 700) m = vh * 0.38;
-    return Math.max(m, 260);
-  }
   function frame() {
     ticking = false;
     var vh = window.innerHeight;
-    var r = band.getBoundingClientRect();
-    var start = vh, end = vh * 0.10;               // grow while the band's top travels this zone
-    var p = (start - r.top) / (start - end);
-    p = Math.max(0, Math.min(1, p));
-    p = p * p * (3 - 2 * p);                        // smoothstep
-    var h = minH(vh) + (vh - minH(vh)) * p;
-    band.style.setProperty('--bandh', h.toFixed(1) + 'px');
-    band.style.height = 'var(--bandh)';
+    var r = reveal.getBoundingClientRect();
+    var travel = reveal.offsetHeight - vh;
+    if (travel <= 0) return;
+    var p = Math.max(0, Math.min(1, -r.top / travel));
+    band.style.setProperty('--p', (p * p * (3 - 2 * p)).toFixed(4));
   }
   function onScroll() { if (!ticking) { ticking = true; requestAnimationFrame(frame); } }
   window.addEventListener('scroll', onScroll, { passive: true });
