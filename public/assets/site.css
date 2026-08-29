@@ -324,15 +324,7 @@ a.card:hover{border-color:var(--blue);transform:translateY(-2px)}
 .hpot{position:absolute;left:-9999px;top:-9999px;height:0;overflow:hidden}
 
 /* ---------------- front door — manifesto ---------------- */
-.fd-open{min-height:calc(100vh - 42px);min-height:calc(100svh - 42px);
-  display:flex;flex-direction:column;align-items:center;justify-content:center;
-  text-align:center;padding:clamp(40px,6vw,70px) 22px 40px;
-  background:
-    linear-gradient(180deg, rgba(255,255,255,.56) 0%, rgba(255,255,255,.42) 45%, rgba(255,255,255,.40) 75%, rgba(255,255,255,.97) 100%),
-    url('/assets/img/hero-home.jpg') center/cover no-repeat;}
-.fd-open .btn-o{background:rgba(255,255,255,.82)}
-.fd-open .btn-o:hover{background:rgba(255,255,255,.95)}
-.fd-open .fd-hint{color:#3F454D}
+.fd-hint{color:#3F454D}
 .fd-open h1{margin-top:clamp(24px,4vw,34px);font-size:clamp(1.5rem,3.6vw,2.45rem);
   font-weight:800;letter-spacing:-.025em;line-height:1.16;max-width:21ch}
 .fd-hint{margin-top:clamp(26px,4vw,40px);font-size:9.5px;letter-spacing:.22em;
@@ -377,3 +369,33 @@ legend{display:block;font-size:10.5px;font-weight:800;letter-spacing:.14em;text-
 .creds span{font-size:9.5px}
 .err-summary{display:none;border:1px solid #C22;border-radius:10px;background:#FDF2F2;color:#8a1f1f;padding:12px 14px;font-size:.85rem;margin-top:16px}
 .err-summary.on{display:block}
+
+/* ---------------- front door — editorial hero ---------------- */
+.fdh{min-height:calc(100vh);min-height:calc(100svh);display:flex;flex-direction:column}
+.fdh-top{display:flex;justify-content:space-between;align-items:center;gap:16px;
+  padding:18px clamp(20px,4vw,44px)}
+.fdh-top img{width:clamp(180px,17vw,230px);height:auto}
+.fdh-top .r{text-align:right;font-size:9.5px;letter-spacing:.15em;text-transform:uppercase;
+  color:var(--label);font-weight:600;line-height:1.7}
+.fdh-top .r b{display:block;color:#000;letter-spacing:.02em;text-transform:none;font-size:12.5px;font-weight:700}
+.fdh-top .r b a{color:inherit;text-decoration:none}
+.fdh-main{flex:1;display:flex;align-items:center;padding:30px 0}
+.fdh-main .shell{width:100%}
+.fdh-main h1{font-size:clamp(2rem,4.8vw,3.5rem);font-weight:800;letter-spacing:-.03em;
+  line-height:1.08;max-width:15ch;margin-top:14px}
+.fdh-sub{margin-top:20px;color:var(--body);font-size:clamp(.95rem,1.35vw,1.05rem);
+  max-width:54ch;line-height:1.7}
+.fdh-row{display:flex;align-items:flex-end;justify-content:space-between;gap:22px;
+  margin-top:32px;flex-wrap:wrap}
+.fdh-cta{display:flex;gap:12px;flex-wrap:wrap}
+.fdh-soc{display:flex;gap:18px;padding-bottom:6px}
+.fdh-soc a{color:#000;display:inline-flex;width:21px;height:21px}
+.fdh-soc a:hover{color:var(--blue)}
+.fdh-soc svg{width:100%;height:100%}
+.fdh-hint{text-align:center;padding:10px 0 16px}
+.fdh-strip{height:clamp(150px,24vh,250px);
+  background:url('/assets/img/hero-home.jpg?g2') center 68%/cover no-repeat}
+@media (max-width:700px){
+  .fdh-top .r span{display:none}
+  .fdh-main h1{font-size:clamp(1.7rem,8vw,2.2rem)}
+}
