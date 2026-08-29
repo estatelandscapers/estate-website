@@ -331,8 +331,8 @@ a.card:hover{border-color:var(--blue);transform:translateY(-2px)}
   text-transform:uppercase;color:#5A6068;font-weight:700;display:inline-flex;align-items:center;gap:7px}
 .fd-hint .arr{display:inline-block;font-size:13px;line-height:1}
 @media (prefers-reduced-motion:no-preference){
-  .fd-hint .arr{animation:bob 1.9s ease-in-out infinite}
-  @keyframes bob{0%,100%{transform:translateY(0);opacity:.55}50%{transform:translateY(6px);opacity:1}}
+  .fdh .fd-hint{animation:bob 1.9s ease-in-out infinite}
+  @keyframes bob{0%,100%{transform:translateY(0);opacity:.6}50%{transform:translateY(6px);opacity:1}}
 }
 .fd-row{display:grid;grid-template-columns:1fr 1fr;min-height:52vh}
 .fd-row .ph{position:relative;min-height:300px}
@@ -394,11 +394,14 @@ legend{display:block;font-size:10.5px;font-weight:800;letter-spacing:.14em;text-
 .fdh-soc svg{width:100%;height:100%}
 .fdh-reveal{margin-top:clamp(20px,3.5vh,36px)}
 .fdh-band{--bmin:clamp(300px,48vh,540px);height:var(--bmin);
-  background:url('/assets/img/hero-home.jpg?g4') center 66%/cover no-repeat}
-.fdh-reveal.on{height:190vh}
-.fdh-reveal.on .fdh-sticky{position:sticky;top:0;height:100vh;overflow:hidden}
-.fdh-reveal.on .fdh-band{height:calc(var(--bmin) + (100vh - var(--bmin)) * var(--p,0));will-change:height}
-@media (max-width:700px){.fdh-band{--bmin:38vh;background-position:center 62%}}
+  background:url('/assets/img/hero-home.jpg?g4') center 12%/cover no-repeat}
+@media (prefers-reduced-motion:no-preference){
+  html.js .fdh-reveal{height:260vh}
+  html.js .fdh-sticky{position:sticky;top:0;height:100vh;overflow:hidden}
+  html.js .fdh-band{height:calc(var(--bmin) + (100vh - var(--bmin)) * var(--ph,0));
+    will-change:height,background-position}
+}
+@media (max-width:700px){.fdh-band{--bmin:38vh}}
 @media (max-width:700px){
   .fdh-top .r span{display:none}
   .fdh-main h1{font-size:clamp(1.7rem,8vw,2.2rem)}

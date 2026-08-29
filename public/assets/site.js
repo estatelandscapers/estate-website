@@ -111,24 +111,27 @@
   } catch (e) {}
 })();
 
-// Hero band pinned reveal: the image pins at the top and scroll drives it from
-// band height to full viewport, then the page releases and scrolls past it.
-// Progressive: without JS (or with reduced-motion) the band is simply static.
+// Hero reveal, two phases. Phase 1 (p 0-0.45): the text scrolls away and the
+// band grows to full viewport, anchored on the TOP of the photo (sky and roof).
+// Phase 2 (p 0.45-1): pinned full-screen, scroll pans DOWN through the photo to
+// its bottom, then the page releases into the next section.
 (function () {
   var reveal = document.querySelector('.fdh-reveal');
   var band = document.querySelector('.fdh-band');
   if (!reveal || !band) return;
   if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
-  reveal.classList.add('on');
   var ticking = false;
+  function ease(t) { return t * t * (3 - 2 * t); }
   function frame() {
     ticking = false;
     var vh = window.innerHeight;
-    var r = reveal.getBoundingClientRect();
     var travel = reveal.offsetHeight - vh;
     if (travel <= 0) return;
-    var p = Math.max(0, Math.min(1, -r.top / travel));
-    band.style.setProperty('--p', (p * p * (3 - 2 * p)).toFixed(4));
+    var p = Math.max(0, Math.min(1, -reveal.getBoundingClientRect().top / travel));
+    var grow = ease(Math.min(1, p / 0.45));            // phase 1
+    var pan = p <= 0.45 ? 0 : ease((p - 0.45) / 0.55); // phase 2
+    band.style.setProperty('--ph', grow.toFixed(4));
+    band.style.backgroundPosition = 'center ' + (10 + pan * 84).toFixed(2) + '%';
   }
   function onScroll() { if (!ticking) { ticking = true; requestAnimationFrame(frame); } }
   window.addEventListener('scroll', onScroll, { passive: true });
