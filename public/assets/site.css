@@ -392,10 +392,9 @@ legend{display:block;font-size:10.5px;font-weight:800;letter-spacing:.14em;text-
 .fdh-soc a{color:#000;display:inline-flex;width:21px;height:21px}
 .fdh-soc a:hover{color:var(--blue)}
 .fdh-soc svg{width:100%;height:100%}
-.fdh-pano{margin:clamp(26px,4vh,44px) auto clamp(30px,5vh,52px);border-radius:18px;
-  overflow:hidden;box-shadow:0 26px 60px -30px rgba(0,0,0,.35)}
-.fdh-pano img{width:100%;aspect-ratio:16/8.2;object-fit:cover;display:block}
-@media (max-width:700px){.fdh-pano img{aspect-ratio:16/10}}
+.fdh-band{height:clamp(300px,48vh,540px);margin-top:clamp(20px,3.5vh,36px);
+  background:url('/assets/img/hero-home.jpg?g3') center 58%/cover no-repeat}
+@media (max-width:700px){.fdh-band{height:38vh;background-position:center 62%}}
 @media (max-width:700px){
   .fdh-top .r span{display:none}
   .fdh-main h1{font-size:clamp(1.7rem,8vw,2.2rem)}
