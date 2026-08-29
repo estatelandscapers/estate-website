@@ -74,6 +74,10 @@ for (const f of walk(path.join(SRC, 'pages'))) {
   };
   let html = c.raw ? render(body, vars) : render(layout, vars);
   html = swapPhotos(html, c.path);
+  // Cache-busting: assets carry the build stamp, so a deploy is visible instantly
+  // even though assets themselves are cached for speed.
+  html = html.replace(/\/assets\/(site\.css|site\.js|enquiry\.js)(?!\?)/g,
+    '/assets/$1?v=' + STAMP.replace(/[^0-9]/g, ''));
   html = html.replace('</html>', '<!-- estate build ' + STAMP + ' · ' + c.path + ' -->\n</html>');
   if (!global.__built) global.__built = new Set();
   if (global.__built.has(c.path)) throw new Error('DUPLICATE PAGE PATH: ' + c.path + ' built twice (second source: ' + f + ')');
