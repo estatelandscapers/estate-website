@@ -371,9 +371,12 @@ legend{display:block;font-size:10.5px;font-weight:800;letter-spacing:.14em;text-
 .err-summary.on{display:block}
 
 /* ---------------- front door — editorial hero ---------------- */
-.fdh{min-height:calc(100vh);min-height:calc(100svh);display:flex;flex-direction:column}
-.fdh-top{display:flex;justify-content:space-between;align-items:center;gap:16px;
-  padding:18px clamp(20px,4vw,44px)}
+.fdh{--fdgut:clamp(24px,3vw,54px);min-height:calc(100vh);min-height:calc(100svh);
+  display:flex;flex-direction:column}
+.fdh-main .shell{width:calc(100% - 2*var(--fdgut));max-width:none}
+.mega .shell{--fdgut:clamp(24px,3vw,54px);width:calc(100% - 2*var(--fdgut));max-width:none}
+.fdh-top{display:flex;justify-content:space-between;align-items:center;gap:22px;
+  padding:18px var(--fdgut,clamp(24px,3vw,54px))}
 .fdh-top img{width:clamp(180px,17vw,230px);height:auto}
 .fdh-top .r{text-align:right;font-size:9.5px;letter-spacing:.15em;text-transform:uppercase;
   color:var(--label);font-weight:600;line-height:1.7}
@@ -395,9 +398,12 @@ legend{display:block;font-size:10.5px;font-weight:800;letter-spacing:.14em;text-
 .fdh-reveal{margin-top:clamp(20px,3.5vh,36px)}
 .fdh-band{--bmin:clamp(300px,48vh,540px);height:var(--bmin);
   background:url('/assets/img/hero-home.jpg?g4') center 12%/cover no-repeat}
-html.js .fdh-reveal{height:260vh}
+html.js .fdh-main{align-items:flex-start;padding-top:clamp(30px,9vh,120px)}
+html.js .fdh-reveal{height:260vh;margin-top:0}
+html.js .fdh-sticky{display:flex;align-items:flex-end}
 html.js .fdh-sticky{position:sticky;top:0;height:100vh;overflow:hidden}
-html.js .fdh-band{height:calc(var(--bmin) + (100vh - var(--bmin)) * var(--ph,0));
+html.js .fdh-band{--bstart:clamp(70px,11vh,150px);width:100%;
+  height:calc(var(--bstart) + (100vh - var(--bstart)) * var(--ph,0));
   will-change:height,background-position}
 @media (max-width:700px){.fdh-band{--bmin:38vh}}
 @media (max-width:700px){
@@ -423,11 +429,10 @@ html.js .rv{opacity:0;transform:translateY(16px);
 html.js .rv.v{opacity:1;transform:none}
 
 /* ---------------- front door menu ---------------- */
-.fdh-menu{display:inline-flex;flex-direction:column;justify-content:center;gap:6px;
-  width:44px;height:44px;padding:10px;background:none;border:1px solid var(--line);
-  border-radius:10px;cursor:pointer;flex:none}
+.fdh-menu{display:inline-flex;flex-direction:column;justify-content:center;gap:7px;
+  width:44px;height:44px;padding:9px;background:none;border:none;cursor:pointer;flex:none}
 .fdh-menu span{display:block;height:2px;background:#000;border-radius:2px;transition:.2s}
-.fdh-menu:hover{border-color:var(--blue)}
+.fdh-menu:hover span{background:var(--blue)}
 .mega{position:fixed;inset:0;z-index:80;background:#fff;overflow:auto;display:none}
 .mega.on{display:block}
 @media (prefers-reduced-motion:no-preference){
