@@ -203,3 +203,24 @@ if (/estatelandscapers\.com\.au$/.test(location.hostname)) {
   }, { threshold: 0.12, rootMargin: '0px 0px -6% 0px' });
   list.forEach(function (el) { io.observe(el); });
 })();
+
+// Front-door mega menu: hamburger opens the full sitemap panel; closes on X,
+// Escape, or choosing a link. Focus moves in on open and back on close.
+(function () {
+  var btn = document.getElementById('megabtn');
+  var mega = document.getElementById('mega');
+  var close = document.getElementById('megaclose');
+  if (!btn || !mega || !close) return;
+  function setOpen(open) {
+    mega.classList.toggle('on', open);
+    btn.setAttribute('aria-expanded', open ? 'true' : 'false');
+    document.body.style.overflow = open ? 'hidden' : '';
+    if (open) close.focus(); else btn.focus();
+  }
+  btn.addEventListener('click', function () { setOpen(true); });
+  close.addEventListener('click', function () { setOpen(false); });
+  document.addEventListener('keydown', function (e) {
+    if (e.key === 'Escape' && mega.classList.contains('on')) setOpen(false);
+  });
+  mega.addEventListener('click', function (e) { if (e.target.closest('a')) setOpen(false); });
+})();

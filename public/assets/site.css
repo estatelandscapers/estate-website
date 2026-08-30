@@ -421,3 +421,41 @@ html.cur-hover #cuf{opacity:0}
 html.js .rv{opacity:0;transform:translateY(16px);
   transition:opacity .55s cubic-bezier(.16,1,.3,1),transform .55s cubic-bezier(.16,1,.3,1)}
 html.js .rv.v{opacity:1;transform:none}
+
+/* ---------------- front door menu ---------------- */
+.fdh-menu{display:inline-flex;flex-direction:column;justify-content:center;gap:6px;
+  width:44px;height:44px;padding:10px;background:none;border:1px solid var(--line);
+  border-radius:10px;cursor:pointer;flex:none}
+.fdh-menu span{display:block;height:2px;background:#000;border-radius:2px;transition:.2s}
+.fdh-menu:hover{border-color:var(--blue)}
+.mega{position:fixed;inset:0;z-index:80;background:#fff;overflow:auto;display:none}
+.mega.on{display:block}
+@media (prefers-reduced-motion:no-preference){
+  .mega.on{animation:megain .28s cubic-bezier(.16,1,.3,1)}
+  @keyframes megain{from{opacity:0;transform:translateY(-14px)}to{opacity:1;transform:none}}
+}
+.mega-top{display:flex;justify-content:space-between;align-items:center;gap:16px;
+  padding:18px clamp(20px,4vw,44px)}
+.mega-top img{width:clamp(170px,15vw,210px);height:auto}
+.mega-close{width:44px;height:44px;border:1px solid var(--line);border-radius:10px;
+  background:none;cursor:pointer;font-size:22px;line-height:1;color:#000}
+.mega-close:hover{border-color:var(--blue);color:var(--blue)}
+.mega-grid{display:grid;grid-template-columns:1fr 1fr 1fr .9fr;
+  gap:clamp(26px,4vw,60px);padding:clamp(20px,4vh,44px) 0 60px}
+.mega-grid .lbl{font-size:10px;font-weight:800;letter-spacing:.2em;color:var(--label);
+  text-transform:uppercase;margin-bottom:18px}
+.mega-grid a{display:block;color:#000;text-decoration:none;font-size:1.02rem;
+  font-weight:600;padding:7px 0;letter-spacing:-.01em}
+.mega-grid a:hover{color:var(--blue)}
+.mega-grid a.sml{font-size:.82rem;font-weight:600;color:var(--body);padding:4px 0}
+.mega-brand{border-left:1px solid var(--line);padding-left:clamp(20px,3vw,44px)}
+.mega-brand img{width:130px;height:auto;margin-bottom:18px}
+.mega-brand p{font-size:.85rem;color:var(--body);line-height:1.8}
+.mega-brand a{font-weight:700;color:#000;font-size:.9rem;padding:0}
+.mega-brand .fdh-soc{margin-top:16px;padding:0}
+.mega-brand .cred{margin-top:20px;font-size:9px;letter-spacing:.16em;text-transform:uppercase;color:var(--label);font-weight:700;line-height:2}
+@media (max-width:900px){
+  .mega-grid{grid-template-columns:1fr 1fr}
+  .mega-brand{grid-column:1/-1;border-left:0;padding-left:0;border-top:1px solid var(--line);padding-top:26px}
+}
+@media (max-width:540px){.mega-grid{grid-template-columns:1fr}}
