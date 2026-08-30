@@ -2,7 +2,7 @@
 
 Save an image as `public/assets/img/<name>.jpg` (or .webp/.png), push, and it
 appears in its slot automatically on the next build. This file regenerates on
-every build and ticks itself: 0 of 50 slots filled.
+every build and ticks itself: 2 of 50 slots filled.
 
 Best size: 1600px wide, JPG/WebP, under 400 KB (squoosh.app does this in-browser).
 Height is flexible — every slot crops to fit, so keep the subject centred.
@@ -17,10 +17,10 @@ added to the image sitemap automatically.
 
 ## /
 
-- [ ] `home-1.jpg` — Set-out or drainage in progress — string lines, levels, ag pipe
+- [ ] `home-1.jpg` — Supervisor checking levels or set-out against the plan — the standard in action
 - [ ] `home-2.jpg` — Engineered retaining wall — piers and steel before the pour
 - [ ] `home-3.jpg` — Finished landscape — ideally photographed months after handover
-- [ ] `home-4.jpg` — Commercial site in progress — machinery, scale
+- [x] `home-4.jpg` — Commercial site in progress — machinery, scale
 - [ ] `home-5.jpg` — Finished residential landscape — turf, retaining, planting
 
 ## /about/
@@ -29,7 +29,7 @@ added to the image sitemap automatically.
 
 ## /commercial/
 
-- [ ] `commercial-1.jpg` — Commercial site mid-build — plant on site, works in progress
+- [x] `commercial-1.jpg` — Commercial site mid-build — plant on site, works in progress
 
 ## /commercial/builders-developers/
 
