@@ -79,8 +79,16 @@
   </div>
   <div class="fdh-reveal">
     <div class="fdh-sticky">
-      <div class="fdh-band" role="img"
-        aria-label="Native planting along a completed commercial landscape by Estate Landscapers"></div>
+      <div class="fdh-band" id="heroslides" aria-roledescription="carousel" aria-label="Featured projects">
+        <!-- Add a slide per project: div.fdh-slide > img + a.fdh-cap. First slide preloaded. -->
+        <div class="fdh-slide on">
+          <img src="/assets/img/hero-home.jpg?g4" alt="Native planting along a completed commercial landscape by Estate Landscapers" fetchpriority="high">
+          <a class="fdh-cap" href="/projects/"><b>Commercial streetscape — native planting</b><span>View projects →</span></a>
+        </div>
+        <button class="fdh-arr prev" type="button" aria-label="Previous project">‹</button>
+        <button class="fdh-arr next" type="button" aria-label="Next project">›</button>
+        <div class="fdh-dots" role="tablist"></div>
+      </div>
     </div>
   </div>
 </div>

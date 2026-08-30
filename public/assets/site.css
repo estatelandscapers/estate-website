@@ -373,8 +373,8 @@ legend{display:block;font-size:10.5px;font-weight:800;letter-spacing:.14em;text-
 /* ---------------- front door — editorial hero ---------------- */
 .fdh{--fdgut:clamp(24px,3vw,54px);min-height:calc(100vh);min-height:calc(100svh);
   display:flex;flex-direction:column}
-.fdh-main .shell{width:calc(100% - 2*var(--fdgut));max-width:none}
-.mega .shell{--fdgut:clamp(24px,3vw,54px);width:calc(100% - 2*var(--fdgut));max-width:none}
+.fdh-main .shell{width:calc(100% - 2*var(--fdgut));max-width:1360px}
+.mega .shell{--fdgut:clamp(24px,3vw,54px);width:calc(100% - 2*var(--fdgut));max-width:1360px}
 .fdh-top{display:flex;justify-content:space-between;align-items:center;gap:22px;
   padding:18px var(--fdgut,clamp(24px,3vw,54px))}
 .fdh-top img{width:clamp(180px,17vw,230px);height:auto}
@@ -396,8 +396,24 @@ legend{display:block;font-size:10.5px;font-weight:800;letter-spacing:.14em;text-
 .fdh-soc a:hover{color:var(--blue)}
 .fdh-soc svg{width:100%;height:100%}
 .fdh-reveal{margin-top:clamp(20px,3.5vh,36px)}
-.fdh-band{--bmin:clamp(300px,48vh,540px);height:var(--bmin);
-  background:url('/assets/img/hero-home.jpg?g4') center 12%/cover no-repeat}
+.fdh-band{--bmin:clamp(300px,48vh,540px);height:var(--bmin);position:relative;overflow:hidden;background:#EDEFF2}
+.fdh-slide{position:absolute;inset:0;opacity:0;transition:opacity .8s ease}
+.fdh-slide.on{opacity:1}
+.fdh-slide img{width:100%;height:100%;object-fit:cover;object-position:center 12%}
+.fdh-cap{position:absolute;left:0;right:0;bottom:0;z-index:3;display:flex;align-items:flex-end;
+  justify-content:space-between;gap:14px;padding:18px clamp(18px,2.6vw,30px);
+  background:linear-gradient(180deg,transparent,rgba(0,0,0,.45));color:#fff;text-decoration:none}
+.fdh-cap b{font-size:clamp(1rem,1.8vw,1.25rem);font-weight:800;text-shadow:0 2px 12px rgba(0,0,0,.5)}
+.fdh-cap span{font-size:10px;font-weight:800;letter-spacing:.16em;text-transform:uppercase;white-space:nowrap}
+.fdh-arr{position:absolute;top:50%;transform:translateY(-50%);z-index:4;width:44px;height:44px;
+  border:none;background:rgba(0,0,0,.28);color:#fff;border-radius:50%;cursor:pointer;font-size:18px;display:none}
+.fdh-band.multi .fdh-arr{display:block}
+.fdh-arr:hover{background:rgba(0,0,0,.5)}
+.fdh-arr.prev{left:16px}.fdh-arr.next{right:16px}
+.fdh-dots{position:absolute;bottom:14px;left:50%;transform:translateX(-50%);z-index:4;display:none;gap:8px}
+.fdh-band.multi .fdh-dots{display:flex}
+.fdh-dots button{width:9px;height:9px;border-radius:50%;border:none;background:rgba(255,255,255,.5);cursor:pointer;padding:0}
+.fdh-dots button.on{background:#fff}
 html.js .fdh-main{align-items:flex-start;padding-top:clamp(30px,9vh,120px)}
 html.js .fdh-reveal{height:260vh;margin-top:0}
 html.js .fdh-sticky{display:flex;align-items:flex-end}

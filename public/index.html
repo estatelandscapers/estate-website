@@ -26,7 +26,7 @@
 <script>(function(){try{var f=location.search.indexOf('motion=1')>-1;if(f||!matchMedia('(prefers-reduced-motion: reduce)').matches)document.documentElement.className+=' js';}catch(e){}})();</script>
 <script async src="https://www.googletagmanager.com/gtag/js?id=G-NWQPY0NXEF"></script>
 <link rel="preload" as="image" href="/assets/img/hero-home.jpg?g4">
-<link rel="stylesheet" href="/assets/site.css?v=202608301316">
+<link rel="stylesheet" href="/assets/site.css?v=202608301324">
 </head>
 <body>
 
@@ -73,8 +73,16 @@
   </div>
   <div class="fdh-reveal">
     <div class="fdh-sticky">
-      <div class="fdh-band" role="img"
-        aria-label="Native planting along a completed commercial landscape by Estate Landscapers"></div>
+      <div class="fdh-band" id="heroslides" aria-roledescription="carousel" aria-label="Featured projects">
+        <!-- Add a slide per project: div.fdh-slide > img + a.fdh-cap. First slide preloaded. -->
+        <div class="fdh-slide on">
+          <img src="/assets/img/hero-home.jpg?g4" alt="Native planting along a completed commercial landscape by Estate Landscapers" fetchpriority="high">
+          <a class="fdh-cap" href="/projects/"><b>Commercial streetscape — native planting</b><span>View projects →</span></a>
+        </div>
+        <button class="fdh-arr prev" type="button" aria-label="Previous project">‹</button>
+        <button class="fdh-arr next" type="button" aria-label="Next project">›</button>
+        <div class="fdh-dots" role="tablist"></div>
+      </div>
     </div>
   </div>
 </div>
@@ -251,7 +259,7 @@
   </div>
 </footer>
 
-<script src="/assets/site.js?v=202608301316" defer></script>
+<script src="/assets/site.js?v=202608301324" defer></script>
 <script type="application/ld+json">
 {
   "@context":"https://schema.org",
@@ -283,5 +291,5 @@
 }
 </script>
 </body>
-<!-- estate build 2026-08-30T13:16Z · / -->
+<!-- estate build 2026-08-30T13:24Z · / -->
 </html>

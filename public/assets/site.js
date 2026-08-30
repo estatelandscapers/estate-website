@@ -141,7 +141,8 @@ if (/estatelandscapers\.com\.au$/.test(location.hostname)) {
     var grow = ease(Math.min(1, p / 0.45));            // phase 1
     var pan = p <= 0.45 ? 0 : ease((p - 0.45) / 0.55); // phase 2
     band.style.setProperty('--ph', grow.toFixed(4));
-    band.style.backgroundPosition = 'center ' + (10 + pan * 84).toFixed(2) + '%';
+    var img = band.querySelector('.fdh-slide.on img');
+    if (img) img.style.objectPosition = 'center ' + (10 + pan * 84).toFixed(2) + '%';
   }
   function onScroll() { if (!ticking) { ticking = true; requestAnimationFrame(frame); } }
   window.addEventListener('scroll', onScroll, { passive: true });
@@ -223,4 +224,36 @@ if (/estatelandscapers\.com\.au$/.test(location.hostname)) {
     if (e.key === 'Escape' && mega.classList.contains('on')) setOpen(false);
   });
   mega.addEventListener('click', function (e) { if (e.target.closest('a')) setOpen(false); });
+})();
+
+// Hero project slider: fades between slides every 5s when there's more than one,
+// with arrows and dots. One slide today; each future project adds a div.fdh-slide.
+(function () {
+  var band = document.getElementById('heroslides');
+  if (!band) return;
+  var slides = [].slice.call(band.querySelectorAll('.fdh-slide'));
+  if (slides.length < 2) return;
+  band.classList.add('multi');
+  var dots = band.querySelector('.fdh-dots'), cur = 0, timer;
+  slides.forEach(function (_, i) {
+    var b = document.createElement('button');
+    b.setAttribute('aria-label', 'Go to project ' + (i + 1));
+    b.addEventListener('click', function () { go(i, true); });
+    dots.appendChild(b);
+  });
+  function paint() {
+    slides.forEach(function (s, i) { s.classList.toggle('on', i === cur); });
+    [].slice.call(dots.children).forEach(function (d, i) { d.classList.toggle('on', i === cur); });
+  }
+  function go(i, manual) {
+    cur = (i + slides.length) % slides.length; paint();
+    if (manual) { clearInterval(timer); arm(); }
+  }
+  function arm() {
+    if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+    timer = setInterval(function () { go(cur + 1); }, 5000);
+  }
+  band.querySelector('.fdh-arr.prev').addEventListener('click', function () { go(cur - 1, true); });
+  band.querySelector('.fdh-arr.next').addEventListener('click', function () { go(cur + 1, true); });
+  paint(); arm();
 })();
