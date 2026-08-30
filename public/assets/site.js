@@ -1,3 +1,13 @@
+// Google Analytics 4 — loader is in the page head; config fires on the live
+// domain only, so staging traffic never pollutes the property. gtag is defined
+// globally either way so form events can call it safely.
+window.dataLayer = window.dataLayer || [];
+window.gtag = function () { dataLayer.push(arguments); };
+if (/estatelandscapers\.com\.au$/.test(location.hostname)) {
+  gtag('js', new Date());
+  gtag('config', 'G-NWQPY0NXEF');
+}
+
 // Mobile navigation toggle
 (function () {
   var btn = document.querySelector('.nav-toggle');
@@ -119,7 +129,7 @@
   var reveal = document.querySelector('.fdh-reveal');
   var band = document.querySelector('.fdh-band');
   if (!reveal || !band) return;
-  if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+  if (!/\bjs\b/.test(document.documentElement.className)) return; // boot script decides motion
   var ticking = false;
   function ease(t) { return t * t * (3 - 2 * t); }
   function frame() {
@@ -137,4 +147,59 @@
   window.addEventListener('scroll', onScroll, { passive: true });
   window.addEventListener('resize', onScroll);
   frame();
+})();
+
+// Cursor: dot glued to the mouse, ring chasing with easing, both blend-inverted
+// so they read over any background; grows over interactive elements. Fine
+// pointers only, and only when the boot script allowed motion (html.js).
+(function () {
+  if (!/\bjs\b/.test(document.documentElement.className)) return;
+  if (!window.matchMedia('(pointer: fine)').matches) return;
+  var dot = document.createElement('div'); dot.id = 'cur';
+  var ring = document.createElement('div'); ring.id = 'cuf';
+  document.body.appendChild(dot); document.body.appendChild(ring);
+  document.documentElement.classList.add('cur-on');
+  var mx = -40, my = -40, fx = -40, fy = -40;
+  document.addEventListener('mousemove', function (e) {
+    mx = e.clientX; my = e.clientY;
+    dot.style.left = mx + 'px'; dot.style.top = my + 'px';
+  }, { passive: true });
+  (function chase() {
+    fx += (mx - fx) * 0.13; fy += (my - fy) * 0.13;
+    ring.style.left = fx + 'px'; ring.style.top = fy + 'px';
+    requestAnimationFrame(chase);
+  })();
+  document.addEventListener('mouseover', function (e) {
+    if (e.target.closest('a, button, .chip, .card, .fd-door, input, select, textarea, .filebox'))
+      document.documentElement.classList.add('cur-hover');
+  }, { passive: true });
+  document.addEventListener('mouseout', function (e) {
+    if (e.target.closest('a, button, .chip, .card, .fd-door, input, select, textarea, .filebox'))
+      document.documentElement.classList.remove('cur-hover');
+  }, { passive: true });
+})();
+
+// Reveal on scroll: content blocks below the fold rise in as they enter view,
+// staggered within their group. Above-the-fold content is never touched, so
+// nothing flashes; without JS or with reduced motion, everything is static.
+(function () {
+  if (!/\bjs\b/.test(document.documentElement.className)) return;
+  if (!('IntersectionObserver' in window)) return;
+  var els = document.querySelectorAll('.card, .steps li, .faq li, .fd-row .tx, .fd-door, .g2 > div, .plate');
+  var vh = window.innerHeight, list = [];
+  els.forEach(function (el) {
+    if (el.getBoundingClientRect().top > vh * 0.88) { el.classList.add('rv'); list.push(el); }
+  });
+  if (!list.length) return;
+  var io = new IntersectionObserver(function (entries) {
+    entries.forEach(function (en) {
+      if (!en.isIntersecting) return;
+      var el = en.target, sibs = el.parentElement ? [].slice.call(el.parentElement.children) : [];
+      var i = Math.max(0, sibs.indexOf(el));
+      el.style.transitionDelay = Math.min(i * 70, 350) + 'ms';
+      el.classList.add('v');
+      io.unobserve(el);
+    });
+  }, { threshold: 0.12, rootMargin: '0px 0px -6% 0px' });
+  list.forEach(function (el) { io.observe(el); });
 })();
