@@ -31,7 +31,7 @@
 <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 <script>(function(){try{var f=location.search.indexOf('motion=1')>-1;if(f||!matchMedia('(prefers-reduced-motion: reduce)').matches)document.documentElement.className+=' js';}catch(e){}})();</script>
 <script async src="https://www.googletagmanager.com/gtag/js?id=G-NWQPY0NXEF"></script>
-<link rel="preload" as="image" href="/assets/img/hero-home.jpg?g4">
+<link rel="preload" as="image" href="/assets/img/hero-bg.jpg?v1">
 <link rel="stylesheet" href="/assets/site.css">
 </head>
 <body>
@@ -42,8 +42,10 @@
 <main id="main">
 
 <div class="fdh">
+<div class="fdh-hero">
+  <div class="bg" aria-hidden="true"></div><div class="glow" aria-hidden="true"></div><div class="grain" aria-hidden="true"></div>
   <header class="fdh-top rise d1">
-    <a href="/" aria-label="Estate Landscapers — home"><img src="/assets/logo-horizontal.png" width="640" height="115" alt="Estate Landscapers"></a>
+    <a href="/" aria-label="Estate Landscapers — home"><img src="/assets/logo-horizontal-white.png" width="640" height="115" alt="Estate Landscapers"></a>
     <div class="fdh-right">
       <p class="r"><span>Licensed Landscapers · LIC 487076C · Est. 2019</span>
         <b><a href="mailto:enquiry@estatelandscapers.com.au">enquiry@estatelandscapers.com.au</a></b></p>
@@ -55,6 +57,7 @@
 
   <div class="fdh-main">
     <div class="shell">
+    <div class="fdh-tx">
       <p class="eyebrow rise d1">Landscape construction · Sydney · NSW &amp; QLD</p>
       <h1 class="rise d2">Landscapes that perform <em style="font-style:normal;color:var(--blue)">long after</em> we leave.</h1>
       <p class="fdh-sub rise d2">From private homes to major developments, we deliver complete landscape
@@ -74,20 +77,26 @@
         </div>
       </div>
     </div>
+    </div>
   </div>
 
   <div class="shell fdh-hintwrap">
     <p class="fd-hint rise d4" aria-hidden="true" style="margin-top:6px">Scroll <span class="arr">↓</span></p>
   </div>
-  <div class="fdh-band" id="heroslides" aria-roledescription="carousel" aria-label="Featured projects">
+</div>
+  <div class="fdh-reveal">
+    <div class="fdh-sticky">
+      <div class="fdh-band" id="heroslides" aria-roledescription="carousel" aria-label="Featured projects">
         <!-- Add a slide per project: div.fdh-slide > img + a.fdh-cap. First slide preloaded. -->
         <div class="fdh-slide on">
-          <img src="/assets/img/hero-home.jpg?g4" alt="Native planting along a completed commercial landscape by Estate Landscapers" fetchpriority="high">
+          <img src="/assets/img/hero-home.jpg?g4" alt="Native planting along a completed commercial landscape by Estate Landscapers" loading="lazy">
           <a class="fdh-cap" href="/projects/"><b>Commercial streetscape — native planting</b><span>View projects →</span></a>
         </div>
         <button class="fdh-arr prev" type="button" aria-label="Previous project">‹</button>
         <button class="fdh-arr next" type="button" aria-label="Next project">›</button>
         <div class="fdh-dots" role="tablist"></div>
+      </div>
+    </div>
   </div>
 </div>
 

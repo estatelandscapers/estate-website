@@ -479,3 +479,37 @@ html.js .rv.v{opacity:1;transform:none}
   .mega-brand{grid-column:1/-1;border-left:0;padding-left:0;border-top:1px solid var(--line);padding-top:26px}
 }
 @media (max-width:540px){.mega-grid{grid-template-columns:1fr}}
+
+/* ---------------- front door — dark hero ---------------- */
+.fdh{min-height:0}
+.fdh-hero{position:relative;min-height:100vh;min-height:100svh;display:flex;flex-direction:column;
+  background:#0B1220;color:#fff;overflow:hidden}
+.fdh-hero .bg{position:absolute;inset:0;background:url('/assets/img/hero-bg.jpg?v1') center 45%/cover no-repeat;opacity:var(--hero-photo,.28)}
+.fdh-hero .glow{position:absolute;inset:0;pointer-events:none;
+  background:radial-gradient(ellipse 70% 60% at 30% 30%,rgba(30,91,255,.22),transparent 65%),
+             radial-gradient(ellipse 60% 70% at 85% 85%,rgba(45,65,90,.4),transparent 60%)}
+.fdh-hero .grain{position:absolute;inset:0;opacity:.35;pointer-events:none;
+  background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='.08'/%3E%3C/svg%3E")}
+.fdh-hero .fdh-top,.fdh-hero .fdh-main,.fdh-hero .fdh-hintwrap{position:relative;z-index:2}
+.fdh-hero .fdh-top .r{color:rgba(255,255,255,.6)}
+.fdh-hero .fdh-top .r b{color:#fff}
+.fdh-hero .fdh-menu span{background:#fff}
+.fdh-hero .fdh-menu:hover span{background:#7FA3FF}
+.fdh-hero .eyebrow{color:#7FA3FF}
+.fdh-hero h1{color:#fff}
+.fdh-hero .fdh-sub{color:rgba(255,255,255,.78)}
+.fdh-hero .btn-o{background:rgba(255,255,255,.08);color:#fff;border-color:rgba(255,255,255,.55)}
+.fdh-hero .btn-o:hover{background:rgba(255,255,255,.16)}
+.fdh-hero .fdh-soc a{color:#fff}
+.fdh-hero .fd-hint{color:rgba(255,255,255,.7)}
+/* text block on the right of the container, aligned right; socials beneath the buttons */
+.fdh-hero .fdh-main .shell{display:flex;justify-content:flex-end}
+.fdh-tx{max-width:640px;text-align:right}
+.fdh-tx .fdh-sub{margin-left:auto}
+.fdh-tx .fdh-row{justify-content:flex-end;flex-direction:column;align-items:flex-end;gap:18px}
+.fdh-tx .fdh-cta{justify-content:flex-end}
+@media (max-width:760px){
+  .fdh-hero .fdh-main .shell{justify-content:flex-start}
+  .fdh-tx{text-align:left}.fdh-tx .fdh-sub{margin-left:0}
+  .fdh-tx .fdh-row{align-items:flex-start}.fdh-tx .fdh-cta{justify-content:flex-start}
+}
