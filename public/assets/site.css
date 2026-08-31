@@ -522,7 +522,8 @@ html.js .rv.v{opacity:1;transform:none}
 .hd .shell{display:flex;justify-content:space-between;align-items:center;gap:16px;padding:12px 0}
 .hd-logo{width:clamp(170px,17vw,220px);height:auto}
 .hd-right{display:flex;align-items:center;gap:12px}
-.hd-contact{padding:10px 16px}
+.hd-contact{padding:10px 16px;display:none}
+@media (max-width:760px){.hd-contact{display:inline-flex}}
 .hd .fdh-menu span{background:#000}
 .hd .fdh-menu:hover span{background:var(--blue)}
 /* one floating CTA (mobile only) */
@@ -542,3 +543,20 @@ html.js .rv.v{opacity:1;transform:none}
   .prog{display:block;position:fixed;right:3px;top:74px;bottom:90px;width:3px;background:rgba(0,0,0,.08);border-radius:3px;z-index:65;pointer-events:none}
   .prog i{display:block;width:100%;height:0;background:var(--blue);border-radius:3px}
 }
+
+/* ---------------- tier table ---------------- */
+.tierwrap{overflow:auto;border:1px solid var(--line);border-radius:14px;background:#fff}
+.tiers{width:100%;border-collapse:collapse;min-width:640px;font-size:.88rem}
+.tiers th,.tiers td{padding:14px 16px;text-align:left;vertical-align:top;border-bottom:1px solid var(--line)}
+.tiers thead th{font-size:10.5px;font-weight:800;letter-spacing:.14em;text-transform:uppercase;color:var(--blue);background:var(--mist)}
+.tiers tbody th{font-weight:800;width:20%;color:#000}
+.tiers tbody tr:last-child td,.tiers tbody tr:last-child th{border-bottom:0}
+.tiers a{color:var(--blue);font-weight:700;text-decoration:none}
+/* ---------------- council marquee ---------------- */
+.marq{overflow:hidden;border-top:1px solid var(--line);border-bottom:1px solid var(--line);padding:18px 0;mask-image:linear-gradient(90deg,transparent,#000 8%,#000 92%,transparent)}
+.marq .track{display:flex;gap:14px;width:max-content}
+@media (prefers-reduced-motion:no-preference){.marq .track{animation:marq 42s linear infinite}}
+@keyframes marq{to{transform:translateX(-50%)}}
+.ctile{display:inline-flex;align-items:center;justify-content:center;min-width:220px;height:64px;padding:0 22px;border:1px solid var(--line);
+  border-radius:12px;background:#fff;font-size:11px;font-weight:800;letter-spacing:.12em;text-transform:uppercase;color:#2c3138;white-space:nowrap}
+.ctile img{height:40px;width:auto}

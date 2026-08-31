@@ -74,6 +74,10 @@ for (const f of walk(path.join(SRC, 'pages'))) {
   };
   let html = c.raw ? render(body, vars) : render(layout, vars);
   html = swapPhotos(html, c.path);
+  html = html.replace(/<span class="ctile" data-logo="([^"]+)">([^<]+)<\/span>/g, (m, slug, name) => {
+    const ext = ['svg', 'png', 'webp'].find(e => fs.existsSync(path.join(OUT, 'assets', 'img', 'councils', slug + '.' + e)));
+    return ext ? '<span class="ctile"><img src="/assets/img/councils/' + slug + '.' + ext + '" alt="' + name + '" loading="lazy"></span>' : m;
+  });
   // Cache-busting: assets carry the build stamp, so a deploy is visible instantly
   // even though assets themselves are cached for speed.
   html = html.replace(/\/assets\/(site\.css|site\.js|enquiry\.js)(?!\?)/g,

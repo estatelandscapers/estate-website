@@ -2,7 +2,7 @@
 
 Save an image as `public/assets/img/<name>.jpg` (or .webp/.png), push, and it
 appears in its slot automatically on the next build. This file regenerates on
-every build and ticks itself: 2 of 50 slots filled.
+every build and ticks itself: 2 of 62 slots filled.
 
 Best size: 1600px wide, JPG/WebP, under 400 KB (squoosh.app does this in-browser).
 Height is flexible — every slot crops to fit, so keep the subject centred.
@@ -51,19 +51,49 @@ added to the image sitemap automatically.
 
 - [ ] `commercial-strata-body-corporate-1.jpg` — Common-property landscape — entry, gardens or shared open space
 
+## /insights/retaining-walls/besser-block/
+
+- [ ] `insights-retaining-walls-besser-block-1.jpg` — Besser block retaining walls — completed, with the drainage or piers visible if possible
+
+## /insights/retaining-walls/decorative-concrete-sleeper/
+
+- [ ] `insights-retaining-walls-decorative-concrete-sleeper-1.jpg` — Decorative concrete sleeper retaining walls — completed, with the drainage or piers visible if possible
+
+## /insights/retaining-walls/plain-concrete-sleeper/
+
+- [ ] `insights-retaining-walls-plain-concrete-sleeper-1.jpg` — Plain concrete sleeper retaining walls — completed, with the drainage or piers visible if possible
+
+## /insights/retaining-walls/rendered-block/
+
+- [ ] `insights-retaining-walls-rendered-block-1.jpg` — Rendered block retaining walls — completed, with the drainage or piers visible if possible
+
+## /insights/retaining-walls/split-face-block/
+
+- [ ] `insights-retaining-walls-split-face-block-1.jpg` — Split-face block retaining walls — completed, with the drainage or piers visible if possible
+
+## /insights/retaining-walls/timber-sleeper-steel-post/
+
+- [ ] `insights-retaining-walls-timber-sleeper-steel-post-1.jpg` — Timber sleeper retaining walls with steel posts — completed, with the drainage or piers visible if possible
+
 ## /residential/
 
 - [ ] `residential-1.jpg` — Finished residential landscape — the strongest single image you have
-- [ ] `residential-2.jpg` — New build, finished front and back
-- [ ] `residential-3.jpg` — Engineered retaining wall
-- [ ] `residential-4.jpg` — Finished driveway
-- [ ] `residential-5.jpg` — Fresh turf, close up
-- [ ] `residential-6.jpg` — Colorbond and blade fencing
-- [ ] `residential-7.jpg` — Excavation underway
-- [ ] `residential-8.jpg` — Recent post
-- [ ] `residential-9.jpg` — Recent post
-- [ ] `residential-10.jpg` — Recent post
-- [ ] `residential-11.jpg` — Recent post
+- [ ] `residential-2.jpg` — A landscape plan on the table, or a designed yard built from one
+- [ ] `residential-3.jpg` — New build — bare site to finished yard
+- [ ] `residential-4.jpg` — Finished driveway — plain, colour or exposed aggregate
+- [ ] `residential-5.jpg` — Excavator working a residential site
+- [ ] `residential-6.jpg` — Engineered retaining wall mid-build
+- [ ] `residential-7.jpg` — Ag pipe and gravel in an open trench
+- [ ] `residential-8.jpg` — Fresh turf being laid over screened underlay
+- [ ] `residential-9.jpg` — Planted garden beds at completion
+- [ ] `residential-10.jpg` — Drip line in a garden bed before mulch
+- [ ] `residential-11.jpg` — Timber deck or pergola at completion
+- [ ] `residential-12.jpg` — Colorbond run with plinth, or a front blade fence
+- [ ] `residential-13.jpg` — Paved entertaining area at completion
+- [ ] `residential-14.jpg` — Recent post
+- [ ] `residential-15.jpg` — Recent post
+- [ ] `residential-16.jpg` — Recent post
+- [ ] `residential-17.jpg` — Recent post
 
 ## /residential/concrete-driveways/
 
