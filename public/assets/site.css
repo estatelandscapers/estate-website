@@ -504,7 +504,7 @@ html.js .rv.v{opacity:1;transform:none}
 .fdh-hero .fd-hint{color:rgba(255,255,255,.7)}
 /* text block on the right of the container, aligned right; socials beneath the buttons */
 .fdh-hero .fdh-main .shell{display:flex;flex-direction:column;align-items:flex-end}
-.fdh-tx{max-width:680px;text-align:right}
+.fdh-tx{max-width:820px;text-align:right}
 .fdh-tx .fdh-sub{margin-left:auto;max-width:none}
 .fdh-hero .fdh-row{width:100%;display:flex;justify-content:space-between;align-items:center;margin-top:32px}
 .fdh-hero .fdh-cta{justify-content:flex-end}
@@ -560,3 +560,8 @@ html.js .rv.v{opacity:1;transform:none}
 .ctile{display:inline-flex;align-items:center;justify-content:center;min-width:220px;height:64px;padding:0 22px;border:1px solid var(--line);
   border-radius:12px;background:#fff;font-size:11px;font-weight:800;letter-spacing:.12em;text-transform:uppercase;color:#2c3138;white-space:nowrap}
 .ctile img{height:40px;width:auto}
+
+.fdh-h1 span{display:block;white-space:nowrap}
+.fdh-h1 em{font-style:normal;color:var(--blue)}
+.fdh-hero .fdh-main h1{font-size:clamp(1.8rem,3.9vw,3.1rem)}
+@media (max-width:760px){.fdh-h1 span{white-space:normal}}

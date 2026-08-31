@@ -2,7 +2,7 @@
 
 Save an image as `public/assets/img/<name>.jpg` (or .webp/.png), push, and it
 appears in its slot automatically on the next build. This file regenerates on
-every build and ticks itself: 2 of 62 slots filled.
+every build and ticks itself: 2 of 56 slots filled.
 
 Best size: 1600px wide, JPG/WebP, under 400 KB (squoosh.app does this in-browser).
 Height is flexible — every slot crops to fit, so keep the subject centred.
@@ -78,22 +78,17 @@ added to the image sitemap automatically.
 ## /residential/
 
 - [ ] `residential-1.jpg` — Finished residential landscape — the strongest single image you have
-- [ ] `residential-2.jpg` — A landscape plan on the table, or a designed yard built from one
+- [ ] `residential-2.jpg` — Designed yard built from its plan
 - [ ] `residential-3.jpg` — New build — bare site to finished yard
-- [ ] `residential-4.jpg` — Finished driveway — plain, colour or exposed aggregate
-- [ ] `residential-5.jpg` — Excavator working a residential site
-- [ ] `residential-6.jpg` — Engineered retaining wall mid-build
-- [ ] `residential-7.jpg` — Ag pipe and gravel in an open trench
-- [ ] `residential-8.jpg` — Fresh turf being laid over screened underlay
-- [ ] `residential-9.jpg` — Planted garden beds at completion
-- [ ] `residential-10.jpg` — Drip line in a garden bed before mulch
-- [ ] `residential-11.jpg` — Timber deck or pergola at completion
-- [ ] `residential-12.jpg` — Colorbond run with plinth, or a front blade fence
-- [ ] `residential-13.jpg` — Paved entertaining area at completion
-- [ ] `residential-14.jpg` — Recent post
-- [ ] `residential-15.jpg` — Recent post
-- [ ] `residential-16.jpg` — Recent post
-- [ ] `residential-17.jpg` — Recent post
+- [ ] `residential-4.jpg` — An Estate-built yard being maintained a season after handover
+- [ ] `residential-5.jpg` — Recent post
+- [ ] `residential-6.jpg` — Recent post
+- [ ] `residential-7.jpg` — Recent post
+- [ ] `residential-8.jpg` — Recent post
+
+## /residential/artificial-turf/
+
+- [ ] `residential-artificial-turf-1.jpg` — Artificial turf laid on a compacted base, join invisible
 
 ## /residential/concrete-driveways/
 
@@ -114,6 +109,10 @@ added to the image sitemap automatically.
 ## /residential/garden-care/
 
 - [ ] `residential-garden-care-1.jpg` — A maintained Estate yard, a season or more after handover
+
+## /residential/garden-edging/
+
+- [ ] `residential-garden-edging-1.jpg` — Corten steel edging between turf and a mulched bed
 
 ## /residential/irrigation/
 
@@ -170,6 +169,10 @@ added to the image sitemap automatically.
 ## /residential/landscaping-schofields/
 
 - [ ] `residential-landscaping-schofields-1.jpg` — A completed Schofields project — add when photographed
+
+## /residential/maintain/
+
+- [ ] `residential-maintain-1.jpg` — An Estate-built yard being maintained a season after handover
 
 ## /residential/new-build-landscaping/
 
