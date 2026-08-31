@@ -44,11 +44,13 @@
 <div class="fdh">
   <header class="fdh-top rise d1">
     <a href="/" aria-label="Estate Landscapers — home"><img src="/assets/logo-horizontal.png" width="640" height="115" alt="Estate Landscapers"></a>
-    <p class="r"><span>Licensed Landscapers · LIC 487076C · Est. 2019</span>
-      <b><a href="mailto:enquiry@estatelandscapers.com.au">enquiry@estatelandscapers.com.au</a></b></p>
-    <button class="fdh-menu" id="megabtn" aria-label="Open menu" aria-expanded="false" aria-controls="mega">
-      <span></span><span></span><span></span>
-    </button>
+    <div class="fdh-right">
+      <p class="r"><span>Licensed Landscapers · LIC 487076C · Est. 2019</span>
+        <b><a href="mailto:enquiry@estatelandscapers.com.au">enquiry@estatelandscapers.com.au</a></b></p>
+      <button class="fdh-menu" id="megabtn" aria-label="Open menu" aria-expanded="false" aria-controls="mega">
+        <span></span><span></span><span></span>
+      </button>
+    </div>
   </header>
 
   <div class="fdh-main">
@@ -74,12 +76,10 @@
     </div>
   </div>
 
-  <div class="shell">
+  <div class="shell fdh-hintwrap">
     <p class="fd-hint rise d4" aria-hidden="true" style="margin-top:6px">Scroll <span class="arr">↓</span></p>
   </div>
-  <div class="fdh-reveal">
-    <div class="fdh-sticky">
-      <div class="fdh-band" id="heroslides" aria-roledescription="carousel" aria-label="Featured projects">
+  <div class="fdh-band" id="heroslides" aria-roledescription="carousel" aria-label="Featured projects">
         <!-- Add a slide per project: div.fdh-slide > img + a.fdh-cap. First slide preloaded. -->
         <div class="fdh-slide on">
           <img src="/assets/img/hero-home.jpg?g4" alt="Native planting along a completed commercial landscape by Estate Landscapers" fetchpriority="high">
@@ -88,8 +88,6 @@
         <button class="fdh-arr prev" type="button" aria-label="Previous project">‹</button>
         <button class="fdh-arr next" type="button" aria-label="Next project">›</button>
         <div class="fdh-dots" role="tablist"></div>
-      </div>
-    </div>
   </div>
 </div>
 

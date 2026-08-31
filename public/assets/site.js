@@ -121,34 +121,6 @@ if (/estatelandscapers\.com\.au$/.test(location.hostname)) {
   } catch (e) {}
 })();
 
-// Hero reveal, two phases. Phase 1 (p 0-0.45): the text scrolls away and the
-// band grows to full viewport, anchored on the TOP of the photo (sky and roof).
-// Phase 2 (p 0.45-1): pinned full-screen, scroll pans DOWN through the photo to
-// its bottom, then the page releases into the next section.
-(function () {
-  var reveal = document.querySelector('.fdh-reveal');
-  var band = document.querySelector('.fdh-band');
-  if (!reveal || !band) return;
-  if (!/\bjs\b/.test(document.documentElement.className)) return; // boot script decides motion
-  var ticking = false;
-  function ease(t) { return t * t * (3 - 2 * t); }
-  function frame() {
-    ticking = false;
-    var vh = window.innerHeight;
-    var travel = reveal.offsetHeight - vh;
-    if (travel <= 0) return;
-    var p = Math.max(0, Math.min(1, -reveal.getBoundingClientRect().top / travel));
-    var grow = ease(Math.min(1, p / 0.45));            // phase 1
-    var pan = p <= 0.45 ? 0 : ease((p - 0.45) / 0.55); // phase 2
-    band.style.setProperty('--ph', grow.toFixed(4));
-    var img = band.querySelector('.fdh-slide.on img');
-    if (img) img.style.objectPosition = 'center ' + (10 + pan * 84).toFixed(2) + '%';
-  }
-  function onScroll() { if (!ticking) { ticking = true; requestAnimationFrame(frame); } }
-  window.addEventListener('scroll', onScroll, { passive: true });
-  window.addEventListener('resize', onScroll);
-  frame();
-})();
 
 // Cursor: dot glued to the mouse, ring chasing with easing, both blend-inverted
 // so they read over any background; grows over interactive elements. Fine
@@ -256,4 +228,32 @@ if (/estatelandscapers\.com\.au$/.test(location.hostname)) {
   band.querySelector('.fdh-arr.prev').addEventListener('click', function () { go(cur - 1, true); });
   band.querySelector('.fdh-arr.next').addEventListener('click', function () { go(cur + 1, true); });
   paint(); arm();
+})();
+
+// Live Instagram squares: if the quote tool exposes /api/public/instagram
+// (cached daily server-side), the four "Recent post" slots become the latest
+// posts, each linking to the original. If the endpoint doesn't exist yet,
+// nothing happens and the labelled slots remain — zero risk.
+(function () {
+  var grid = document.getElementById('igfeed');
+  if (!grid) return;
+  fetch('https://quotes.estatelandscapers.com.au/api/public/instagram')
+    .then(function (r) { return r.ok ? r.json() : null; })
+    .then(function (d) {
+      if (!d || !d.posts || !d.posts.length) return;
+      var plates = grid.querySelectorAll('.plate');
+      d.posts.slice(0, plates.length).forEach(function (p, i) {
+        if (!p.image || !p.permalink) return;
+        var a = document.createElement('a');
+        a.href = p.permalink; a.target = '_blank'; a.rel = 'noopener';
+        a.style.cssText = 'position:absolute;inset:0;display:block';
+        var img = document.createElement('img');
+        img.src = p.image; img.alt = (p.caption || 'Estate Landscapers on Instagram').slice(0, 120);
+        img.loading = 'lazy';
+        img.style.cssText = 'width:100%;height:100%;object-fit:cover';
+        a.appendChild(img);
+        plates[i].innerHTML = ''; plates[i].appendChild(a);
+      });
+    })
+    .catch(function () {});
 })();

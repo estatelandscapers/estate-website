@@ -332,6 +332,7 @@ a.card:hover{border-color:var(--blue);transform:translateY(-2px)}
 .fd-hint .arr{display:inline-block;font-size:13px;line-height:1}
 @media (prefers-reduced-motion:no-preference){
   .fdh .fd-hint{animation:bob 1.9s ease-in-out infinite}
+  .fdh .fdh-hintwrap{text-align:center}
   @keyframes bob{0%,100%{transform:translateY(0);opacity:.6}50%{transform:translateY(6px);opacity:1}}
 }
 .fd-row{display:grid;grid-template-columns:1fr 1fr;min-height:52vh}
@@ -376,7 +377,8 @@ legend{display:block;font-size:10.5px;font-weight:800;letter-spacing:.14em;text-
 .fdh-main .shell{width:calc(100% - 2*var(--fdgut));max-width:1360px}
 .mega .shell{--fdgut:clamp(24px,3vw,54px);width:calc(100% - 2*var(--fdgut));max-width:1360px}
 .fdh-top{display:flex;justify-content:space-between;align-items:center;gap:22px;
-  padding:18px var(--fdgut,clamp(24px,3vw,54px))}
+  width:calc(100% - 2*var(--fdgut));max-width:1360px;margin-inline:auto;padding:18px 0}
+.fdh-right{display:flex;align-items:center;gap:20px}
 .fdh-top img{width:clamp(180px,17vw,230px);height:auto}
 .fdh-top .r{text-align:right;font-size:9.5px;letter-spacing:.15em;text-transform:uppercase;
   color:var(--label);font-weight:600;line-height:1.7}
@@ -395,11 +397,12 @@ legend{display:block;font-size:10.5px;font-weight:800;letter-spacing:.14em;text-
 .fdh-soc a{color:#000;display:inline-flex;width:21px;height:21px}
 .fdh-soc a:hover{color:var(--blue)}
 .fdh-soc svg{width:100%;height:100%}
-.fdh-reveal{margin-top:clamp(20px,3.5vh,36px)}
-.fdh-band{--bmin:clamp(300px,48vh,540px);height:var(--bmin);position:relative;overflow:hidden;background:#EDEFF2}
+
+.fdh-band{height:100vh;height:100svh;position:relative;overflow:hidden;background:#EDEFF2;
+  margin-top:clamp(16px,3vh,30px)}
 .fdh-slide{position:absolute;inset:0;opacity:0;transition:opacity .8s ease}
 .fdh-slide.on{opacity:1}
-.fdh-slide img{width:100%;height:100%;object-fit:cover;object-position:center 12%}
+.fdh-slide img{width:100%;height:100%;object-fit:cover;object-position:center 8%}
 .fdh-cap{position:absolute;left:0;right:0;bottom:0;z-index:3;display:flex;align-items:flex-end;
   justify-content:space-between;gap:14px;padding:18px clamp(18px,2.6vw,30px);
   background:linear-gradient(180deg,transparent,rgba(0,0,0,.45));color:#fff;text-decoration:none}
@@ -414,13 +417,9 @@ legend{display:block;font-size:10.5px;font-weight:800;letter-spacing:.14em;text-
 .fdh-band.multi .fdh-dots{display:flex}
 .fdh-dots button{width:9px;height:9px;border-radius:50%;border:none;background:rgba(255,255,255,.5);cursor:pointer;padding:0}
 .fdh-dots button.on{background:#fff}
-html.js .fdh-main{align-items:flex-start;padding-top:clamp(30px,9vh,120px)}
-html.js .fdh-reveal{height:260vh;margin-top:0}
-html.js .fdh-sticky{display:flex;align-items:flex-end}
+html.js .fdh-reveal{height:260vh}
 html.js .fdh-sticky{position:sticky;top:0;height:100vh;overflow:hidden}
-html.js .fdh-band{--bstart:clamp(70px,11vh,150px);width:100%;
-  height:calc(var(--bstart) + (100vh - var(--bstart)) * var(--ph,0));
-  will-change:height,background-position}
+html.js .fdh-band{height:calc(var(--bmin) + (100vh - var(--bmin)) * var(--ph,0));will-change:height}
 @media (max-width:700px){.fdh-band{--bmin:38vh}}
 @media (max-width:700px){
   .fdh-top .r span{display:none}
@@ -456,7 +455,7 @@ html.js .rv.v{opacity:1;transform:none}
   @keyframes megain{from{opacity:0;transform:translateY(-14px)}to{opacity:1;transform:none}}
 }
 .mega-top{display:flex;justify-content:space-between;align-items:center;gap:16px;
-  padding:18px clamp(20px,4vw,44px)}
+  width:calc(100% - 2*clamp(24px,3vw,54px));max-width:1360px;margin-inline:auto;padding:18px 0}
 .mega-top img{width:clamp(170px,15vw,210px);height:auto}
 .mega-close{width:44px;height:44px;border:1px solid var(--line);border-radius:10px;
   background:none;cursor:pointer;font-size:22px;line-height:1;color:#000}
