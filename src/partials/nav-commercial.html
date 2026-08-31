@@ -1,22 +1,14 @@
-<header class="nav">
+<header class="hd" id="top">
   <div class="shell">
-    <a href="/" aria-label="Estate Landscapers — home">
-      <img class="nav-logo" src="/assets/logo-horizontal.png" width="640" height="115" alt="Estate Landscapers">
-    </a>
-    <nav class="nav-links" id="nav-links" aria-label="Commercial">
-      <a href="/commercial/#sectors">Sectors</a>
-      <a href="/commercial/#capability">Capability</a>
-      <a href="/the-estate-standard/">The Estate Standard</a>
-      <a href="/about/">About</a>
-      <a href="/contact/">Contact</a>
-    </nav>
-    <div class="nav-right">
-      <a class="switch" href="/residential/">Residential ↗</a>
-      <a class="btn" href="/commercial/tender/">Request a tender</a>
-      <button class="nav-toggle" type="button" aria-expanded="false" aria-controls="nav-links" aria-label="Menu">
+    <a href="/" aria-label="Estate Landscapers — home"><img class="hd-logo" src="/assets/logo-horizontal.png" width="640" height="115" alt="Estate Landscapers"></a>
+    <div class="hd-right">
+      <a class="btn btn-o hd-contact" href="/contact/">Contact</a>
+      <button class="fdh-menu" id="megabtn" aria-label="Open menu" aria-expanded="false" aria-controls="mega">
         <span></span><span></span><span></span>
       </button>
     </div>
   </div>
 </header>
-<div class="mcta"><a class="btn" href="/commercial/tender/">Request a tender</a><a class="btn btn-o" href="mailto:enquiry@estatelandscapers.com.au">Email</a></div>
+{{include mega}}
+<a class="fab" href="/commercial/tender/">Request a tender</a>
+<div class="prog" aria-hidden="true"><i></i></div>

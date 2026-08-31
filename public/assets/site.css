@@ -484,10 +484,10 @@ html.js .rv.v{opacity:1;transform:none}
 .fdh{min-height:0}
 .fdh-hero{position:relative;min-height:100vh;min-height:100svh;display:flex;flex-direction:column;
   background:#0B1220;color:#fff;overflow:hidden}
-.fdh-hero .bg{position:absolute;inset:0;background:url('/assets/img/hero-bg.jpg?v1') center 45%/cover no-repeat;opacity:var(--hero-photo,.28)}
+.fdh-hero .bg{position:absolute;inset:0;background:url('/assets/img/hero-bg.jpg?v1') center 45%/cover no-repeat}
 .fdh-hero .glow{position:absolute;inset:0;pointer-events:none;
-  background:radial-gradient(ellipse 70% 60% at 30% 30%,rgba(30,91,255,.22),transparent 65%),
-             radial-gradient(ellipse 60% 70% at 85% 85%,rgba(45,65,90,.4),transparent 60%)}
+  background:linear-gradient(90deg,rgba(11,18,32,.25) 0%,rgba(11,18,32,.55) 45%,rgba(11,18,32,.88) 100%),
+             linear-gradient(180deg,rgba(11,18,32,.5),transparent 30%,transparent 70%,rgba(11,18,32,.6))}
 .fdh-hero .grain{position:absolute;inset:0;opacity:.35;pointer-events:none;
   background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='.08'/%3E%3C/svg%3E")}
 .fdh-hero .fdh-top,.fdh-hero .fdh-main,.fdh-hero .fdh-hintwrap{position:relative;z-index:2}
@@ -503,13 +503,42 @@ html.js .rv.v{opacity:1;transform:none}
 .fdh-hero .fdh-soc a{color:#fff}
 .fdh-hero .fd-hint{color:rgba(255,255,255,.7)}
 /* text block on the right of the container, aligned right; socials beneath the buttons */
-.fdh-hero .fdh-main .shell{display:flex;justify-content:flex-end}
-.fdh-tx{max-width:640px;text-align:right}
-.fdh-tx .fdh-sub{margin-left:auto}
-.fdh-tx .fdh-row{justify-content:flex-end;flex-direction:column;align-items:flex-end;gap:18px}
-.fdh-tx .fdh-cta{justify-content:flex-end}
+.fdh-hero .fdh-main .shell{display:flex;flex-direction:column;align-items:flex-end}
+.fdh-tx{max-width:680px;text-align:right}
+.fdh-tx .fdh-sub{margin-left:auto;max-width:none}
+.fdh-hero .fdh-row{width:100%;display:flex;justify-content:space-between;align-items:center;margin-top:32px}
+.fdh-hero .fdh-cta{justify-content:flex-end}
+.fdh-hero .eyebrow{line-height:1.9}
 @media (max-width:760px){
-  .fdh-hero .fdh-main .shell{justify-content:flex-start}
+  .fdh-hero .fdh-main .shell{align-items:flex-start}
   .fdh-tx{text-align:left}.fdh-tx .fdh-sub{margin-left:0}
-  .fdh-tx .fdh-row{align-items:flex-start}.fdh-tx .fdh-cta{justify-content:flex-start}
+  .fdh-hero .fdh-row{flex-direction:column-reverse;align-items:stretch;gap:16px}
+  .fdh-hero .fdh-cta{flex-direction:column}.fdh-hero .fdh-cta .btn{justify-content:center}
+  .fdh-hero .fdh-top .r{display:none}
+}
+
+/* ---------------- unified header (inner pages) ---------------- */
+.hd{position:sticky;top:0;z-index:70;background:#fff;border-bottom:1px solid var(--line)}
+.hd .shell{display:flex;justify-content:space-between;align-items:center;gap:16px;padding:12px 0}
+.hd-logo{width:clamp(170px,17vw,220px);height:auto}
+.hd-right{display:flex;align-items:center;gap:12px}
+.hd-contact{padding:10px 16px}
+.hd .fdh-menu span{background:#000}
+.hd .fdh-menu:hover span{background:var(--blue)}
+/* one floating CTA (mobile only) */
+.fab{display:none}
+@media (max-width:760px){
+  .fab{display:inline-flex;position:fixed;right:16px;bottom:calc(18px + env(safe-area-inset-bottom));z-index:60;
+    background:var(--blue);color:#fff;text-decoration:none;font-size:10.5px;font-weight:800;letter-spacing:.12em;
+    text-transform:uppercase;padding:14px 18px;border-radius:30px;box-shadow:0 12px 26px -10px rgba(30,91,255,.75)}
+  .hero .btn-row .btn:not(.btn-o){display:none}   /* hero's primary quote button: the FAB covers it */
+  .mcta{display:none}
+  body{padding-bottom:0}
+  .totop{bottom:78px}
+}
+/* reading progress (mobile) */
+.prog{display:none}
+@media (max-width:760px){
+  .prog{display:block;position:fixed;right:3px;top:74px;bottom:90px;width:3px;background:rgba(0,0,0,.08);border-radius:3px;z-index:65;pointer-events:none}
+  .prog i{display:block;width:100%;height:0;background:var(--blue);border-radius:3px}
 }

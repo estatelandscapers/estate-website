@@ -89,7 +89,7 @@ if (/estatelandscapers\.com\.au$/.test(location.hostname)) {
 // Precise anchor offset: measure the sticky nav so jumped-to headings land exactly
 // below it — no sliver of the section above showing through.
 (function () {
-  var nav = document.querySelector('.nav');
+  var nav = document.querySelector('.hd') || document.querySelector('.nav');
   if (!nav) return;
   function set() { document.documentElement.style.setProperty('--navh', nav.offsetHeight + 'px'); }
   set();
@@ -256,4 +256,15 @@ if (/estatelandscapers\.com\.au$/.test(location.hostname)) {
       });
     })
     .catch(function () {});
+})();
+
+// Reading progress bar (mobile): fills as the reader moves down the page.
+(function () {
+  var bar = document.querySelector('.prog i');
+  if (!bar) return;
+  function upd() {
+    var max = document.documentElement.scrollHeight - window.innerHeight;
+    bar.style.height = (max > 0 ? Math.min(100, window.scrollY / max * 100) : 0).toFixed(1) + '%';
+  }
+  window.addEventListener('scroll', upd, { passive: true }); window.addEventListener('resize', upd); upd();
 })();
