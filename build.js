@@ -134,3 +134,21 @@ Object.keys(byPage).sort().forEach(pg => {
 });
 fs.writeFileSync(path.join(__dirname, 'PHOTOS.md'), md);
 console.log('PHOTOS.md: ' + PHOTOS.filter(p => p.done).length + '/' + PHOTOS.length + ' slots filled');
+
+// ---- ASSET GUARD: fail the build if a referenced asset is missing from public/ ----
+// A missing hero image used to ship silently and show as a blank hero. Now the
+// deploy stops here instead, naming the file.
+(function assetGuard() {
+  const css = fs.readFileSync(path.join(OUT, 'assets', 'site.css'), 'utf8');
+  const refs = new Set();
+  for (const m of css.matchAll(/url\('?\/(assets\/[^')?]+)/g)) refs.add(m[1]);
+  refs.add('assets/site.css'); refs.add('assets/site.js');
+  const missing = [...refs].filter(r => !fs.existsSync(path.join(OUT, r)));
+  if (missing.length) {
+    console.error('\nBUILD FAILED — referenced assets missing from public/:');
+    missing.forEach(m => console.error('  ✗ /' + m));
+    console.error('These are referenced by the site but not present. The most common cause is\nfiles dropped during extraction. Restore them and rebuild.\n');
+    process.exit(1);
+  }
+  console.log('assets verified: ' + refs.size + ' referenced files present');
+})();
