@@ -483,8 +483,10 @@ html.js .rv.v{opacity:1;transform:none}
 /* ---------------- front door — dark hero ---------------- */
 .fdh{min-height:0}
 .fdh-hero{position:relative;min-height:100vh;min-height:100svh;display:flex;flex-direction:column;
-  background:#0B1220;color:#fff;overflow:hidden}
-.fdh-hero .bg{position:absolute;inset:0;background:url('/assets/img/hero-bg.jpg?v1') center 45%/cover no-repeat}
+  color:#fff;overflow:hidden;background:#0B1220;
+  background-image:radial-gradient(ellipse 70% 60% at 30% 30%,rgba(30,91,255,.28),transparent 65%),
+    radial-gradient(ellipse 60% 70% at 85% 85%,rgba(45,65,90,.5),transparent 60%)}
+.fdh-hero .bg{position:absolute;inset:0;background:url('/assets/img/hero-bg.jpg?v=202609100316') center 45%/cover no-repeat}
 .fdh-hero .glow{position:absolute;inset:0;pointer-events:none;
   background:linear-gradient(90deg,rgba(11,18,32,.25) 0%,rgba(11,18,32,.55) 45%,rgba(11,18,32,.88) 100%),
              linear-gradient(180deg,rgba(11,18,32,.5),transparent 30%,transparent 70%,rgba(11,18,32,.6))}
@@ -495,7 +497,7 @@ html.js .rv.v{opacity:1;transform:none}
 .fdh-hero .fdh-top .r b{color:#fff}
 .fdh-hero .fdh-menu span{background:#fff}
 .fdh-hero .fdh-menu:hover span{background:#7FA3FF}
-.fdh-hero .eyebrow{color:#7FA3FF}
+.fdh-hero .eyebrow{color:rgba(255,255,255,.78)}
 .fdh-hero h1{color:#fff}
 .fdh-hero .fdh-sub{color:rgba(255,255,255,.78)}
 .fdh-hero .btn-o{background:rgba(255,255,255,.08);color:#fff;border-color:rgba(255,255,255,.55)}
@@ -522,8 +524,7 @@ html.js .rv.v{opacity:1;transform:none}
 .hd .shell{display:flex;justify-content:space-between;align-items:center;gap:16px;padding:12px 0}
 .hd-logo{width:clamp(170px,17vw,220px);height:auto}
 .hd-right{display:flex;align-items:center;gap:12px}
-.hd-contact{padding:10px 16px;display:none}
-@media (max-width:760px){.hd-contact{display:inline-flex}}
+.hd-contact{display:none}
 .hd .fdh-menu span{background:#000}
 .hd .fdh-menu:hover span{background:var(--blue)}
 /* one floating CTA (mobile only) */
@@ -578,3 +579,57 @@ html.js .rv.v{opacity:1;transform:none}
 .panel.dark p{color:#B8BDC4}
 .panel.dark .btn-o{background:transparent;color:#fff;border-color:rgba(255,255,255,.5)}
 @media (max-width:760px){.statstrip{grid-template-columns:1fr 1fr}}
+
+/* ---------------- project case studies ---------------- */
+.facts{display:grid;grid-template-columns:1fr 1fr;gap:10px 18px;margin-top:16px}
+.facts div{border-top:1px solid var(--line);padding-top:8px}
+.facts dt{font-size:9.5px;font-weight:800;letter-spacing:.14em;text-transform:uppercase;color:var(--label)}
+.facts dd{font-size:.9rem;font-weight:600;margin-top:2px}
+.tiers.dl{min-width:720px}.tiers.dl tbody th{width:22%}
+.chips{display:flex;gap:8px;flex-wrap:wrap}
+.chip{font:inherit;font-size:10px;font-weight:800;letter-spacing:.1em;text-transform:uppercase;border:1px solid var(--line);
+  border-radius:30px;padding:0 16px;min-height:38px;display:inline-flex;align-items:center;justify-content:center;
+  line-height:1.25;text-align:center;color:#2c3138;background:#fff;text-decoration:none;cursor:default}
+.chips.center{justify-content:center}
+a.chip:hover,button.chip:hover{border-color:var(--blue);color:var(--blue)}
+button.chip{cursor:pointer}.chip.b{background:var(--blue);border-color:var(--blue);color:#fff}
+.quote{border-left:4px solid var(--blue);padding:6px 0 6px 18px}
+.quote p{font-size:1.02rem;font-weight:600;line-height:1.6}
+.quote footer{font-size:.8rem;color:var(--label);margin-top:8px}
+.hd-switch{font-size:10px;font-weight:800;letter-spacing:.12em;text-transform:uppercase;color:var(--blue);text-decoration:none;
+  border:1px solid var(--line);border-radius:30px;padding:9px 14px;white-space:nowrap}
+.hd-switch:hover{border-color:var(--blue)}
+@media (max-width:760px){.facts{grid-template-columns:1fr}.hd-switch{padding:8px 10px;font-size:9px}.hd-right{gap:8px}}
+#pgrid .card.hide{display:none}
+
+/* mobile header: no Contact button, logo gets the room back */
+@media (max-width:760px){
+  .hd .shell{padding:10px 0}
+  .hd-logo{width:clamp(150px,44vw,210px)}
+  .hd-right{gap:10px}
+  .hd-switch{padding:9px 12px}
+}
+/* pages that are themselves the form: no floating CTA */
+body.noform .fab{display:none}
+
+@media (max-width:520px){.hd-portfolio{display:none}}
+
+.crumbs{border-bottom:1px solid var(--line);background:#fff}
+.crumbs .shell{display:flex;flex-wrap:wrap;align-items:center;gap:8px;padding:10px 0;
+  font-size:10.5px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--label)}
+.crumbs a{color:var(--label);text-decoration:none}
+.crumbs a:hover{color:var(--blue)}
+.crumbs [aria-current]{color:#000}
+.crumbs .sep{color:#C9CDD3}
+
+.fdh-port{margin-top:22px}
+.portlink{display:inline-flex;align-items:center;gap:7px;background:none;border:0;padding:0;
+  color:var(--blue);text-decoration:none;font-weight:800;font-size:12px;letter-spacing:.14em;text-transform:uppercase}
+.portlink:hover{color:#5C86FF}
+
+/* ---------------- video ---------------- */
+.fdh-hero .herovid{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;
+  z-index:0;opacity:0;transition:opacity .6s ease}
+.fdh-hero .herovid.on{opacity:1}
+.plate .slotvid,.card .slotvid{width:100%;height:100%;object-fit:cover;display:block;background:#0B1220}
+.plate{position:relative;overflow:hidden}

@@ -1,0 +1,4 @@
+{
+ "note": "Weekly Instagram feed. Save 4 post images into public/assets/img/instagram/ and list them here with their post links. The site renders these into the four squares on the residential page. If the quote tool's /api/public/instagram endpoint ever goes live, it takes over automatically.",
+ "posts": []
+}

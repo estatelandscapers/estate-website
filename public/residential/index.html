@@ -26,7 +26,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700;800&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="/assets/site.css?v=202609050644">
+<link rel="stylesheet" href="/assets/site.css?v=202609130205">
 </head>
 <body>
 
@@ -36,7 +36,8 @@
   <div class="shell">
     <a href="/" aria-label="Estate Landscapers — home"><img class="hd-logo" src="/assets/logo-horizontal.png" width="640" height="115" alt="Estate Landscapers"></a>
     <div class="hd-right">
-      <a class="btn btn-o hd-contact" href="/contact/">Contact</a>
+      <a class="hd-switch hd-portfolio" href="/projects/">Portfolio <span aria-hidden="true">↗</span></a>
+      <a class="hd-switch" href="/commercial/">Commercial <span aria-hidden="true">↗</span></a>
       <button class="fdh-menu" id="megabtn" aria-label="Open menu" aria-expanded="false" aria-controls="mega">
         <span></span><span></span><span></span>
       </button>
@@ -55,12 +56,11 @@
       <a href="/residential/quote/">Get a quote</a>
       <a href="/residential/landscape-design/">Design</a>
       <a href="/residential/new-build-landscaping/">Build</a>
-      <a href="/residential/maintain/">Maintain</a>
-      <a href="/residential/retaining-walls/">Retaining walls</a>
-      <a href="/residential/concrete-driveways/">Concrete works</a>
+      <a href="/residential/care/">Care</a>
       
+      <a href="/areas/">Service areas</a>
       <a class="sml" href="/residential/#services">All services →</a>
-      <a class="sml" href="/residential/garden-care/">Garden care guide</a>
+      <a class="sml" href="/residential/garden-care/">DIY garden care guide</a>
     </div>
     <div>
       <p class="lbl">Commercial · NSW &amp; QLD</p>
@@ -77,7 +77,6 @@
       <a href="/the-estate-standard/">The Estate Standard</a>
       <a href="/insights/why-compliance-matters/">Why compliance matters</a>
       <a href="/projects/">Projects</a>
-      <a class="sml" href="/projects/ermington-duplex/">Ermington duplex case study</a>
       <a href="/about/">About</a>
       <a href="/insights/">Insights</a>
       <a href="/contact/">Contact</a>
@@ -127,7 +126,7 @@
 <section class="creds" aria-label="Credentials">
   <ul class="shell">
     <li><b>LIC 487076C</b><span>Fair Trading</span></li>
-    <li><b>HBCF</b><span>Insured over $20k</span></li>
+    <li><b>HBC cover</b><span>Where required, over $20k</span></li>
     <li><b>$20M</b><span>Public liability</span></li>
     <li><b>41219</b><span>Landscape Association</span></li>
     <li><b>300+</b><span>Projects delivered</span></li>
@@ -150,14 +149,14 @@
         <div class="plate"><div class="slot"><b>Photo slot</b><span>New build — bare site to finished yard</span></div></div>
         <div class="in"><h3>Build</h3><p>Bare site to finished yard: excavation, retaining, drainage, concrete, fencing, turf and gardens as one itemised package.</p><span class="more">View →</span></div>
       </a>
-      <a class="card" href="/residential/maintain/">
+      <a class="card" href="/residential/care/">
         <div class="plate"><div class="slot"><b>Photo slot</b><span>An Estate-built yard being maintained a season after handover</span></div></div>
-        <div class="in"><h3>Maintain</h3><p>Establishment care and scheduled maintenance for the landscapes we build — and only those, so the quality stays consistent.</p><span class="more">View →</span></div>
+        <div class="in"><h3>Care</h3><p>We don’t offer general garden maintenance. Establishment and scheduled aftercare for the landscapes we build — so the quality stays consistent.</p><span class="more">View →</span></div>
       </a>
     </div>
     <p class="eyebrow mt">Individual services</p>
     <div class="g3" style="margin-top:14px">
-      <a class="card" href="/residential/concrete-driveways/"><div class="in"><h3>Concrete works</h3><p>Driveways, paths, slabs, kerb and gutter, council crossovers and footpaths — approved contractor for councils across Sydney.</p><span class="more">View →</span></div></a>
+      <a class="card" href="/residential/concrete-driveways/"><div class="in"><h3>Concrete works</h3><p>Driveways, paths, slabs, kerb and gutter, council crossovers and footpaths — works delivered to council specification across Sydney.</p><span class="more">View →</span></div></a>
       <a class="card" href="/residential/earthworks-excavation/"><div class="in"><h3>Earthworks &amp; excavation</h3><p>Site clean-ups, cut and fill, levelling and spoil removal on our own plant and trucks.</p><span class="more">View →</span></div></a>
       <a class="card" href="/residential/retaining-walls/"><div class="in"><h3>Retaining walls</h3><p>Timber sleeper to engineered rendered block, with drainage and certification built in.</p><span class="more">View →</span></div></a>
       <a class="card" href="/residential/landscape-drainage/"><div class="in"><h3>Landscape drainage</h3><p>Ag lines, pits and surface falls installed before surfaces — never dug up twice.</p><span class="more">View →</span></div></a>
@@ -190,7 +189,7 @@
         so the quote is built from the real thing.</p></li>
       <li><h3>Quote in 48 hours</h3><p>An itemised quote you can read — element by element,
         so you can add, cut or stage it.</p></li>
-      <li><h3>Contract &amp; scheduling</h3><p>Written contract, HBCF cover where the job is
+      <li><h3>Contract &amp; scheduling</h3><p>Written contract, HBC cover where required for eligible residential building work over $20,000 where the job is
         over $20,000, and a start date you can plan around.</p></li>
       <li><h3>Construction</h3><p>Set-out and levels first, drainage before surfaces, progress
         photos as we go, and one point of contact throughout.</p></li>
@@ -318,7 +317,7 @@
       </li>
       <li>
         <h3>Do you build retaining walls that need engineering?</h3>
-        <p>Yes. We build engineered retaining walls including excavation, piering, concrete, structural engineering inspections and certification — the documentation you need signed off before an Occupation Certificate.</p>
+        <p>Yes. We build engineered retaining walls including excavation, piering, concrete, structural engineering inspections and certification — the documentation you need signed off before an Occupation Certificate (OC).</p>
       </li>
       <li>
         <h3>Do you offer garden maintenance, mowing or hedging?</h3>
@@ -338,10 +337,36 @@
 
 <section class="infra">
   <div class="shell">
-    <b>Subdividing, or need civil works?</b>
-    <p>Bulk earthworks, subdivision civil, stormwater infrastructure and road works are
-       delivered by our civil arm.</p>
+    <b>Road, bridge or highway project?</b>
+    <p>Landscaping for road, bridge and highway infrastructure — TfNSW, QMR and similar
+       programs — is delivered by our infrastructure arm, Infra Landscapers.</p>
     <a href="https://infralandscapers.com.au" target="_blank" rel="noopener">Visit Infra Landscapers →</a>
+  </div>
+</section>
+
+
+<section class="band">
+  <div class="shell">
+    <p class="eyebrow">Featured projects</p>
+    <h2>Recent residential projects.</h2>
+    <div class="g3 mt">
+      <a class="card" href="/projects/ermington-duplex-landscaping-retaining-wall/" data-sector="res">
+        <div class="plate" data-hero="/projects/ermington-duplex-landscaping-retaining-wall/"></div>
+        <div class="in"><h3>Ermington Duplex Landscaping &amp; Retaining Wall</h3><p>Ermington duplex landscaping with Sir Walter Buffalo turf, 66 m Colorbond fencing and a 41 m engineered retaining wall with drainage and sign-off.</p>
+        <p class="tags">Residential · Duplex · Ermington</p><span class="more">Read the case study →</span></div>
+      </a>
+      <a class="card" href="/projects/rouse-hill-boutique-home-landscaping/" data-sector="res">
+        <div class="plate" data-hero="/projects/rouse-hill-boutique-home-landscaping/"></div>
+        <div class="in"><h3>Rouse Hill Boutique Home Landscaping</h3><p>Rouse Hill boutique landscaping with turf, 36.5 m fencing, pebbled side areas, aluminium edging and a composite deck with timber pergola works.</p>
+        <p class="tags">Residential · Custom home (new build) · Rouse Hill</p><span class="more">Read the case study →</span></div>
+      </a>
+      <a class="card" href="/projects/north-kellyville-boutique-home-landscaping/" data-sector="res">
+        <div class="plate" data-hero="/projects/north-kellyville-boutique-home-landscaping/"></div>
+        <div class="in"><h3>North Kellyville Boutique Home Landscaping</h3><p>North Kellyville home landscaping with 63 m garden walls, concrete, floating steps, Buffalo turf and 22 m of Colorbond fencing works package.</p>
+        <p class="tags">Residential · Custom home (new build) · North Kellyville</p><span class="more">Read the case study →</span></div>
+      </a>
+    </div>
+    <div class="btn-row mt"><a class="btn btn-o" href="/projects/">All projects →</a></div>
   </div>
 </section>
 
@@ -502,7 +527,7 @@
         <ul>
           <li><a href="/the-estate-standard/">The Estate Standard</a></li>
           <li><a href="/about/">About</a></li>
-          <li><a href="/residential/garden-care/">Garden care guide</a></li>
+          <li><a href="/residential/garden-care/">DIY garden care guide</a></li>
           <li><a href="/insights/">Insights</a></li>
           <li><a href="/contact/">Contact</a></li>
           <li><a href="/commercial/">Commercial site</a></li>
@@ -520,7 +545,7 @@
   </div>
 </footer>
 
-<script src="/assets/site.js?v=202609050644" defer></script>
+<script src="/assets/site.js?v=202609130205" defer></script>
 </body>
-<!-- estate build 2026-09-05T06:44Z · /residential/ -->
+<!-- estate build 2026-09-13T02:05Z · /residential/ -->
 </html>

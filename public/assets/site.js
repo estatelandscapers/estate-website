@@ -230,32 +230,35 @@ if (/estatelandscapers\.com\.au$/.test(location.hostname)) {
   paint(); arm();
 })();
 
-// Live Instagram squares: if the quote tool exposes /api/public/instagram
-// (cached daily server-side), the four "Recent post" slots become the latest
-// posts, each linking to the original. If the endpoint doesn't exist yet,
-// nothing happens and the labelled slots remain — zero risk.
+// Instagram squares on the residential page. Two sources, in order:
+//   1. the quote tool's /api/public/instagram endpoint (live, daily) if it exists
+//   2. /instagram.json in this repo — update it weekly, no backend needed
+// If neither yields posts, the labelled photo slots stay exactly as they are.
 (function () {
   var grid = document.getElementById('igfeed');
   if (!grid) return;
-  fetch('https://quotes.estatelandscapers.com.au/api/public/instagram')
+  function render(posts) {
+    if (!posts || !posts.length) return false;
+    var plates = grid.querySelectorAll('.plate');
+    posts.slice(0, plates.length).forEach(function (p, i) {
+      if (!p.image || !p.permalink) return;
+      var a = document.createElement('a');
+      a.href = p.permalink; a.target = '_blank'; a.rel = 'noopener';
+      a.style.cssText = 'position:absolute;inset:0;display:block';
+      var img = document.createElement('img');
+      img.src = p.image; img.alt = (p.caption || 'Estate Landscapers on Instagram').slice(0, 120);
+      img.loading = 'lazy'; img.style.cssText = 'width:100%;height:100%;object-fit:cover';
+      a.appendChild(img); plates[i].innerHTML = ''; plates[i].appendChild(a);
+    });
+    return true;
+  }
+  fetch('/api/instagram')
     .then(function (r) { return r.ok ? r.json() : null; })
-    .then(function (d) {
-      if (!d || !d.posts || !d.posts.length) return;
-      var plates = grid.querySelectorAll('.plate');
-      d.posts.slice(0, plates.length).forEach(function (p, i) {
-        if (!p.image || !p.permalink) return;
-        var a = document.createElement('a');
-        a.href = p.permalink; a.target = '_blank'; a.rel = 'noopener';
-        a.style.cssText = 'position:absolute;inset:0;display:block';
-        var img = document.createElement('img');
-        img.src = p.image; img.alt = (p.caption || 'Estate Landscapers on Instagram').slice(0, 120);
-        img.loading = 'lazy';
-        img.style.cssText = 'width:100%;height:100%;object-fit:cover';
-        a.appendChild(img);
-        plates[i].innerHTML = ''; plates[i].appendChild(a);
-      });
-    })
-    .catch(function () {});
+    .then(function (d) { if (!render(d && d.posts)) throw 0; })
+    .catch(function () {
+      fetch('/instagram.json').then(function (r) { return r.ok ? r.json() : null; })
+        .then(function (d) { render(d && d.posts); }).catch(function () {});
+    });
 })();
 
 // Reading progress bar (mobile): fills as the reader moves down the page.
@@ -267,4 +270,148 @@ if (/estatelandscapers\.com\.au$/.test(location.hostname)) {
     bar.style.height = (max > 0 ? Math.min(100, window.scrollY / max * 100) : 0).toFixed(1) + '%';
   }
   window.addEventListener('scroll', upd, { passive: true }); window.addEventListener('resize', upd); upd();
+})();
+
+// Projects index: sector filter chips.
+(function () {
+  var grid = document.getElementById('pgrid'); if (!grid) return;
+  var chips = document.querySelectorAll('[data-f]');
+  chips.forEach(function (b) { b.addEventListener('click', function () {
+    var f = b.dataset.f;
+    chips.forEach(function (x) { x.classList.toggle('b', x === b); x.setAttribute('aria-pressed', x === b ? 'true' : 'false'); });
+    grid.querySelectorAll('.card').forEach(function (c) { c.classList.toggle('hide', f !== 'all' && c.dataset.sector !== f); });
+  }); });
+})();
+
+// ---------------------------------------------------------------- prefetch --
+// Predictive loading: the page a visitor is about to open is fetched before
+// they click. Two signals, both cheap: links that scroll into view get a
+// low-priority speculative fetch, and hovering or touching one promotes it.
+// Only same-origin document links, never forms or downloads, and skipped
+// entirely on slow connections or when the browser asks us to save data.
+(function () {
+  var nav = navigator.connection || {};
+  if (nav.saveData) return;
+  if (/2g/.test(nav.effectiveType || '')) return;
+  var done = {};
+  function prefetch(href, priority) {
+    if (!href || done[href]) return;
+    var u;
+    try { u = new URL(href, location.href); } catch (e) { return; }
+    if (u.origin !== location.origin) return;
+    if (u.pathname === location.pathname) return;
+    if (/\.(zip|pdf|jpe?g|png|webp|svg)$/i.test(u.pathname)) return;
+    done[href] = 1;
+    var l = document.createElement('link');
+    l.rel = 'prefetch'; l.href = u.href; l.as = 'document';
+    if (priority) l.fetchPriority = 'high';
+    document.head.appendChild(l);
+  }
+  // hover / touch = strong intent
+  ['mouseover', 'touchstart', 'focusin'].forEach(function (ev) {
+    document.addEventListener(ev, function (e) {
+      var a = e.target.closest && e.target.closest('a[href]');
+      if (a) prefetch(a.getAttribute('href'), true);
+    }, { passive: true, capture: true });
+  });
+  // visible links = weak intent, throttled to the first dozen
+  if ('IntersectionObserver' in window) {
+    var budget = 12;
+    var io = new IntersectionObserver(function (entries) {
+      entries.forEach(function (en) {
+        if (!en.isIntersecting || budget <= 0) return;
+        budget--; prefetch(en.target.getAttribute('href'), false); io.unobserve(en.target);
+      });
+    }, { rootMargin: '200px' });
+    setTimeout(function () {
+      document.querySelectorAll('main a[href^="/"]').forEach(function (a) { io.observe(a); });
+    }, 1200);
+  }
+})();
+
+// --------------------------------------------------------------- behaviour --
+// What visitors actually do, sent to GA4 as named events. Nothing personal is
+// collected: no text they type, no identifiers, only which things get used.
+// Read these in GA4 → Reports → Engagement → Events.
+(function () {
+  if (typeof gtag !== 'function') return;
+  var page = location.pathname;
+  function ev(name, params) { try { gtag('event', name, params || {}); } catch (e) {} }
+
+  // how far down the page people actually get
+  var marks = [25, 50, 75, 100], hit = {};
+  function depth() {
+    var max = document.documentElement.scrollHeight - window.innerHeight;
+    var pct = max > 0 ? (window.scrollY / max) * 100 : 100;
+    marks.forEach(function (m) {
+      if (pct >= m && !hit[m]) { hit[m] = 1; ev('scroll_depth', { percent: m, page_path: page }); }
+    });
+  }
+  window.addEventListener('scroll', depth, { passive: true }); depth();
+
+  // time actually spent reading, banded so it stays useful in reports
+  var start = Date.now(), sent = {};
+  [15, 60, 180].forEach(function (s) {
+    setTimeout(function () {
+      if (document.visibilityState === 'visible' && !sent[s]) {
+        sent[s] = 1; ev('time_on_page', { seconds: s, page_path: page });
+      }
+    }, s * 1000);
+  });
+
+  // clicks worth knowing about
+  document.addEventListener('click', function (e) {
+    var a = e.target.closest && e.target.closest('a, button');
+    if (!a) return;
+    var href = a.getAttribute('href') || '';
+    var label = (a.textContent || '').trim().slice(0, 60);
+    if (/^tel:/.test(href)) return ev('click_phone', { page_path: page });
+    if (/^mailto:/.test(href)) return ev('click_email', { page_path: page });
+    if (/\/residential\/quote\//.test(href)) return ev('cta_quote', { page_path: page, label: label });
+    if (/\/commercial\/tender\//.test(href)) return ev('cta_tender', { page_path: page, label: label });
+    if (/^\/projects\/[a-z]/.test(href)) return ev('open_project', { page_path: page, project: href });
+    if (/^\/areas\/[a-z]/.test(href)) return ev('open_area', { page_path: page, area: href });
+    if (a.dataset && a.dataset.f) return ev('filter_projects', { filter: a.dataset.f });
+    if (a.closest('#mega')) return ev('menu_navigate', { to: href });
+    if (/^https?:/.test(href) && href.indexOf(location.host) === -1)
+      return ev('click_outbound', { page_path: page, to: href.slice(0, 100) });
+  }, { passive: true, capture: true });
+
+  // did the visitor see the photo of the work, or bounce above it?
+  if ('IntersectionObserver' in window) {
+    var seen = false;
+    var io = new IntersectionObserver(function (es) {
+      es.forEach(function (en) {
+        if (en.isIntersecting && !seen) { seen = true; ev('gallery_viewed', { page_path: page }); io.disconnect(); }
+      });
+    }, { threshold: 0.3 });
+    var g = document.querySelector('.g3 .plate img, .fdh-band');
+    if (g) io.observe(g);
+  }
+})();
+
+// ---------------------------------------------------------------- video ----
+// Silent looping clips play only when they are worth playing: motion allowed,
+// a real connection, and the element actually on screen. Everything else sees
+// the poster still, which is why a poster is required.
+(function () {
+  var vids = document.querySelectorAll('video.herovid, video.slotvid');
+  if (!vids.length) return;
+  var nav = navigator.connection || {};
+  var allow = !window.matchMedia('(prefers-reduced-motion: reduce)').matches &&
+              !nav.saveData && !/2g/.test(nav.effectiveType || '');
+  if (!allow) return;                      // poster remains, nothing downloads
+  if (!('IntersectionObserver' in window)) return;
+  var io = new IntersectionObserver(function (entries) {
+    entries.forEach(function (en) {
+      var v = en.target;
+      if (en.isIntersecting) {
+        if (v.preload !== 'auto') { v.preload = 'auto'; v.load(); }
+        var p = v.play();
+        if (p && p.catch) p.catch(function () {});
+        v.classList.add('on');
+      } else if (!v.paused) v.pause();
+    });
+  }, { threshold: 0.25 });
+  vids.forEach(function (v) { io.observe(v); });
 })();
