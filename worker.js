@@ -129,7 +129,22 @@ export default {
       return Response.json({ feed, token: tok });
     }
 
-    return env.ASSETS.fetch(request);
+    // Production: apex → www (one canonical host for search engines).
+    if (url.hostname === 'estatelandscapers.com.au') {
+      url.hostname = 'www.estatelandscapers.com.au';
+      return Response.redirect(url.toString(), 301);
+    }
+
+    const res = await env.ASSETS.fetch(request);
+
+    // Staging (workers.dev) is never indexed; production is. Same build, same
+    // files — the hostname decides.
+    if (url.hostname.endsWith('.workers.dev')) {
+      const r = new Response(res.body, res);
+      r.headers.set('X-Robots-Tag', 'noindex, nofollow');
+      return r;
+    }
+    return res;
   },
 
   async scheduled(event, env, ctx) {

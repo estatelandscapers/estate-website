@@ -1,7 +1,3 @@
-# ⚠️ REMOVE THE NOINDEX BLOCK AT DNS CUTOVER (brief §64)
-/*
-  X-Robots-Tag: noindex, nofollow
-
 # ---- Security (permanent) ----
 /*
   X-Content-Type-Options: nosniff

@@ -171,17 +171,27 @@
   var CHUNK = 5 * 1024 * 1024; // multiple of 320 KiB, as Graph requires
   function putFile(f, uploadUrl, onBytes) {
     var pos = 0;
-    function step() {
-      if (pos >= f.size) return Promise.resolve();
+    // Each chunk gets one retry: mobile connections drop mid-upload and a single
+    // repeat recovers most of them. A 410 means the upload session itself has
+    // expired — retrying cannot help, so it is surfaced separately.
+    function chunk(retried) {
       var end = Math.min(pos + CHUNK, f.size);
       return fetch(uploadUrl, {
         method: 'PUT',
         headers: { 'Content-Range': 'bytes ' + pos + '-' + (end - 1) + '/' + f.size },
         body: f.slice(pos, end)
       }).then(function (r) {
+        if (r.status === 410) { var ex = new Error('upload session expired'); ex.expired = true; throw ex; }
         if (!r.ok && r.status !== 202) throw new Error('upload ' + r.status);
         onBytes(end - pos); pos = end; return step();
+      }, function (netErr) {
+        if (retried) throw netErr;
+        return new Promise(function (res) { setTimeout(res, 800); }).then(function () { return chunk(true); });
       });
+    }
+    function step() {
+      if (pos >= f.size) return Promise.resolve();
+      return chunk(false);
     }
     return step();
   }
@@ -189,11 +199,14 @@
   form.addEventListener('submit', function (e) {
     e.preventDefault();
     if (!validPanel(panels[cur])) return;
-    files = files.filter(function (f) { return f.size > 0; });
+    // One snapshot for this submission. body.files and the upload loop must be
+    // built from the SAME array, or files[i] and uploads[i] can drift apart and
+    // a file gets uploaded into another file's session.
+    var sending = files.filter(function (f) { return f.size > 0; });
     var btn = form.querySelector('[type="submit"]');
     btn.disabled = true; btn.textContent = 'Sending\u2026';
 
-    var body = { audience: AUD, files: files.map(function (f) { return { name: f.name, size: f.size }; }) };
+    var body = { audience: AUD, files: sending.map(function (f) { return { name: f.name, size: f.size }; }) };
     ['name', 'phone', 'email', 'suburb', 'address', 'jobType', 'budget', 'timeline', 'message', 'company', 'website']
       .forEach(function (k) { var el = form.querySelector('[name="' + k + '"]'); if (el) body[k] = el.value; });
     // Commercial extras: composed into fields the tool already stores, so the
@@ -220,7 +233,7 @@
     var pct = meter ? meter.querySelector('.pct') : null;
 
     function finish(ref, note) {
-      ev(AUD === 'commercial' ? 'tender_submitted' : 'quote_submitted', { files: files.length });
+      ev(AUD === 'commercial' ? 'tender_submitted' : 'quote_submitted', { files: sending.length });
       say('Enquiry sent successfully.');
       form.style.display = 'none';
       var done = document.getElementById('done');
@@ -249,36 +262,53 @@
       if (j._status >= 300 || !j.ok) return fail(j.error);
       var ref = j.ref;
       var uploads = j.uploads || [];
-      if (!files.length) return finish(ref);
+      if (!sending.length) return finish(ref);
       if (!uploads.length) return finish(ref, j.message ||
         'We couldn\u2019t attach your files \u2014 please email them to enquiry@estatelandscapers.com.au quoting ' + ref + '.');
 
       if (meter) meter.classList.add('on');
-      var total = files.reduce(function (s, f) { return s + f.size; }, 0), sent = 0;
-      var okNames = [], badNames = [], i = 0;
+      var total = sending.reduce(function (s, f) { return s + f.size; }, 0), sent = 0;
+      var okNames = [], badNames = [], expiredNames = [], i = 0;
       function tick(n) {
         sent += n;
         var v = Math.min(100, Math.round(sent / total * 100));
         if (barI) barI.style.width = v + '%';
-        if (pct) pct.textContent = 'file ' + Math.min(i + 1, files.length) + ' of ' + files.length + ' \u00b7 ' + v + '%';
+        if (pct) pct.textContent = 'file ' + Math.min(i + 1, sending.length) + ' of ' + sending.length + ' \u00b7 ' + v + '%';
         if (v % 25 === 0) say('Uploading, ' + v + ' percent.');
       }
       function next() {
-        if (i >= files.length) {
+        if (i >= sending.length) {
+          var allFailed = badNames.concat(expiredNames);
           return jfetch(API + '/' + encodeURIComponent(ref) + '/complete',
-            { uploaded: okNames, failed: badNames }).catch(function () {})
+            { uploaded: okNames, failed: allFailed }).catch(function () {})
             .then(function () {
-              finish(ref, badNames.length
-                ? 'These files didn\u2019t upload: ' + badNames.join(', ') + ' \u2014 please email them through quoting ' + ref + '.'
-                : null);
+              var note = null;
+              if (expiredNames.length) {
+                note = 'Your upload link expired before these finished: ' + expiredNames.join(', ') +
+                  ' \u2014 please email them to enquiry@estatelandscapers.com.au quoting ' + ref + '.';
+              } else if (badNames.length) {
+                note = 'These files didn\u2019t upload: ' + badNames.join(', ') +
+                  ' \u2014 please email them through quoting ' + ref + '.';
+              }
+              finish(ref, note);
             });
         }
-        var f = files[i];
-        var u = uploads.find(function (x) { return x && x.name && f.name.indexOf(x.name.split(' ')[0]) > -1; }) || uploads[i];
+        var f = sending[i];
+        // Pair by POSITION. The server builds `uploads` from `declared` in the
+        // order the browser sent them, so uploads[i] belongs to sending[i].
+        // Matching on names was mispairing files with shared or stripped
+        // leading words and silently overwriting one upload with another.
+        var u = uploads[i];
+        // Report the server's sanitised name, so the lead notes match what is
+        // actually stored in OneDrive.
+        var label = (u && u.name) || f.name;
         var p = (u && u.uploadUrl)
-          ? putFile(f, u.uploadUrl, tick).then(function () { okNames.push(f.name); })
-                                        .catch(function () { badNames.push(f.name); tick(0); })
-          : Promise.resolve(badNames.push(f.name));
+          ? putFile(f, u.uploadUrl, tick).then(function () { okNames.push(label); })
+                                        .catch(function (err) {
+                                          (err && err.expired ? expiredNames : badNames).push(label);
+                                          tick(0);
+                                        })
+          : Promise.resolve(badNames.push(label));
         return p.then(function () { i++; return next(); });
       }
       next();
