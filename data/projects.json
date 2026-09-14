@@ -175,7 +175,7 @@
   "client": "",
   "builder": "",
   "designer": "",
-  "drawings": "None — designed by Estate",
+  "drawings": "None: designed by Estate",
   "area_m2": null,
   "slope": "",
   "access": "Open front",
@@ -1083,7 +1083,7 @@
   "client": "",
   "builder": "",
   "designer": "",
-  "drawings": "None — designed by Estate",
+  "drawings": "None: designed by Estate",
   "area_m2": null,
   "slope": "",
   "access": "Open front",
@@ -1138,7 +1138,7 @@
   "brief": "Create a natural acreage landscape in Dural using native planting and premium lawn, with strong natural-material features including Pink Bark and a sandstone log wall, plus a timber pergola and supporting earthworks.",
   "challenge": "The work was spread across an acreage setting rather than a compact suburban block, so the design needed to connect larger landscape areas using consistent natural materials and planting. Detailed quantities are not available in the retained project records.",
   "approach": "Estate completed the earthworks and established the landscape with native planting, Pink Bark mulch and Sir Grange Zoysia turf, then added a sandstone log wall and timber pergola as the major structural landscape features.",
-  "technical": "The confirmed finish palette combines native planting, Pink Bark, sandstone logs and Sir Grange Zoysia turf. No quote is available, so quantities, individual plant species and construction dimensions have intentionally not been invented.",
+  "technical": "The confirmed finish palette combines native planting, Pink Bark, sandstone logs and Sir Grange Zoysia turf. No quote is available, so quantities, individual plant species and construction dimensions have intentionally not been invented. Level changes are carried on sandstone log walls, the natural-stone option in our Premium retaining tier: solid logs set in courses on a compacted base with ag-line drainage behind them.",
   "outcome": "The acreage property received a cohesive natural landscape combining native planting, premium Sir Grange Zoysia turf, natural sandstone, Pink Bark mulch, earthworks and a timber pergola.",
   "aftercare": "",
   "review": "",
@@ -1174,7 +1174,8 @@
    "Turf & Soft Landscaping",
    "Garden Beds & Planting",
    "Retaining Walls",
-   "Earthworks"
+   "Earthworks",
+   "Sandstone Log Retaining Walls"
   ],
   "nearby": [
    "Glenhaven",

@@ -415,3 +415,58 @@ if (/estatelandscapers\.com\.au$/.test(location.hostname)) {
   }, { threshold: 0.25 });
   vids.forEach(function (v) { io.observe(v); });
 })();
+
+// ------------------------------------------------------------- site search --
+// Whole-site search inside the menu. The build writes /search-index.json (one
+// entry per page: title, description, headings, body excerpt); this scores
+// pages by where the words match and shows the top results without leaving
+// the menu. No third party, nothing sent anywhere.
+(function () {
+  var form = document.getElementById('msearch'), q = document.getElementById('mq'), out = document.getElementById('msresults');
+  if (!form || !q || !out) return;
+  var index = null, timer = null;
+  function load() {
+    if (index) return Promise.resolve(index);
+    return fetch('/search-index.json').then(function (r) { return r.json(); }).then(function (d) { index = d; return d; });
+  }
+  function esc(s) { return s.replace(/[&<>"]/g, function (c) { return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]; }); }
+  function mark(s, terms) {
+    var e = esc(s);
+    terms.forEach(function (t) { e = e.replace(new RegExp('(' + t.replace(/[.*+?^${}()|[\]\\]/g, '\\$&') + ')', 'ig'), '<em>$1</em>'); });
+    return e;
+  }
+  function snippet(body, terms) {
+    var low = body.toLowerCase(), i = -1;
+    terms.some(function (t) { i = low.indexOf(t); return i > -1; });
+    if (i < 0) return body.slice(0, 140) + '…';
+    var s = Math.max(0, i - 60);
+    return (s ? '…' : '') + body.slice(s, s + 160) + '…';
+  }
+  function run() {
+    var terms = q.value.trim().toLowerCase().split(/\s+/).filter(function (t) { return t.length > 1; });
+    if (!terms.length) { out.hidden = true; out.innerHTML = ''; return; }
+    load().then(function (idx) {
+      var hits = idx.map(function (p) {
+        var t = p.t.toLowerCase(), h = (p.h || '').toLowerCase(), d = (p.d || '').toLowerCase(), b = (p.b || '').toLowerCase();
+        var score = 0;
+        terms.forEach(function (w) {
+          if (t.indexOf(w) > -1) score += 8;
+          if (h.indexOf(w) > -1) score += 4;
+          if (d.indexOf(w) > -1) score += 3;
+          if (b.indexOf(w) > -1) score += 1;
+        });
+        return { p: p, s: score };
+      }).filter(function (x) { return x.s > 0; }).sort(function (a, b2) { return b2.s - a.s; }).slice(0, 8);
+      if (!hits.length) { out.innerHTML = '<p class="lbl">No pages match “' + esc(q.value) + '”</p>'; out.hidden = false; return; }
+      out.innerHTML = '<p class="lbl">' + hits.length + ' result' + (hits.length > 1 ? 's' : '') + '</p>' +
+        hits.map(function (x) {
+          return '<a href="' + x.p.u + '"><b>' + mark(x.p.t, terms) + '</b><span>' + mark(snippet(x.p.d || x.p.b || '', terms), terms) + '</span></a>';
+        }).join('');
+      out.hidden = false;
+      if (typeof gtag === 'function') gtag('event', 'site_search', { term: q.value.slice(0, 60), results: hits.length });
+    });
+  }
+  q.addEventListener('input', function () { clearTimeout(timer); timer = setTimeout(run, 160); });
+  q.addEventListener('focus', function () { load(); });
+  form.addEventListener('submit', function (e) { e.preventDefault(); run(); });
+})();

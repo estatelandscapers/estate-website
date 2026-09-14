@@ -34,7 +34,7 @@ const IMAGES = [];
 function pageSlug(p) { return p === '/' ? 'home' : p.replace(/^\/|\/$/g, '').replace(/\//g, '-').replace(/\.html$/, ''); }
 // Visible breadcrumb trail on pages two or more levels deep. The JSON-LD
 // BreadcrumbList already exists on most; this is the human-readable half.
-const CRUMB_LABEL = { residential: 'Residential', commercial: 'Commercial', projects: 'Projects',
+const CRUMB_LABEL = { residential: 'Residential', turf: 'Turfing', 'decorative-pebbles': 'Decorative pebbles', 'concrete-driveways': 'Concrete works', commercial: 'Commercial', projects: 'Projects',
   insights: 'Insights', areas: 'Service areas', 'retaining-walls': 'Retaining walls' };
 function titleise(seg) {
   return CRUMB_LABEL[seg] || seg.replace(/-/g, ' ').replace(/^\w/, ch => ch.toUpperCase());
@@ -169,6 +169,7 @@ function swapPhotos(html, cpath) {
   });
 }
 const BUILT = [];
+const SEARCH = [];
 const STAMP = new Date().toISOString().slice(0, 16) + 'Z';
 const MAP_PATH = path.join(__dirname, 'data', 'photo-map.json');
 const PHOTO_MAP = fs.existsSync(MAP_PATH) ? JSON.parse(fs.readFileSync(MAP_PATH, 'utf8')) : {};
@@ -214,6 +215,14 @@ for (const f of walk(path.join(SRC, 'pages'))) {
   fs.mkdirSync(path.dirname(out), { recursive: true });
   fs.writeFileSync(out, html);
   BUILT.push(out.replace(OUT, ''));
+  if (!c.noindex && !c.path.endsWith('.html')) {
+    const text = html.replace(/<script[\s\S]*?<\/script>|<style[\s\S]*?<\/style>|<nav[\s\S]*?<\/nav>|<footer[\s\S]*?<\/footer>|<div class="mega"[\s\S]*?<\/div>\n<\/div>/g, ' ')
+      .replace(/<[^>]+>/g, ' ').replace(/&[a-z#0-9]+;/g, ' ').replace(/\s+/g, ' ').trim();
+    const title = (html.match(/<title>(.*?)<\/title>/s) || [])[1] || c.path;
+    const desc = (html.match(/name="description" content="(.*?)"/s) || [])[1] || '';
+    const heads = [...html.matchAll(/<h[123][^>]*>(.*?)<\/h[123]>/gs)].map(m => m[1].replace(/<[^>]+>/g, '')).join(' · ');
+    SEARCH.push({ u: c.path, t: title.replace(/ \| Estate Landscapers.*$| — Estate Landscapers.*$/, ''), d: desc, h: heads.slice(0, 300), b: text.slice(0, 1200) });
+  }
   console.log('built ' + c.path);
   if (!c.path.endsWith('.html') && !c.noindex) SITEMAP_PATHS.push(c.path);
   n++;
@@ -296,6 +305,9 @@ console.log('PHOTOS.md: ' + PHOTOS.filter(p => p.done).length + '/' + PHOTOS.len
 // public/ is committed, so pages deleted from src/ used to linger and keep
 // serving (and duplicating titles). Remove any built page not produced by this
 // run. Assets are never touched.
+fs.writeFileSync(path.join(OUT, 'search-index.json'), JSON.stringify(SEARCH));
+console.log('search index: ' + SEARCH.length + ' pages');
+
 (function stale() {
   const keep = new Set(BUILT.map(p => path.join(OUT, p.replace(/^\//, ''))));
   const removed = [];
