@@ -460,7 +460,7 @@ html.js .rv.v{opacity:1;transform:none}
 .mega-close{width:44px;height:44px;border:1px solid var(--line);border-radius:10px;
   background:none;cursor:pointer;font-size:22px;line-height:1;color:#000}
 .mega-close:hover{border-color:var(--blue);color:var(--blue)}
-.mega-grid{display:grid;grid-template-columns:1fr 1fr 1fr .9fr;
+.mega-grid{display:grid;grid-template-columns:1fr 1fr .85fr 1.25fr;
   gap:clamp(26px,4vw,60px);padding:clamp(20px,4vh,44px) 0 60px}
 .mega-grid .lbl{font-size:10px;font-weight:800;letter-spacing:.2em;color:var(--label);
   text-transform:uppercase;margin-bottom:18px}
@@ -468,12 +468,14 @@ html.js .rv.v{opacity:1;transform:none}
   font-weight:600;padding:7px 0;letter-spacing:-.01em}
 .mega-grid a:hover{color:var(--blue)}
 .mega-grid a.sml{font-size:.82rem;font-weight:600;color:var(--body);padding:4px 0}
-.mega-brand{border-left:1px solid var(--line);padding-left:clamp(20px,3vw,44px)}
-.mega-brand img{width:130px;height:auto;margin-bottom:18px}
+.mega-brand{border-left:1px solid var(--line);padding-left:clamp(20px,3vw,44px);display:flex;flex-direction:column;align-items:center;text-align:center}
+.mega-brand img{width:130px;height:auto;margin:0 auto 18px}
 .mega-brand p{font-size:.85rem;color:var(--body);line-height:1.8}
 .mega-brand a{font-weight:700;color:#000;font-size:.9rem;padding:0}
 .mega-brand .fdh-soc{margin-top:16px;padding:0}
-.mega-brand .cred{margin-top:20px;font-size:9px;letter-spacing:.16em;text-transform:uppercase;color:var(--label);font-weight:700;line-height:2}
+.mega-brand .cred{margin-top:20px;font-size:8.5px;letter-spacing:.14em;text-transform:uppercase;color:var(--label);font-weight:700;line-height:2}
+.mega-brand .cred span{display:block;white-space:nowrap}
+.mega-brand .fdh-soc{justify-content:center}
 @media (max-width:900px){
   .mega-grid{grid-template-columns:1fr 1fr}
   .mega-brand{grid-column:1/-1;border-left:0;padding-left:0;border-top:1px solid var(--line);padding-top:26px}
@@ -659,7 +661,11 @@ body.noform .fab{display:none}
 .tiers.cmp tbody th{width:19%;font-size:.8rem}
 @media (max-width:760px){.tierwrap:has(.cmp){overflow:auto}.tiers.cmp{min-width:720px}}
 
-.mega-cta{display:flex;flex-direction:column;gap:8px;margin:14px 0 12px}
-.mega-cta .btn{justify-content:center;padding:11px 16px;font-size:10.5px}
+.mega-cta{display:flex;flex-direction:column;gap:6px;margin:6px 0 12px}
+.mega-cta a{color:#000;text-decoration:none;font-weight:700;font-size:1rem;padding:4px 0}
+.mega-cta a:hover{color:var(--blue)}
 
 .slot.ghost span{font-size:10px;opacity:.8;word-break:break-all}
+
+.g2 .panel{align-self:start}
+.g2{align-items:start}

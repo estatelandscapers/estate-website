@@ -385,14 +385,22 @@ SOIL = [
       what='Honey-coloured cypress with natural oils that resist termites and fungus. Holds its colour longer than any other mulch here.',
       best='Beds near the house and timber structures, and designed gardens where the mulch is part of the look.',
       note='The premium mulch by price and by lifespan. Available as a finer mulch or a larger woodchip.'),
- dict(slug='tea-tree-mulch', name='Tea Tree Mulch', tier='Premium', kind='mulch',
-      what='Dark, aromatic and textured, from the tea tree oil harvest. Decomposes slowly and suits native planting.',
-      best='Native gardens, coastal beds and anywhere a dark, natural, character-filled surface is wanted.',
-      note='Priced with cypress; chosen for character where cypress is chosen for colour.'),
+ dict(slug='forest-fines', name='Forest Fines', tier='Standard', kind='mulch',
+      what='Finely chipped and composted forest material. Dark, soft and dense, it knits into a mat that holds moisture and hides the soil completely.',
+      best='Beds with dense planting, sloping beds where coarse chip would wash, and anyone who wants the dark look without dye.',
+      note='Breaks down faster than bark or chip and feeds the soil as it does. Top up yearly.'),
+ dict(slug='black-wood-chip', name='Black Wood Chip', tier='Premium', kind='mulch',
+      what='Softwood chip dyed black with a non-toxic oxide stain. A dark, uniform, contemporary surface.',
+      best='Modern frontages and courtyards where the mulch is a design element against pale paving and green planting.',
+      note='Leaf litter shows against black more than any other mulch, and the colour softens over a season or two. Top-dress to refresh.'),
+ dict(slug='red-wood-chip', name='Red Wood Chip', tier='Premium', kind='mulch',
+      what='Softwood chip dyed a warm red-brown with a non-toxic oxide stain. Bright, uniform and slow to break down.',
+      best='Feature beds and commercial frontages where colour needs to hold between maintenance visits.',
+      note='Same softwood base and lifespan as black chip; the colour hides litter better than black and fades a little slower.'),
 ]
 SOIL_TIERS = tiers('Beds are priced by the square metre; the soil and mulch specification sets the tier.',
     [('Garden mix', 'Garden Mix', 'Organic Garden Mix', 'Premium Soil Mix'),
-     ('Mulch', 'Leaf Mulch (natural)', 'Pine Bark, Eucalyptus Mulch or Hardwood Chip', 'Cypress Mulch or Tea Tree Mulch'),
+     ('Mulch', 'Leaf Mulch (natural)', 'Pine Bark, Eucalyptus Mulch, Hardwood Chip or Forest Fines', 'Cypress Mulch, Black Wood Chip or Red Wood Chip'),
      ('Native beds', 'Native Mix at any tier', 'Native Mix at any tier', 'Native Mix at any tier')],
     'Every mulch is spread 50 to 100 mm deep over a prepared, watered bed. Thinner and it fails at weeds; thicker wastes product.')
 for sm in SOIL:
@@ -411,7 +419,7 @@ for sm in SOIL:
       <div><dt>Type</dt><dd>{kind}</dd></div>
       <div><dt>{'Placed' if kind=='Soil' else 'Spread'}</dt><dd>{'To the bed depth the planting needs' if kind=='Soil' else '50 to 100 mm deep'}</dd></div>
     </dl></div></div>''') + SOIL_TIERS,
-        [(f"Is {e(sm['name'])} right for natives?", 'Native Mix is the safe choice for natives, azaleas and camellias because it carries no mushroom compost and drains freely. We specify it wherever the plant schedule calls for it, at any tier.' if sm['kind']=='soil' else 'Tea tree and leaf mulch suit native beds best; pine bark and cypress are fine on most. We match mulch to the planting.'),
+        [(f"Is {e(sm['name'])} right for natives?", 'Native Mix is the safe choice for natives, azaleas and camellias because it carries no mushroom compost and drains freely. We specify it wherever the plant schedule calls for it, at any tier.' if sm['kind']=='soil' else 'Leaf mulch and forest fines suit native beds best; pine bark, chip and cypress are fine on most. Dyed chips are inert and safe but add nothing to the soil. We match mulch to the planting.'),
          ('Can I mix tiers in one yard?', 'Yes. A premium soil in the feature bed and standard elsewhere is common and is priced bed by bed.'),
          ('How much do I need?', 'We measure the beds at the site visit and the quote carries the volume. Nothing to calculate.')],
         f"Planting beds this season?", 'Photos and the plan are enough. Soil, mulch and plants are lines on the quote at the tier you choose.',

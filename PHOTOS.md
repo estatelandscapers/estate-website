@@ -2,7 +2,7 @@
 
 Save an image as `public/assets/img/<name>.jpg` (or .webp/.png), push, and it
 appears in its slot automatically on the next build. This file regenerates on
-every build and ticks itself: 3 of 197 slots filled.
+every build and ticks itself: 3 of 208 slots filled.
 
 Best size: 1600px wide, JPG/WebP, under 400 KB (squoosh.app does this in-browser).
 Height is flexible — every slot crops to fit, so keep the subject centred.
@@ -87,6 +87,30 @@ added to the image sitemap automatically.
 
 - [ ] `commercial-strata-body-corporate-hero.jpg` — Common-property landscape: entry, gardens or shared open space
 
+## /estimate/
+
+- [ ] `estimate-hero.jpg` — A finished Estate yard, wide shot
+
+## /insights/builder-left-clay-pad-nothing-grows/
+
+- [ ] `insights-builder-left-clay-pad-nothing-grows-hero.jpg` — The builder left a clay pad and nothing will grow in it, illustrated on a real Sydney site
+
+## /insights/council-driveway-crossover-approval-delays/
+
+- [ ] `insights-council-driveway-crossover-approval-delays-hero.jpg` — The council crossover is holding up the driveway, illustrated on a real Sydney site
+
+## /insights/easement-stormwater-pit-in-backyard/
+
+- [ ] `insights-easement-stormwater-pit-in-backyard-hero.jpg` — There is an easement and a stormwater pit in my backyard, illustrated on a real Sydney site
+
+## /insights/landscaping-required-for-occupation-certificate/
+
+- [ ] `insights-landscaping-required-for-occupation-certificate-hero.jpg` — Do I need landscaping to get my Occupation Certificate?, illustrated on a real Sydney site
+
+## /insights/new-build-landscaping-budget-not-in-contract/
+
+- [ ] `insights-new-build-landscaping-budget-not-in-contract-hero.jpg` — Landscaping was not in the build contract. What does it actually cost?, illustrated on a real Sydney site
+
 ## /insights/retaining-walls/
 
 - [ ] `insights-retaining-walls-hero.jpg` — Completed retaining wall: full length
@@ -118,6 +142,18 @@ added to the image sitemap automatically.
 ## /insights/retaining-walls/timber-sleeper-steel-post/
 
 - [ ] `insights-retaining-walls-timber-sleeper-steel-post-hero.jpg` — Timber sleeper retaining walls with steel posts, completed, with the drainage or piers visible if possible
+
+## /insights/turf-dying-new-build-first-summer/
+
+- [ ] `insights-turf-dying-new-build-first-summer-hero.jpg` — The new turf is dying in its first summer, illustrated on a real Sydney site
+
+## /insights/water-pooling-new-build-yard-drainage/
+
+- [ ] `insights-water-pooling-new-build-yard-drainage-hero.jpg` — Water pools in the yard after every rain, illustrated on a real Sydney site
+
+## /insights/who-pays-boundary-retaining-wall-fence/
+
+- [ ] `insights-who-pays-boundary-retaining-wall-fence-hero.jpg` — Who pays for the boundary retaining wall and fence?, illustrated on a real Sydney site
 
 ## /projects/
 
@@ -422,6 +458,10 @@ added to the image sitemap automatically.
 
 - [ ] `residential-planting-gardens-hero.jpg` — Planted garden beds at completion, mulched and edged
 
+## /residential/planting-gardens/black-wood-chip/
+
+- [ ] `residential-planting-black-wood-chip-hero.jpg` — Black Wood Chip in a prepared garden bed
+
 ## /residential/planting-gardens/cypress-mulch/
 
 - [ ] `residential-planting-cypress-mulch-hero.jpg` — Cypress Mulch in a prepared garden bed
@@ -429,6 +469,10 @@ added to the image sitemap automatically.
 ## /residential/planting-gardens/eucalyptus-mulch/
 
 - [ ] `residential-planting-eucalyptus-mulch-hero.jpg` — Eucalyptus Mulch in a prepared garden bed
+
+## /residential/planting-gardens/forest-fines/
+
+- [ ] `residential-planting-forest-fines-hero.jpg` — Forest Fines in a prepared garden bed
 
 ## /residential/planting-gardens/garden-mix/
 
@@ -458,9 +502,9 @@ added to the image sitemap automatically.
 
 - [ ] `residential-planting-premium-soil-mix-hero.jpg` — Premium Soil Mix in a prepared garden bed
 
-## /residential/planting-gardens/tea-tree-mulch/
+## /residential/planting-gardens/red-wood-chip/
 
-- [ ] `residential-planting-tea-tree-mulch-hero.jpg` — Tea Tree Mulch in a prepared garden bed
+- [ ] `residential-planting-red-wood-chip-hero.jpg` — Red Wood Chip in a prepared garden bed
 
 ## /residential/retaining-walls/
 
