@@ -385,7 +385,6 @@ legend{display:block;font-size:10.5px;font-weight:800;letter-spacing:.14em;text-
 .fdh-top .r b{display:block;color:#000;letter-spacing:.02em;text-transform:none;font-size:12.5px;font-weight:700}
 .fdh-top .r b a{color:inherit;text-decoration:none}
 .fdh-main{flex:1;display:flex;align-items:center;padding:30px 0}
-.fdh-hero .fdh-main{align-items:flex-start;padding-top:clamp(20px,6vh,70px)}
 
 .fdh-main h1{font-size:clamp(2rem,4.8vw,3.5rem);font-weight:800;letter-spacing:-.03em;
   line-height:1.08;max-width:15ch;margin-top:14px}
@@ -625,8 +624,9 @@ body.noform .fab{display:none}
 
 .fdh-port{margin-top:22px}
 .portlink{display:inline-flex;align-items:center;gap:7px;background:none;border:0;padding:0;
-  color:var(--blue);text-decoration:none;font-weight:800;font-size:12px;letter-spacing:.14em;text-transform:uppercase}
-.portlink:hover{color:#5C86FF}
+  color:rgba(255,255,255,.78);text-decoration:none;font-weight:800;font-size:12px;letter-spacing:.14em;text-transform:uppercase}
+.portlink:hover{color:#fff}
+.fdh-port{margin-top:18px;text-align:right;width:100%}
 
 /* ---------------- video ---------------- */
 .fdh-hero .herovid{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;
@@ -652,4 +652,14 @@ body.noform .fab{display:none}
 .tiers.walls td .plate.tp{height:110px;border-radius:10px;overflow:hidden;background:var(--mist);margin:0}
 .tiers.walls td .plate.tp img{width:100%;height:100%;object-fit:cover;display:block}
 .tpgrid{display:grid;grid-template-columns:1fr 1fr;gap:6px}
-.tiers.cmp{min-width:960px}.tiers.cmp thead th{white-space:nowrap}
+.tiers.cmp{min-width:0;table-layout:fixed;font-size:.82rem}
+.tiers.cmp thead th{white-space:normal;text-align:center;vertical-align:bottom;line-height:1.3;padding:12px 8px}
+.tiers.cmp thead th a{display:block}
+.tiers.cmp td{text-align:center;padding:10px 8px}
+.tiers.cmp tbody th{width:19%;font-size:.8rem}
+@media (max-width:760px){.tierwrap:has(.cmp){overflow:auto}.tiers.cmp{min-width:720px}}
+
+.mega-cta{display:flex;flex-direction:column;gap:8px;margin:14px 0 12px}
+.mega-cta .btn{justify-content:center;padding:11px 16px;font-size:10.5px}
+
+.slot.ghost span{font-size:10px;opacity:.8;word-break:break-all}

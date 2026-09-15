@@ -300,3 +300,121 @@ write('insights/retaining-walls/sandstone-log.html', f'''<!--CONFIG
 ''')
 
 print('catalogue: 6 turf, 5 pebble, 3 concrete, letterboxes, clotheslines, sandstone log')
+
+# =========================================================== FENCING =========
+FENCE = [
+ dict(slug='colorbond', name='Colorbond', tier='Standard',
+      what='Steel panel fencing in the full Colorbond colour range, on steel posts concreted in, with matching capping and gates.',
+      best='Boundary and side fences on almost every Sydney block. Private, low maintenance, and the colour never needs painting.',
+      note='Height to 1.8 m as standard. Sleeper plinths under the bottom rail keep soil and mulch off the steel and off the neighbour.'),
+ dict(slug='timber-lap-and-cap', name='Timber lap and cap', tier='Basic',
+      what='Treated pine palings, lapped and capped, on timber or steel posts. The traditional Sydney fence.',
+      best='Budget boundaries, rear fences behind planting, and anywhere a timber look is wanted at the lowest cost.',
+      note='Timber weathers and moves. Steel posts and a capping rail extend its life; painting or staining extends it further.'),
+ dict(slug='ezy-clip-lap-and-cap', name='Ezy Clip lap and cap', tier='Premium',
+      what='A modular lap-and-cap system that clips together on steel posts, giving the timber profile with a faster, tidier build and no exposed fixings.',
+      best='Front and feature fences where the lap-and-cap look is wanted without the movement and maintenance of raw timber.',
+      note='Premium over timber because the components and the finish cost more; the trade is a fence that stays straight.'),
+ dict(slug='aluminium', name='Aluminium', tier='Premium',
+      what='Powder-coated aluminium slat, blade and picket fencing. Never rusts, never needs painting, and takes curves and steps cleanly.',
+      best='Front fences, pool fencing, side returns and anywhere the fence is part of the architecture.',
+      note='The premium fence. Slat spacing sets privacy; blade fencing sets the modern look; pool fencing is built to the pool code.'),
+]
+FENCE_TIERS = tiers('Fencing is priced per metre at the tier you choose, gates per unit.',
+    [('Fence', 'Timber lap and cap', 'Colorbond', 'Ezy Clip lap and cap, or aluminium slat, blade or picket'),
+     ('Gates', 'Colorbond, matched to the fence', 'Colorbond, matched to the fence', 'Aluminium, or custom metal'),
+     ('Character', 'Traditional timber, lowest cost', 'Private, colour-fast, the Sydney default', 'Straight, sharp, architectural')])
+for fc in FENCE:
+    write(f"residential/fencing-gates/{fc['slug']}.html", page(f"/residential/fencing-gates/{fc['slug']}/", 'residential',
+        f"{fc['name']} Fencing Sydney | {fc['tier']} Tier | Estate Landscapers",
+        f"{fc['name']} fencing installed across Sydney as part of a landscape package. {fc['what']} {fc['tier']} tier.",
+        ('Fencing and gates', '/residential/fencing-gates/'), fc['tier'] + ' tier',
+        f"{e(fc['name'])} fencing: <em>{ {'Basic':'the budget boundary','Standard':'the Sydney default','Premium':'the fence that stays straight'}[fc['tier']] }</em>.",
+        e(fc['what']), f"{fc['name']} fence, installed, full run",
+        band('Where it works', 'What the fence is for.', f'''    <div class="g2 mt"><div>
+      <p class="sub"><b>Best for.</b> {e(fc['best'])}</p>
+      <p class="sub" style="margin-top:12px"><b>Worth knowing.</b> {e(fc['note'])}</p>
+    </div><div class="panel"><h3>At a glance</h3><dl class="facts">
+      <div><dt>Tier on your quote</dt><dd>{fc['tier']}</dd></div>
+      <div><dt>Posts</dt><dd>Steel, concreted in</dd></div>
+      <div><dt>Follows the levels</dt><dd>Stepped or raked to the ground line</dd></div>
+      <div><dt>Gates</dt><dd>Matched, hung to swing true</dd></div>
+    </dl></div></div>''') + FENCE_TIERS,
+        [('Does the fence follow a sloping block?', 'Yes. Panels are stepped or raked to the ground line, and plinths close the gap underneath so soil and mulch stay on your side.'),
+         ('Who pays for a boundary fence?', 'Dividing fences are usually shared between neighbours under NSW fencing law. We build to your instruction and can supply the quote you need for that conversation.'),
+         ('Can you match an existing fence?', 'Usually. Colorbond colours are standard, and timber profiles are common. Send a photo.')],
+        f"Fencing a boundary in {e(fc['name'].lower())}?", 'Send the run length and a photo of the line. It is a line on your quote at tier, gates included.',
+        [('Home', HOME + '/'), ('Residential', HOME + '/residential/'), ('Fencing and gates', HOME + '/residential/fencing-gates/'), (fc['name'], '{{PAGE_URL}}')],
+        hero_key=f"residential-fencing-{fc['slug']}-hero"))
+
+# ====================================================== SOILS & MULCH =========
+SOIL = [
+ dict(slug='garden-mix', name='Garden Mix', tier='Basic', kind='soil',
+      what='A general planting blend of soil, sand, ash, bark fines, mushroom compost and wood mulch. The workhorse bed soil.',
+      best='General garden beds with exotics, hedges and screening plants.',
+      note='Contains mushroom compost, which is alkaline: not for most natives, azaleas or camellias. Those beds get Native Mix.'),
+ dict(slug='organic-garden-mix', name='Organic Garden Mix', tier='Standard', kind='soil',
+      what='Soil blended with composted organics and chicken manure. Holds moisture, feeds the bed for the first season, and the same blend that grows vegetables.',
+      best='Beds that will be planted densely, raised planters, and anything you want to establish fast.',
+      note='Richer than Garden Mix, so it costs more per cubic metre and needs no fertiliser at planting.'),
+ dict(slug='premium-soil-mix', name='Premium Soil Mix', tier='Premium', kind='soil',
+      what='The organic blend with added composted manures and screened to a finer, cleaner texture. The best bed soil we place.',
+      best='Feature beds, advanced tree planting, and designed gardens where the plant schedule is expensive enough to deserve it.',
+      note='The soil is a small share of a bed\'s cost and the largest share of its success. This is where a premium tier earns its name.'),
+ dict(slug='native-mix', name='Native Mix', tier='Any', kind='soil',
+      what='Soil, sand, ash, bark fines and duck manure, with no mushroom compost. Free-draining and low in phosphorus.',
+      best='Native beds, azaleas, camellias, and planter boxes that need drainage. Specified at whatever tier the bed sits in.',
+      note='Drains faster than Garden Mix, so it is not the choice for thirsty vegetables.'),
+ dict(slug='leaf-mulch', name='Leaf Mulch', tier='Basic', kind='mulch',
+      what='Chipped tree prunings and leaf, the natural forest mulch. Dense, textured, breaks down into compost.',
+      best='Large beds, native gardens and anywhere the budget matters more than a uniform look.',
+      note='Appearance varies batch to batch. It is the mulch that feeds the soil fastest, and needs topping up sooner.'),
+ dict(slug='pine-bark', name='Pine Bark', tier='Standard', kind='mulch',
+      what='Bark from plantation pine, in 10, 14 and 25 mm grades. Tidy, uniform, slow to break down.',
+      best='Front-of-house beds and anywhere a neat, consistent surface is wanted.',
+      note='Larger grade for larger beds; 10 mm for pots and narrow strips.'),
+ dict(slug='eucalyptus-mulch', name='Eucalyptus Mulch', tier='Standard', kind='mulch',
+      what='A fine hardwood chip with a reddish-brown colour. Excellent weed suppression and a rich background for planting.',
+      best='Beds where a finer, darker finish suits the planting.',
+      note='Spread 50 to 100 mm deep. Finer grades knit together and resist wind and birds.'),
+ dict(slug='hardwood-chip', name='Hardwood Chip', tier='Standard', kind='mulch',
+      what='Chipped hardwood offcuts. Uniform, long-lasting and the economical decorative option.',
+      best='Large areas and commercial beds where longevity between top-ups matters.',
+      note='Takes years to break down, which is why it is cost-efficient over time.'),
+ dict(slug='cypress-mulch', name='Cypress Mulch', tier='Premium', kind='mulch',
+      what='Honey-coloured cypress with natural oils that resist termites and fungus. Holds its colour longer than any other mulch here.',
+      best='Beds near the house and timber structures, and designed gardens where the mulch is part of the look.',
+      note='The premium mulch by price and by lifespan. Available as a finer mulch or a larger woodchip.'),
+ dict(slug='tea-tree-mulch', name='Tea Tree Mulch', tier='Premium', kind='mulch',
+      what='Dark, aromatic and textured, from the tea tree oil harvest. Decomposes slowly and suits native planting.',
+      best='Native gardens, coastal beds and anywhere a dark, natural, character-filled surface is wanted.',
+      note='Priced with cypress; chosen for character where cypress is chosen for colour.'),
+]
+SOIL_TIERS = tiers('Beds are priced by the square metre; the soil and mulch specification sets the tier.',
+    [('Garden mix', 'Garden Mix', 'Organic Garden Mix', 'Premium Soil Mix'),
+     ('Mulch', 'Leaf Mulch (natural)', 'Pine Bark, Eucalyptus Mulch or Hardwood Chip', 'Cypress Mulch or Tea Tree Mulch'),
+     ('Native beds', 'Native Mix at any tier', 'Native Mix at any tier', 'Native Mix at any tier')],
+    'Every mulch is spread 50 to 100 mm deep over a prepared, watered bed. Thinner and it fails at weeds; thicker wastes product.')
+for sm in SOIL:
+    kind='Soil' if sm['kind']=='soil' else 'Mulch'
+    write(f"residential/planting-gardens/{sm['slug']}.html", page(f"/residential/planting-gardens/{sm['slug']}/", 'residential',
+        f"{sm['name']} | {kind} for Sydney Garden Beds | Estate Landscapers",
+        f"{sm['name']}: {sm['what']} {'Specified at any tier.' if sm['tier']=='Any' else sm['tier']+' tier.'}",
+        ('Planting and gardens', '/residential/planting-gardens/'), f"{kind} · {sm['tier'] if sm['tier']!='Any' else 'any tier'}",
+        f"{e(sm['name'])}: <em>{ {'Basic':'the economical choice','Standard':'the everyday specification','Premium':'the best we place','Any':'specified where it belongs'}[sm['tier']] }</em>.",
+        e(sm['what']), f"{sm['name']} in a prepared garden bed",
+        band('Where it works', f'What this {kind.lower()} is for.', f'''    <div class="g2 mt"><div>
+      <p class="sub"><b>Best for.</b> {e(sm['best'])}</p>
+      <p class="sub" style="margin-top:12px"><b>Worth knowing.</b> {e(sm['note'])}</p>
+    </div><div class="panel"><h3>At a glance</h3><dl class="facts">
+      <div><dt>Tier on your quote</dt><dd>{sm['tier']}</dd></div>
+      <div><dt>Type</dt><dd>{kind}</dd></div>
+      <div><dt>{'Placed' if kind=='Soil' else 'Spread'}</dt><dd>{'To the bed depth the planting needs' if kind=='Soil' else '50 to 100 mm deep'}</dd></div>
+    </dl></div></div>''') + SOIL_TIERS,
+        [(f"Is {e(sm['name'])} right for natives?", 'Native Mix is the safe choice for natives, azaleas and camellias because it carries no mushroom compost and drains freely. We specify it wherever the plant schedule calls for it, at any tier.' if sm['kind']=='soil' else 'Tea tree and leaf mulch suit native beds best; pine bark and cypress are fine on most. We match mulch to the planting.'),
+         ('Can I mix tiers in one yard?', 'Yes. A premium soil in the feature bed and standard elsewhere is common and is priced bed by bed.'),
+         ('How much do I need?', 'We measure the beds at the site visit and the quote carries the volume. Nothing to calculate.')],
+        f"Planting beds this season?", 'Photos and the plan are enough. Soil, mulch and plants are lines on the quote at the tier you choose.',
+        [('Home', HOME + '/'), ('Residential', HOME + '/residential/'), ('Planting and gardens', HOME + '/residential/planting-gardens/'), (sm['name'], '{{PAGE_URL}}')],
+        hero_key=f"residential-planting-{sm['slug']}-hero"))
+print('fencing: 4 pages · soils and mulch: 10 pages')
