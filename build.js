@@ -101,7 +101,13 @@ function cardHeroes(html) {
     const file = heroOf(href);
     return file ? '<div class="plate">' + heroImg(file) + '</div>' : m;
   });
-  // cards with no plate at all: give project cards one
+  // cards with no plate: project cards always get one, and any card marked
+  // data-pic (product and guide grids) gets the hero of the page it links to.
+  html = html.replace(/<a class="card"([^>]*?)href="(\/[^"#]+)"([^>]*)>(\s*<div class="in">)/g, (m, pre, href, attrs, inner) => {
+    if (!/\/projects\//.test(href) && !/data-pic/.test(pre + attrs)) return m;
+    const file = heroOf(href);
+    return file ? '<a class="card"' + pre + 'href="' + href + '"' + attrs + '><div class="plate">' + heroImg(file) + '</div>' + inner : m;
+  });
   html = html.replace(/<a class="card" href="(\/projects\/[^"#]+)"([^>]*)>(\s*<div class="in">)/g, (m, href, attrs, inner) => {
     const file = heroOf(href);
     return file ? '<a class="card" href="' + href + '"' + attrs + '><div class="plate">' + heroImg(file) + '</div>' + inner : m;

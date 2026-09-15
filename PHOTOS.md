@@ -2,7 +2,7 @@
 
 Save an image as `public/assets/img/<name>.jpg` (or .webp/.png), push, and it
 appears in its slot automatically on the next build. This file regenerates on
-every build and ticks itself: 3 of 179 slots filled.
+every build and ticks itself: 3 of 183 slots filled.
 
 Best size: 1600px wide, JPG/WebP, under 400 KB (squoosh.app does this in-browser).
 Height is flexible — every slot crops to fit, so keep the subject centred.
@@ -345,6 +345,10 @@ added to the image sitemap automatically.
 ## /residential/garden-edging/
 
 - [ ] `residential-garden-edging-hero.jpg` — Corten steel edging between turf and a mulched bed
+- [ ] `residential-garden-edging-timber.jpg` — Timber edging installed between turf and bed
+- [ ] `residential-garden-edging-charcoal-brick.jpg` — Charcoal brick edging installed between turf and bed
+- [ ] `residential-garden-edging-corten-steel.jpg` — Corten steel edging installed between turf and bed
+- [ ] `residential-garden-edging-aluminium.jpg` — Aluminium edging installed between turf and bed
 
 ## /residential/irrigation/
 

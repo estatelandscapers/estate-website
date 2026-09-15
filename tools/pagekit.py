@@ -124,7 +124,7 @@ def page(path, nav, title, meta, eyebrow_link, eyebrow, h1, lead, slot_desc, sec
 
 def cards(items):
     """items = [(href, title, blurb)] -> card grid without photo plates (build adds hero images)."""
-    return '\n'.join(f'''      <a class="card" href="{h}"><div class="in"><h3>{t}</h3><p>{b}</p><span class="more">View →</span></div></a>''' for h, t, b in items)
+    return '\n'.join(f'''      <a class="card" data-pic href="{h}"><div class="in"><h3>{t}</h3><p>{b}</p><span class="more">Read more →</span></div></a>''' for h, t, b in items)
 
 def band(eyebrow, h2, inner, tint=False):
     return f'''
