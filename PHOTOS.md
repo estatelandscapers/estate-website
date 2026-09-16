@@ -2,7 +2,7 @@
 
 Save an image as `public/assets/img/<name>.jpg` (or .webp/.png), push, and it
 appears in its slot automatically on the next build. This file regenerates on
-every build and ticks itself: 3 of 208 slots filled.
+every build and ticks itself: 3 of 210 slots filled.
 
 Best size: 1600px wide, JPG/WebP, under 400 KB (squoosh.app does this in-browser).
 Height is flexible — every slot crops to fit, so keep the subject centred.
@@ -29,19 +29,19 @@ added to the image sitemap automatically.
 
 ## /areas/
 
-- [ ] `areas-hero.jpg` — A completed Sydney project: wide shot
+- [ ] `areas-hero.jpg` — The service area map
+
+## /areas/bayside/
+
+- [ ] `areas-bayside-hero.jpg` — A completed Bayside project
 
 ## /areas/eastern-suburbs/
 
 - [ ] `areas-eastern-suburbs-hero.jpg` — A completed Eastern Suburbs project
 
-## /areas/hills-district/
-
-- [ ] `areas-hills-district-hero.jpg` — A completed Hills District project
-
 ## /areas/inner-west-and-city/
 
-- [ ] `areas-inner-west-and-city-hero.jpg` — A completed Inner West & City project
+- [ ] `areas-inner-west-and-city-hero.jpg` — A completed Inner West &amp; City project
 
 ## /areas/lower-north-shore/
 
@@ -53,11 +53,19 @@ added to the image sitemap automatically.
 
 ## /areas/ryde-and-parramatta/
 
-- [ ] `areas-ryde-and-parramatta-hero.jpg` — A completed Ryde & Parramatta project
+- [ ] `areas-ryde-and-parramatta-hero.jpg` — A completed Ryde &amp; Parramatta project
 
-## /areas/st-george-and-sutherland/
+## /areas/st-george/
 
-- [ ] `areas-st-george-and-sutherland-hero.jpg` — A completed St George & Sutherland Shire project
+- [ ] `areas-st-george-hero.jpg` — A completed St George project
+
+## /areas/sutherland-shire/
+
+- [ ] `areas-sutherland-shire-hero.jpg` — A completed Sutherland Shire project
+
+## /areas/the-hills/
+
+- [ ] `areas-the-hills-hero.jpg` — A completed The Hills project
 
 ## /areas/upper-north-shore/
 

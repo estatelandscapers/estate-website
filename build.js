@@ -73,12 +73,32 @@ function heroVideo(html) {
     '<div class="bg" aria-hidden="true"></div>' + tag);
 }
 
+// A page's hero slot may declare its own key (data-key) that has nothing to do
+// with its URL: /residential/concrete-driveways/exposed-aggregate/ declares
+// residential-concrete-exposed-aggregate-hero. Cards linking to that page must
+// ask for the declared key, or the photo sits unused under a name nobody asks for.
+const DECLARED_HERO = (() => {
+  const map = {};
+  for (const f of walk(path.join(SRC, 'pages'))) {
+    if (!f.endsWith('.html')) continue;
+    const src = fs.readFileSync(f, 'utf8');
+    const cfg = src.match(/<!--CONFIG\s*([\s\S]*?)-->/);
+    if (!cfg) continue;
+    let p;
+    try { p = JSON.parse(cfg[1]).path; } catch (e) { continue; }
+    const key = (src.match(/<div class="slot"\s+data-key="([^"]+)"/) || [])[1];
+    if (p && key) map[p] = key;
+  }
+  return map;
+})();
+
 function heroFileFor(target) {
   const dir = path.join(OUT, 'assets', 'img');
   const all = fs.existsSync(dir) ? fs.readdirSync(dir) : [];
   const slug = pageSlug(target);
   const names = [slug + '-hero', slug + '-1'];
   if (target.startsWith('/projects/')) names.unshift('project-' + slug.replace(/^projects-/, '') + '-hero');
+  if (DECLARED_HERO[target]) names.unshift(DECLARED_HERO[target]);   // the page's own key wins
   for (const n of names) {
     const f = all.find(f => { const m = f.match(/^(.+?)(?:--.+)?\.(webp|jpe?g|png)$/i); return m && m[1] === n; });
     if (f) return f;
@@ -109,7 +129,8 @@ function cardHeroes(html) {
     if (file) return '<a class="card"' + pre + 'href="' + href + '"' + attrs + '><div class="plate">' + heroImg(file) + '</div>' + inner;
     // No hero yet: show a placeholder so the layout reads, keyed to the target page's hero.
     const slug = pageSlug(href);
-    const key = href.startsWith('/projects/') ? 'project-' + slug.replace(/^projects-/, '') + '-hero' : slug + '-hero';
+    const key = DECLARED_HERO[href]
+      || (href.startsWith('/projects/') ? 'project-' + slug.replace(/^projects-/, '') + '-hero' : slug + '-hero');
     const ghost = '<div class="plate"><div class="slot ghost"><b>Photo slot</b><span>Uses ' + key + '</span></div></div>';
     return '<a class="card"' + pre + 'href="' + href + '"' + attrs + '>' + ghost + inner;
   });
@@ -337,6 +358,26 @@ console.log('search index: ' + SEARCH.length + ' pages');
   if (removed.length) {
     console.log('removed ' + removed.length + ' stale page(s): ' + removed.slice(0, 6).join(', ') +
       (removed.length > 6 ? ' …' : ''));
+  }
+})();
+
+// Two files sharing one slot key means the build picks one alphabetically and
+// silently ignores the other. Almost always a renamed photo whose old copy was
+// never deleted.
+(function duplicateKeys() {
+  const dir = path.join(OUT, 'assets', 'img');
+  if (!fs.existsSync(dir)) return;
+  const byKey = {};
+  for (const f of fs.readdirSync(dir)) {
+    const m = f.match(/^(.+?)(?:--.+)?\.(webp|jpe?g|png|mp4|webm)$/i);
+    if (!m) continue;
+    (byKey[m[1]] = byKey[m[1]] || []).push(f);
+  }
+  const clashes = Object.entries(byKey).filter(([, v]) => v.length > 1);
+  if (clashes.length) {
+    console.warn('  WARNING: ' + clashes.length + ' slot key(s) claimed by more than one file.');
+    console.warn('  The build uses the first alphabetically and ignores the rest. Delete the old one:');
+    clashes.forEach(([k, v]) => console.warn('    ' + k + ': ' + v.join('  |  ')));
   }
 })();
 
