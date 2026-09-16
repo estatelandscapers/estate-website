@@ -126,6 +126,25 @@ def cards(items):
     """items = [(href, title, blurb)] -> card grid without photo plates (build adds hero images)."""
     return '\n'.join(f'''      <a class="card" data-pic href="{h}"><div class="in"><h3>{t}</h3><p>{b}</p><span class="more">Read more →</span></div></a>''' for h, t, b in items)
 
+def split_band(eyebrow, h2, left_html, right_html, tint=False):
+    """Two columns that start on the same line: the heading sits inside the left
+    column rather than spanning the full width, so the panel beside it aligns to
+    the top of the text instead of dropping below the heading."""
+    return f'''
+<section class="band{' tint' if tint else ''}">
+  <div class="shell g2">
+    <div>
+      <p class="eyebrow">{eyebrow}</p>
+      <h2>{h2}</h2>
+{left_html}
+    </div>
+    <div>
+{right_html}
+    </div>
+  </div>
+</section>
+'''
+
 def band(eyebrow, h2, inner, tint=False):
     return f'''
 <section class="band{' tint' if tint else ''}">

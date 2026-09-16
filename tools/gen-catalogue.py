@@ -88,13 +88,11 @@ CERT = band('Genuine varieties', 'Certified turf, not a look-alike.', '''  <p cl
 
 def turf_page(t):
   others = [x for x in TURF if x['slug'] != t['slug']]
-  sections = band('Why choose it', f"{e(t['name'])}, honestly.", f'''  <div class="g2 mt">
-   <div>
-    <p class="sub"><b>Where it shines.</b> {e(t['best'])}</p>
+  sections = split_band('Why choose it', f"{e(t['name'])}, honestly.", f'''    <p class="sub"><b>Where it shines.</b> {e(t['best'])}</p>
     <p class="sub" style="margin-top:12px"><b>Where it doesn\'t.</b> {e(t['avoid'])}</p>
     <p class="sub" style="margin-top:12px"><b>Certification.</b> {e(t['cert'])}</p>
-   </div>
-   <div class="panel">
+   ''',
+      f'''      <div class="panel">
     <h3>At a glance</h3>
     <dl class="facts">
      <div><dt>Tier on your quote</dt><dd>{t['tier']}</dd></div>
@@ -106,8 +104,7 @@ def turf_page(t):
      <div><dt>Leaf</dt><dd>{t['leaf']}</dd></div>
      <div><dt>Winter colour</dt><dd>{stars(t['winter'])}</dd></div>
     </dl>
-   </div>
-  </div>''') + TURF_CMP + band('Every lawn we lay', 'The same preparation under all six.', '''  <p class="sub">The variety decides the tier; the preparation is identical. Existing surface
+   </div>''') + TURF_CMP + band('Every lawn we lay', 'The same preparation under all six.', '''  <p class="sub">The variety decides the tier; the preparation is identical. Existing surface
    stripped, base graded to fall, screened underlay spread and levelled, turf laid tight
    and rolled, then watered in. Cheap lawns fail at the base, not at the grass, which is
    why we do not lay any of these over unprepared ground.</p>''')
@@ -171,15 +168,15 @@ for p in PEB:
     ('Decorative pebbles', '/residential/decorative-pebbles/'), p['tier'] + ' tier',
     f"{e(p['name'])}: <em>{ {'Basic':'the economical stone','Standard':'the classic pebble','Premium':'the feature stone'}[p['tier']] }</em>.",
     e(p['what']), f"{p['name']} pebbles laid in a garden strip",
-    band('Where it works', 'Right stone, right place.', f'''  <div class="g2 mt"><div>
-   <p class="sub"><b>Best for.</b> {e(p['best'])}</p>
+    split_band('Where it works', 'Right stone, right place.', f'''   <p class="sub"><b>Best for.</b> {e(p['best'])}</p>
    <p class="sub" style="margin-top:12px"><b>Worth knowing.</b> {e(p['note'])}</p>
-  </div><div class="panel"><h3>At a glance</h3><dl class="facts">
+  ''',
+      f'''      <div class="panel"><h3>At a glance</h3><dl class="facts">
    <div><dt>Tier on your quote</dt><dd>{p['tier']}</dd></div>
    <div><dt>Sizes we lay</dt><dd>{p['sizes']}</dd></div>
    <div><dt>Larger sizes</dt><dd>On request</dd></div>
    <div><dt>Laid over</dt><dd>Weedmat on a compacted base</dd></div>
-  </dl></div></div>''') + PEB_TIERS,
+  </dl></div>''') + PEB_TIERS,
     [(f"How deep is {e(p['name'])} laid?", 'Roughly twice the stone size: 20 to 40 mm depending on the pebble. Thinner than that and the weedmat shows; thicker wastes stone.'),
      ('Does the colour vary?', 'Yes, it is a natural product and shades vary between loads. We order each area from one batch so it matches.'),
      ('Can I mix it with other stone?', 'Yes. Feature stones and larger river pebbles are common additions, priced per job.')],
@@ -214,16 +211,16 @@ for c in CON:
     ('Concrete works', '/residential/concrete-driveways/'), c['tier'] + ' tier',
     f"{e(c['name'])}: <em>{ {'Basic':'the workhorse','Standard':'the finish that matches the house','Premium':'the finish that sells the frontage'}[c['tier']] }</em>.",
     e(c['what']), f"{c['name']} driveway, finished",
-    band('Where it works', 'What the finish is for.', f'''  <div class="g2 mt"><div>
-   <p class="sub"><b>Best for.</b> {e(c['best'])}</p>
+    split_band('Where it works', 'What the finish is for.', f'''   <p class="sub"><b>Best for.</b> {e(c['best'])}</p>
    <p class="sub" style="margin-top:12px"><b>Worth knowing.</b> {e(c['note'])}</p>
    <p class="sub" style="margin-top:12px">{SUPP}</p>
-  </div><div class="panel"><h3>At a glance</h3><dl class="facts">
+  ''',
+      f'''      <div class="panel"><h3>At a glance</h3><dl class="facts">
    <div><dt>Tier on your quote</dt><dd>{c['tier']}</dd></div>
    <div><dt>Suppliers</dt><dd>Boral, Holcim, Heidelberg</dd></div>
    <div><dt>Council works</dt><dd>Crossovers, kerb and footpath to council spec</dd></div>
    <div><dt>Base</dt><dd>Compacted, mesh reinforced, joints cut</dd></div>
-  </dl></div></div>''') + CON_TIERS,
+  </dl></div>''') + CON_TIERS,
     [('Does the base change with the finish?', 'No. Compaction, mesh, falls and control joints are the same across all three. You are paying for the surface, not a lesser slab.'),
      ('Can I see colours or aggregates first?', 'Yes. Supplier colour and aggregate charts are available, and we confirm your selection before the pour.'),
      ('What about the council crossover?', 'Crossovers, kerb and footpath sections are built to the applicable council specification and inspected, so you receive the final council certificate.')],
@@ -331,15 +328,15 @@ for fc in FENCE:
         ('Fencing and gates', '/residential/fencing-gates/'), fc['tier'] + ' tier',
         f"{e(fc['name'])} fencing: <em>{ {'Basic':'the budget boundary','Standard':'the Sydney default','Premium':'the fence that stays straight'}[fc['tier']] }</em>.",
         e(fc['what']), f"{fc['name']} fence, installed, full run",
-        band('Where it works', 'What the fence is for.', f'''    <div class="g2 mt"><div>
-      <p class="sub"><b>Best for.</b> {e(fc['best'])}</p>
+        split_band('Where it works', 'What the fence is for.', f'''      <p class="sub"><b>Best for.</b> {e(fc['best'])}</p>
       <p class="sub" style="margin-top:12px"><b>Worth knowing.</b> {e(fc['note'])}</p>
-    </div><div class="panel"><h3>At a glance</h3><dl class="facts">
+    ''',
+      f'''      <div class="panel"><h3>At a glance</h3><dl class="facts">
       <div><dt>Tier on your quote</dt><dd>{fc['tier']}</dd></div>
       <div><dt>Posts</dt><dd>Steel, concreted in</dd></div>
       <div><dt>Follows the levels</dt><dd>Stepped or raked to the ground line</dd></div>
       <div><dt>Gates</dt><dd>Matched, hung to swing true</dd></div>
-    </dl></div></div>''') + FENCE_TIERS,
+    </dl></div>''') + FENCE_TIERS,
         [('Does the fence follow a sloping block?', 'Yes. Panels are stepped or raked to the ground line, and plinths close the gap underneath so soil and mulch stay on your side.'),
          ('Who pays for a boundary fence?', 'Dividing fences are usually shared between neighbours under NSW fencing law. We build to your instruction and can supply the quote you need for that conversation.'),
          ('Can you match an existing fence?', 'Usually. Colorbond colours are standard, and timber profiles are common. Send a photo.')],
@@ -411,14 +408,14 @@ for sm in SOIL:
         ('Planting and gardens', '/residential/planting-gardens/'), f"{kind} · {sm['tier'] if sm['tier']!='Any' else 'any tier'}",
         f"{e(sm['name'])}: <em>{ {'Basic':'the economical choice','Standard':'the everyday specification','Premium':'the best we place','Any':'specified where it belongs'}[sm['tier']] }</em>.",
         e(sm['what']), f"{sm['name']} in a prepared garden bed",
-        band('Where it works', f'What this {kind.lower()} is for.', f'''    <div class="g2 mt"><div>
-      <p class="sub"><b>Best for.</b> {e(sm['best'])}</p>
+        split_band('Where it works', f'What this {kind.lower()} is for.', f'''      <p class="sub"><b>Best for.</b> {e(sm['best'])}</p>
       <p class="sub" style="margin-top:12px"><b>Worth knowing.</b> {e(sm['note'])}</p>
-    </div><div class="panel"><h3>At a glance</h3><dl class="facts">
+    ''',
+      f'''      <div class="panel"><h3>At a glance</h3><dl class="facts">
       <div><dt>Tier on your quote</dt><dd>{sm['tier']}</dd></div>
       <div><dt>Type</dt><dd>{kind}</dd></div>
       <div><dt>{'Placed' if kind=='Soil' else 'Spread'}</dt><dd>{'To the bed depth the planting needs' if kind=='Soil' else '50 to 100 mm deep'}</dd></div>
-    </dl></div></div>''') + SOIL_TIERS,
+    </dl></div>''') + SOIL_TIERS,
         [(f"Is {e(sm['name'])} right for natives?", 'Native Mix is the safe choice for natives, azaleas and camellias because it carries no mushroom compost and drains freely. We specify it wherever the plant schedule calls for it, at any tier.' if sm['kind']=='soil' else 'Leaf mulch and forest fines suit native beds best; pine bark, chip and cypress are fine on most. Dyed chips are inert and safe but add nothing to the soil. We match mulch to the planting.'),
          ('Can I mix tiers in one yard?', 'Yes. A premium soil in the feature bed and standard elsewhere is common and is priced bed by bed.'),
          ('How much do I need?', 'We measure the beds at the site visit and the quote carries the volume. Nothing to calculate.')],
