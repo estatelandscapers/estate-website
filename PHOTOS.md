@@ -2,7 +2,7 @@
 
 Save an image as `public/assets/img/<name>.jpg` (or .webp/.png), push, and it
 appears in its slot automatically on the next build. This file regenerates on
-every build and ticks itself: 3 of 210 slots filled.
+every build and ticks itself: 0 of 210 slots filled.
 
 Best size: 1600px wide, JPG/WebP, under 400 KB (squoosh.app does this in-browser).
 Height is flexible — every slot crops to fit, so keep the subject centred.
@@ -20,7 +20,7 @@ added to the image sitemap automatically.
 - [ ] `home-hero.jpg` — Supervisor checking levels or set-out against the plan, the standard in action
 - [ ] `home-2.jpg` — Engineered retaining wall: piers and steel before the pour
 - [ ] `home-3.jpg` — Finished landscape: ideally photographed months after handover
-- [x] `home-4.jpg` — Commercial site in progress: machinery, scale
+- [ ] `home-4.jpg` — Commercial site in progress: machinery, scale
 - [ ] `home-5.jpg` — Finished residential landscape: turf, retaining, planting
 
 ## /about/
@@ -73,7 +73,7 @@ added to the image sitemap automatically.
 
 ## /commercial/
 
-- [x] `commercial-hero.jpg` — Commercial site mid-build: plant on site, works in progress
+- [ ] `commercial-hero.jpg` — Commercial site mid-build: plant on site, works in progress
 
 ## /commercial/builders-developers/
 
@@ -226,7 +226,7 @@ added to the image sitemap automatically.
 
 ## /projects/kemps-creek-industrial-vertical-green-walls/
 
-- [x] `project-kemps-creek-industrial-vertical-green-walls-hero.jpg` — Kemps Creek Industrial Vertical Green Walls, completed landscape by Estate Landscapers
+- [ ] `project-kemps-creek-industrial-vertical-green-walls-hero.jpg` — Kemps Creek Industrial Vertical Green Walls, completed landscape by Estate Landscapers
 - [ ] `project-kemps-creek-industrial-vertical-green-walls-progress.jpg` — During works: the stage that shows the method
 - [ ] `project-kemps-creek-industrial-vertical-green-walls-g1.jpg` — Completed: wide shot of the delivered works
 - [ ] `project-kemps-creek-industrial-vertical-green-walls-g2.jpg` — Completed: the key structure or planting

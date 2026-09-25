@@ -93,7 +93,8 @@
     if (AUD !== 'residential' || cur !== 0 || !declined) return true;
     var jt = (document.getElementById('jobType') || {}).value || '';
     var bg = (document.getElementById('budget') || {}).value || '';
-    var out = /maintenance/i.test(jt) || /under/i.test(bg);
+    // Small jobs now come through (flagged for the tool below); only maintenance is referred out.
+    var out = /maintenance/i.test(jt);
     if (out) {
       declined.style.display = 'block';
       panels[0].querySelector('.formnav').style.display = 'none';
@@ -209,6 +210,13 @@
     var body = { audience: AUD, files: sending.map(function (f) { return { name: f.name, size: f.size }; }) };
     ['name', 'phone', 'email', 'suburb', 'address', 'jobType', 'budget', 'timeline', 'message', 'company', 'website']
       .forEach(function (k) { var el = form.querySelector('[name="' + k + '"]'); if (el) body[k] = el.value; });
+    // Small project flag: budgets under $25k are accepted, and marked so the tool can
+    // sort them (and send the decline template if it is not a fit).
+    if (AUD === 'residential' && /under/i.test(body.budget || '')) {
+      body.smallProject = true;
+      body.message = 'SMALL PROJECT (budget under $25k)\n\n' + (body.message || '');
+      ev('quote_small_project', { budget: body.budget });
+    }
     // Commercial extras: composed into fields the tool already stores, so the
     // estimator sees them structured at the top of the lead.
     function val(n) { var el = form.querySelector('[name="' + n + '"]'); return el ? el.value.trim() : ''; }
