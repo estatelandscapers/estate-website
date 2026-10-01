@@ -9,3 +9,13 @@
 /residential/planting-gardens/tea-tree-mulch/ /residential/planting-gardens/black-wood-chip/ 301
 /areas/hills-district/ /areas/the-hills/ 301
 /areas/st-george-and-sutherland/ /areas/sutherland-shire/ 301
+
+# ---- Old Wix site (retired Sep 2026): pages Google still remembers ----
+/about /about/ 301
+/contact /contact/ 301
+/services /residential/ 301
+/services/ /residential/ 301
+/work /projects/ 301
+/work/ /projects/ 301
+# Wix-only sitemap; point Google at the real one
+/pages-sitemap.xml /sitemap.xml 301
