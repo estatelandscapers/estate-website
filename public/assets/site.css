@@ -677,9 +677,43 @@ body.noform .fab{display:none}
 .fdh-hero .fdh-main h1.fdh-kw{color:rgba(255,255,255,.78)}
 .fdh-kw + .eyebrow{margin-top:0}
 
-/* Home hero: text block lifted (starts ~22% down), two-line intro on desktop */
+/* Home hero: text block lifted (starts ~22% down). The intro is set as three
+   right-aligned lines on tablet and up, each ending on the column edge. */
 .fdh-hero .fdh-main{align-items:flex-start;padding-top:clamp(56px,14vh,150px)}
-@media (min-width:1100px){
-  .fdh-tx{max-width:940px}
-  .fdh-sub span{display:block;white-space:nowrap}
-}
+@media (min-width:761px){ .fdh-sub span{display:block} }
+
+/* "Coming soon" tag: menu item and the pools page plate. Flashes gently;
+   holds still for anyone who has reduced motion switched on. */
+.soon{display:inline-flex;align-items:center;gap:6px;margin-left:10px;vertical-align:2px;
+  font-size:8.5px;font-weight:800;letter-spacing:.16em;text-transform:uppercase;line-height:1;white-space:nowrap;
+  color:#fff;background:var(--blue);padding:5px 9px 5px 8px;border-radius:999px;
+  animation:soonflash 1.6s ease-in-out infinite}
+.soon::before{content:"";width:5px;height:5px;border-radius:50%;background:#fff}
+.mega-grid a:hover .soon{color:#fff}
+@keyframes soonflash{0%,100%{opacity:1;box-shadow:0 0 0 0 rgba(30,91,255,.5)}50%{opacity:.35;box-shadow:0 0 0 7px rgba(30,91,255,0)}}
+
+/* Pools page: a water-blue plate stands in until a pool photo is supplied
+   (drop residential-pools-hero.* into assets/img and it replaces this). */
+.pool-plate{background:#0B1F5C}
+.pool-plate::before{display:none}
+.pool-plate .slot{gap:16px;color:#fff;overflow:hidden;
+  background:radial-gradient(ellipse 60% 45% at 28% 26%,rgba(140,200,255,.34),transparent 70%),
+    radial-gradient(ellipse 55% 40% at 78% 74%,rgba(90,170,255,.26),transparent 70%),
+    linear-gradient(160deg,#2F6BFF 0%,#1E5BFF 30%,#143FB0 68%,#0B1F5C 100%)}
+.pool-plate .slot::before{content:"";position:absolute;inset:0;pointer-events:none;
+  background-image:linear-gradient(rgba(255,255,255,.08) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,.08) 1px,transparent 1px);
+  background-size:30px 30px}
+.pool-plate .slot::after{content:"";position:absolute;inset:-30%;pointer-events:none;
+  background:radial-gradient(circle at 22% 30%,rgba(255,255,255,.13),transparent 22%),
+    radial-gradient(circle at 68% 58%,rgba(255,255,255,.10),transparent 20%),
+    radial-gradient(circle at 42% 82%,rgba(255,255,255,.08),transparent 18%);
+  animation:poolshimmer 10s ease-in-out infinite alternate}
+@keyframes poolshimmer{from{transform:translate(-3%,-2%)}to{transform:translate(3%,2%)}}
+.pool-plate .slot strong{position:relative;z-index:1;font-size:clamp(2.4rem,5vw,3.6rem);font-weight:800;letter-spacing:-.03em;line-height:1}
+.pool-plate .slot b{position:relative;z-index:1;display:inline-flex;align-items:center;gap:7px;
+  font-size:10px;letter-spacing:.2em;color:var(--blue);background:#fff;padding:8px 14px 8px 12px;border-radius:999px;
+  animation:soonflash 1.6s ease-in-out infinite}
+.pool-plate .slot b::before{content:"";width:6px;height:6px;border-radius:50%;background:var(--blue)}
+.pool-plate .slot span{display:none}
+@media (max-width:760px){ .hero .btn-row .btn.keep{display:inline-flex} }
+@media (prefers-reduced-motion:reduce){ .soon,.pool-plate .slot b,.pool-plate .slot::after{animation:none} }
