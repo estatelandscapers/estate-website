@@ -3,13 +3,13 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Free Online Estimate | Estate Landscapers</title>
-<meta name="description" content="A free online landscaping estimator for Sydney homes is being built. Until it is live, send photos and your plan and we will call you the same business day.">
+<title>Free Online Landscaping Estimate | Estate Landscapers Sydney</title>
+<meta name="description" content="Get a same-minute ballpark for your Sydney yard. Answer a few questions about what you want done, how much and the access, and get a range at Basic to Premium finishes.">
 <link rel="canonical" href="https://www.estatelandscapers.com.au/estimate/">
-<meta name="robots" content="noindex">
+
 <meta property="og:type" content="website">
-<meta property="og:title" content="Free Online Estimate | Estate Landscapers">
-<meta property="og:description" content="A free online landscaping estimator for Sydney homes is being built. Until it is live, send photos and your plan and we will call you the same business day.">
+<meta property="og:title" content="Free Online Landscaping Estimate | Estate Landscapers Sydney">
+<meta property="og:description" content="Get a same-minute ballpark for your Sydney yard. Answer a few questions about what you want done, how much and the access, and get a range at Basic to Premium finishes.">
 <meta property="og:url" content="https://www.estatelandscapers.com.au/estimate/">
 <meta property="og:locale" content="en_AU">
 <meta property="og:image" content="https://www.estatelandscapers.com.au/assets/og-image.png">
@@ -26,9 +26,9 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700;800&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="/assets/site.css?v=202610090550">
+<link rel="stylesheet" href="/assets/site.css?v=202610261331">
 </head>
-<body>
+<body class="noform">
 
 <a class="skip" href="#main">Skip to content</a>
 
@@ -44,30 +44,40 @@
 <div class="prog" aria-hidden="true"><i></i></div>
 
 <main id="main">
-<section class="hero">
-  <div class="shell">
-    <div>
-      <p class="eyebrow">Free online estimate</p>
-      <h1>The estimator is <em>being built</em>.</h1>
-      <p class="lead">It will give you a same-minute ballpark for your yard, at Basic, Standard and Premium, from a few measurements and photos. It is not live yet; it will be available shortly.</p>
-      <p class="sub">Until then, the quote form does the same job with a person on the other end: leave your details and photos, and we call you the same business day.</p>
-      <div class="btn-row">
-        <a class="btn" href="/residential/quote/">Get a quote</a>
-        <a class="btn btn-o" href="/commercial/tender/">Request a tender</a>
-      </div>
+<section class="est" id="estimator" data-endpoint="https://quotes.estatelandscapers.com.au/api/public/estimate">
+  <div class="shell est-shell">
+    <div class="est-app" id="estApp" aria-live="polite">
+      <noscript>
+        <div class="est-card">
+          <p class="eyebrow">Free online estimate</p>
+          <h1>The estimator needs JavaScript.</h1>
+          <p class="sub">Turn it on, or use the quote form instead and we will call you the same business day.</p>
+          <div class="btn-row"><a class="btn" href="/residential/quote/">Get a quote</a></div>
+        </div>
+      </noscript>
     </div>
-    <div class="plate"><div class="slot"><b>Photo slot</b><span>A finished Estate yard, wide shot</span></div></div>
+    <aside class="est-side">
+      <p class="eyebrow">How it works</p>
+      <ol class="est-steps">
+        <li><b>Enter your code.</b> It is in the email we sent you. No code yet? Get one here in a minute.</li>
+        <li><b>Answer in your own time.</b> About 8 minutes. One question per screen, and "Not sure" is always fine.</li>
+        <li><b>See your ballpark.</b> A range from Basic to Premium finishes, with what is included and what we need to see on site.</li>
+        <li><b>Pick a Friday.</b> We measure, check the access and falls, and photograph the site. Itemised quote within 48 hours.</li>
+      </ol>
+      <p class="est-fine">Licensed Landscapers · LIC 487076C · $20M public liability · Landscape Association 41219</p>
+    </aside>
   </div>
 </section>
-<section class="infra"> <div class="shell"> <b>Road, bridge or highway project?</b> <p>Landscaping for road, bridge and highway infrastructure. TfNSW and QMR projects are delivered by our infrastructure arm. </p> <a href="https://infralandscapers.com.au" target="_blank" rel="noopener">Visit Infra Landscapers →</a> </div>
-</section>
-
+<script src="/assets/estimate.js" defer></script>
+<script type="application/ld+json">
+{"@context": "https://schema.org", "@type": "WebApplication", "name": "Estate Landscapers Online Estimate", "url": "https://www.estatelandscapers.com.au/estimate/", "applicationCategory": "BusinessApplication", "operatingSystem": "Any", "offers": {"@type": "Offer", "price": "0", "priceCurrency": "AUD"}, "provider": {"@type": "LandscapeContractor", "name": "Estate Landscapers", "url": "https://www.estatelandscapers.com.au/"}}
+</script>
 
 </main>
 <footer class="foot"> <div class="shell"> <div class="cols"> <div> <img class="foot-logo" src="/assets/logo-horizontal.png" width="640" height="115" alt="Estate Landscapers"> <p style="font-size:.83rem;color:var(--body);max-width:34ch">Landscape construction: commercial across NSW and Queensland, residential across Sydney.</p> </div> <div> <h4>Explore</h4> <ul> <li><a href="/commercial/">Commercial</a></li> <li><a href="/residential/">Residential</a></li> <li><a href="/commercial/tender/">Request a tender</a></li> <li><a href="/residential/quote/">Get a quote</a></li> </ul> </div> <div> <h4>Company</h4> <ul> <li><a href="/the-estate-standard/">The Estate Standard</a></li> <li><a href="/about/">About</a></li> <li><a href="/insights/">Insights</a></li> <li><a href="/contact/">Contact</a></li> <li><a href="https://infralandscapers.com.au" target="_blank" rel="noopener">Infra Landscapers</a></li> </ul> </div> </div> <div class="legal"> <p>© <span id="yr">2026</span> Apexx Enterprises Pty Ltd trading as Estate Landscapers · ABN 94 636 443 108 · LIC 487076C · Landscape Association 41219</p> <nav aria-label="Legal"> <a href="/privacy/">Privacy</a> <a href="/terms/">Terms</a> </nav> </div> </div>
 </footer>
 
-<script src="/assets/site.js?v=202610090550" defer></script>
+<script src="/assets/site.js?v=202610261331" defer></script>
 </body>
-<!-- estate build 2026-10-09T05:50Z · /estimate/ -->
+<!-- estate build 2026-10-26T13:31Z · /estimate/ -->
 </html>

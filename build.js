@@ -222,7 +222,7 @@ for (const f of walk(path.join(SRC, 'pages'))) {
     BODY: body
   };
   let html = c.raw ? render(body, vars) : render(layout, vars);
-  if (['/residential/quote/', '/commercial/tender/', '/contact/'].includes(c.path))
+  if (['/residential/quote/', '/commercial/tender/', '/contact/', '/estimate/'].includes(c.path))
     html = html.replace('<body', '<body class="noform"');
   if (c.path.startsWith('/projects/'))
     html = html.replace(/\s*<a class="hd-switch hd-portfolio"[\s\S]*?<\/a>/, '');

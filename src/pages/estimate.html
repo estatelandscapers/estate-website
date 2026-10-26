@@ -3,24 +3,35 @@
  "path": "/estimate/",
  "nav": "shared",
  "footer": "shared",
- "noindex": true,
- "title": "Free Online Estimate | Estate Landscapers",
- "description": "A free online landscaping estimator for Sydney homes is being built. Until it is live, send photos and your plan and we will call you the same business day."
+ "title": "Free Online Landscaping Estimate | Estate Landscapers Sydney",
+ "description": "Get a same-minute ballpark for your Sydney yard. Answer a few questions about what you want done, how much and the access, and get a range at Basic to Premium finishes."
 }
 -->
-<section class="hero">
-  <div class="shell">
-    <div>
-      <p class="eyebrow">Free online estimate</p>
-      <h1>The estimator is <em>being built</em>.</h1>
-      <p class="lead">It will give you a same-minute ballpark for your yard, at Basic, Standard and Premium, from a few measurements and photos. It is not live yet; it will be available shortly.</p>
-      <p class="sub">Until then, the quote form does the same job with a person on the other end: leave your details and photos, and we call you the same business day.</p>
-      <div class="btn-row">
-        <a class="btn" href="/residential/quote/">Get a quote</a>
-        <a class="btn btn-o" href="/commercial/tender/">Request a tender</a>
-      </div>
+<section class="est" id="estimator" data-endpoint="https://quotes.estatelandscapers.com.au/api/public/estimate">
+  <div class="shell est-shell">
+    <div class="est-app" id="estApp" aria-live="polite">
+      <noscript>
+        <div class="est-card">
+          <p class="eyebrow">Free online estimate</p>
+          <h1>The estimator needs JavaScript.</h1>
+          <p class="sub">Turn it on, or use the quote form instead and we will call you the same business day.</p>
+          <div class="btn-row"><a class="btn" href="/residential/quote/">Get a quote</a></div>
+        </div>
+      </noscript>
     </div>
-    <div class="plate"><div class="slot"><b>Photo slot</b><span>A finished Estate yard, wide shot</span></div></div>
+    <aside class="est-side">
+      <p class="eyebrow">How it works</p>
+      <ol class="est-steps">
+        <li><b>Enter your code.</b> It is in the email we sent you. No code yet? Get one here in a minute.</li>
+        <li><b>Answer in your own time.</b> About 8 minutes. One question per screen, and "Not sure" is always fine.</li>
+        <li><b>See your ballpark.</b> A range from Basic to Premium finishes, with what is included and what we need to see on site.</li>
+        <li><b>Pick a Friday.</b> We measure, check the access and falls, and photograph the site. Itemised quote within 48 hours.</li>
+      </ol>
+      <p class="est-fine">Licensed Landscapers · LIC 487076C · $20M public liability · Landscape Association 41219</p>
+    </aside>
   </div>
 </section>
-{{include infra-shared}}
+<script src="/assets/estimate.js" defer></script>
+<script type="application/ld+json">
+{"@context": "https://schema.org", "@type": "WebApplication", "name": "Estate Landscapers Online Estimate", "url": "{{PAGE_URL}}", "applicationCategory": "BusinessApplication", "operatingSystem": "Any", "offers": {"@type": "Offer", "price": "0", "priceCurrency": "AUD"}, "provider": {"@type": "LandscapeContractor", "name": "Estate Landscapers", "url": "https://www.estatelandscapers.com.au/"}}
+</script>
