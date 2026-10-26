@@ -152,7 +152,7 @@
         : resume ? '<h1>Pick up where you left off.</h1><p class="est-hint">You have answered ' + done + ' of ' + list.length + ' questions. The rest takes a few minutes.</p>'
         : '<h1>About 8 minutes, one question at a time.</h1><p class="est-hint">Rough answers are fine, and "Not sure" is always an option: anything you are not sure of, we measure on the site visit. You get a ballpark range at the end.</p>') +
       '<div class="btn-row">' +
-      (S.completed ? BTN('wBall', 'See my ballpark') + BTN('wReview', 'Change my answers', true) + (S.booked ? '' : BTN('wBook', 'Pick a Friday', true))
+      (S.completed ? BTN('wBall', 'See my ballpark') + BTN('wReview', 'Change my answers', true) + (S.booked || !isFit() ? '' : BTN('wBook', 'Pick a Friday', true))
         : BTN('wStart', resume ? 'Continue' : 'Start')) + '</div>';
     h(frame({ body: body }));
     var on = function (id, fn) { var el = document.getElementById(id); if (el) el.addEventListener('click', fn); };
@@ -200,7 +200,7 @@
     } else if (s.type === 'scale') {
       var dir = S.answers.fallDir || '';
       body += '<div class="est-scale">' + s.scale.map(function (o) { return '<button type="button" class="est-opt est-opt-sm" data-v="' + o.v + '" aria-pressed="' + (v === o.v) + '">' + esc(o.label) + '</button>'; }).join('') + '</div>' +
-        '<div class="est-dir" id="qDir" style="' + (v > 0 ? '' : 'display:none') + '"><p class="est-hint">And is the back fence higher or lower than where you are standing?</p>' +
+        '<div class="est-dir" id="qDir" style="' + (v > 0 ? '' : 'display:none') + '"><p class="est-hint">And is the back boundary higher or lower than the front?</p>' +
         '<div class="est-opts est-two"><button type="button" class="est-opt" data-dir="higher" aria-pressed="' + (dir === 'higher') + '">Higher</button><button type="button" class="est-opt" data-dir="lower" aria-pressed="' + (dir === 'lower') + '">Lower</button></div></div>' +
         '<button type="button" class="est-unk" id="qUnk" aria-pressed="' + (v === 'unknown') + '">Not sure</button>';
     }
@@ -350,28 +350,46 @@
     h(frame({ count: 'Your ballpark', body: '<p class="est-hint">Working it out…</p>' }));
     api('/complete', {}).then(function (r) {
       S.result = r; S.completed = true; ga('estimate_ballpark', { lo: r.lo, hi: r.hi });
-      var range = (!r.decline && !r.tooUnknown) ? '<div class="est-range"><div class="l">Based on your answers</div><div class="n">$' + fmt(r.lo) + ' <em>to</em> $' + fmt(r.hi) + '</div><p>Including GST. Basic finishes on the low side, Premium on the high side. Subject to the site visit, final measurements and the finishes you choose.</p></div>' : '';
+      var range = rangeBox(r);
       var inc = r.included.map(function (i) { return '<li class="i"><span>' + esc(i.name) + ', ' + esc(i.qty) + '</span><span>included</span></li>'; }).join('') +
         r.allowed.map(function (a) { return '<li class="i"><span>' + esc(a) + '</span><span>allowed for</span></li>'; }).join('') +
         r.excluded.map(function (x) { return '<li class="x"><span>' + esc(x.name) + '</span><span>' + esc(x.why) + '</span></li>'; }).join('');
       var body = '<p class="est-sec">' + (r.decline ? 'A note on access' : r.tooUnknown ? 'Nearly there' : 'Your ballpark') + '</p>' + range +
         '<h2 class="est-q" style="font-size:1.05rem">' + esc(r.headline) + '</h2>' + r.body.split('\n\n').map(function (p) { return '<p class="est-hint">' + esc(p) + '</p>'; }).join('') +
         (inc ? '<ul class="est-inc">' + inc + '</ul>' : '') +
-        '<p class="est-fine">A copy of this is on its way to ' + esc(S.email) + '.</p>';
+        (r.askReaction ? '' : '<p class="est-fine">A copy of this is on its way to ' + esc(S.email) + '.</p>');
       h(frame({ count: 'Your ballpark', body: body, foot: BTN('bEdit', 'Change answers', true) + BTN('bNext', r.decline ? 'Book a visit anyway' : 'Next') }));
       document.getElementById('bEdit').addEventListener('click', review);
-      document.getElementById('bNext').addEventListener('click', function () { if (r.decline || r.tooUnknown) return book(); reaction(); });
+      document.getElementById('bNext').addEventListener('click', function () { if (!r.askReaction) return book(); reaction(); });
     }).catch(function (e) { if (e.paused) return; if (e.status === 401) return expired(); h(frame({ body: '<p class="est-err">' + esc(e.message) + '</p><div class="btn-row">' + BTN('bRetry', 'Try again') + '</div>' })); document.getElementById('bRetry').addEventListener('click', complete); });
   }
   function fmt(n) { return (n || 0).toLocaleString('en-AU'); }
+  function isFit() { var r = S.answers.priceReaction; return !r || r === 'works' || r === 'low'; }
+  function rangeBox(r) { return (r && !r.decline && !r.tooUnknown) ? '<div class="est-range"><div class="l">Based on your answers</div><div class="n">$' + fmt(r.lo) + ' <em>to</em> $' + fmt(r.hi) + '</div><p>Including GST. Basic finishes on the low side, Premium on the high side. Subject to the site visit, final measurements and the finishes you choose.</p></div>' : ''; }
   function reaction() {
     setScreen('reaction');
-    var body = '<p class="est-sec">One quick question</p><h2 class="est-q">Does that sound about right for you?</h2><p class="est-hint">Optional, and it helps us pitch the quote at the right level.</p>' +
-      '<div class="est-opts">' + S.reactions.map(function (o) { return '<button type="button" class="est-opt" data-v="' + esc(o.v) + '" aria-pressed="' + (S.answers.priceReaction === o.v) + '">' + esc(o.label) + '</button>'; }).join('') + '</div>';
-    h(frame({ count: 'Your ballpark', body: body, foot: BTN('xBack', 'Back', true) + BTN('xSkip', 'Skip') }));
-    app.querySelectorAll('.est-opt').forEach(function (b) { b.addEventListener('click', function () { S.answers.priceReaction = b.dataset.v; api('/reaction', { v: b.dataset.v }).catch(function () {}); ga('estimate_reaction', { v: b.dataset.v }); book(); }); });
+    var body = '<p class="est-sec">Your ballpark</p>' + rangeBox(S.result) +
+      '<h2 class="est-q">Does that sound about right for you?</h2><p class="est-hint">One tap. It decides what happens next.</p>' +
+      '<div class="est-opts est-opts-sm">' + S.reactions.map(function (o) { return '<button type="button" class="est-opt" data-v="' + esc(o.v) + '" aria-pressed="' + (S.answers.priceReaction === o.v) + '">' + esc(o.label) + '</button>'; }).join('') + '</div>';
+    h(frame({ count: 'Your ballpark', body: body, foot: BTN('xBack', 'Back', true) }));
+    app.querySelectorAll('.est-opt').forEach(function (b) {
+      b.addEventListener('click', function () {
+        app.querySelectorAll('.est-opt').forEach(function (x) { x.disabled = true; });
+        S.answers.priceReaction = b.dataset.v; ga('estimate_reaction', { v: b.dataset.v });
+        api('/reaction', { v: b.dataset.v }).then(function (r) { if (r.fit) return book(); notFit(r.text, r.help); })
+          .catch(function (e) { if (e.paused) return; if (e.status === 401) return expired(); if (isFit()) book(); else notFit(); });
+      });
+    });
     document.getElementById('xBack').addEventListener('click', complete);
-    document.getElementById('xSkip').addEventListener('click', book);
+  }
+  function notFit(text, help) {
+    setScreen('notfit'); flush();
+    var body = '<p class="est-sec">Thank you</p><h2 class="est-q">Thanks for taking the time' + (S.first ? ', ' + esc(S.first) : '') + '.</h2>' +
+      '<p class="est-hint">' + esc(text || 'Thank you for reaching out and taking the time to fill in the estimator. From what you have told us, we are not the right fit for your project at the moment.') + '</p>' +
+      '<p class="est-hint">' + esc(help || 'We can still help if you need expert advice on your project: just drop us an email and we will take it from there.') + '</p>' +
+      '<p class="est-fine">A copy of your ballpark is on its way to ' + esc(S.email) + '.</p>' +
+      '<div class="btn-row"><a class="btn" href="mailto:enquiry@estatelandscapers.com.au?subject=Advice%20on%20my%20project">Email us</a><a class="btn btn-o" href="/insights/">Read our guides</a></div>';
+    h(frame({ count: 'Done', body: body }));
   }
 
   // ---- Friday booking -------------------------------------------------------------------------
