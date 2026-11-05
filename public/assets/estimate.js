@@ -409,7 +409,7 @@
       app.querySelectorAll('[data-date]').forEach(function (b) {
         b.addEventListener('click', function () {
           b.disabled = true; b.textContent = 'Booking…';
-          api('/book', { date: b.dataset.date, half: b.dataset.half }).then(function (res) { S.booked = true; ga('estimate_visit_booked'); files(res); })
+          api('/book', { date: b.dataset.date, half: b.dataset.half }).then(function (res) { S.booked = true; ga('estimate_visit_booked'); try { if (window.fbq) window.fbq('track', 'Lead', { content_name: 'Estimator Friday visit booked' }); } catch (e) {} files(res); })
             .catch(function (e) { if (e.paused) return; if (e.status === 401) return expired(); alert(e.message); book(); });
         });
       });

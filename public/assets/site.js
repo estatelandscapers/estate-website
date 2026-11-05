@@ -365,8 +365,8 @@ if (/estatelandscapers\.com\.au$/.test(location.hostname)) {
     if (!a) return;
     var href = a.getAttribute('href') || '';
     var label = (a.textContent || '').trim().slice(0, 60);
-    if (/^tel:/.test(href)) return ev('click_phone', { page_path: page });
-    if (/^mailto:/.test(href)) return ev('click_email', { page_path: page });
+    if (/^tel:/.test(href)) { try { if (window.fbq) fbq('track', 'Contact', { content_name: 'Phone' }); } catch (e) {} return ev('click_phone', { page_path: page }); }
+    if (/^mailto:/.test(href)) { try { if (window.fbq) fbq('track', 'Contact', { content_name: 'Email' }); } catch (e) {} return ev('click_email', { page_path: page }); }
     if (/\/residential\/quote\//.test(href)) return ev('cta_quote', { page_path: page, label: label });
     if (/\/commercial\/tender\//.test(href)) return ev('cta_tender', { page_path: page, label: label });
     if (/^\/projects\/[a-z]/.test(href)) return ev('open_project', { page_path: page, project: href });
