@@ -787,3 +787,49 @@ body.noform .fab{display:none}
 @media (max-width:860px){.est-shell{grid-template-columns:1fr}.est-side{order:2}}
 @media (max-width:480px){.est-body{padding:16px 16px 12px}.est-foot{padding:10px 16px 16px}.est-scale{grid-template-columns:repeat(4,1fr)}.est-opt-sm{font-size:.72rem;padding:9px 4px}}
 @media (prefers-reduced-motion:reduce){.est-shake{animation:none}.est-prog i{transition:none}}
+
+/* ---------------- online estimate button, menu windows, estimator guide (Nov 2026) ----------------
+   One button everywhere: "Online estimate" with "under 10 min" beneath. */
+.btn-two{flex-direction:column;align-items:center;gap:0;line-height:1.15;padding:8px 24px}
+.btn-two small{display:block;font-size:8.5px;font-weight:700;letter-spacing:.08em;opacity:.85;text-transform:none}
+.fab small{display:block;font-size:8px;font-weight:700;letter-spacing:.06em;opacity:.85;text-transform:none;text-align:center}
+@media (max-width:760px){.fab{flex-direction:column;line-height:1.15;padding:10px 18px}}
+.mega-brand .mega-cta a small{font-weight:600;font-size:.78rem;color:var(--body)}
+.mega-grid .mega-cta-start a.btn{display:flex;font-size:11.5px;color:#fff;padding:9px 24px}
+.mega-grid .mega-cta-start a.btn-o{color:var(--blue);padding:12px 24px}
+.mega-grid .mega-cta-start a.btn small{font-size:8.5px;color:#fff;opacity:.85}
+/* the estimator: thank-you note, the guide, the "not sure" nudge */
+.est-note{background:#FFF6E0;color:#8A5A00;border-radius:10px;padding:11px 13px;font-size:.86rem;font-weight:600;line-height:1.5;margin:0 0 14px}
+.est-steps-in{margin:0 0 6px;padding-left:20px}
+.est-steps-in li{margin-bottom:7px;font-size:.88rem;color:var(--body)}.est-steps-in b{color:#000;font-weight:700}
+.est-guide{display:flex;flex-direction:column;gap:9px;margin:0 0 14px}
+.est-guide div{border-left:3px solid var(--blue-mist);padding-left:10px;font-size:.86rem;color:var(--body);line-height:1.45}
+.est-guide b{display:block;color:#000;font-size:.88rem}
+.est-guide-btn{width:100%;margin-top:8px;text-align:left}
+.est-pulse{border-color:#8A5A00;background:#FFF6E0;color:#8A5A00}
+.est-nudge{background:#FFF6E0;color:#8A5A00;border-radius:9px;padding:9px 11px;font-size:.8rem;font-weight:600;line-height:1.45;margin:8px 0 0}
+.est-nudge[hidden]{display:none}
+.est-fine a{color:var(--blue);font-weight:700;text-decoration:none}
+.field .est-fine{display:block;margin:4px 0 0}
+/* menu windows on phones and small tablets: three panes, swipe or tap a name; desktop keeps its columns */
+.mega-tabs{display:none}
+@media (min-width:901px){
+  .mega-pane{display:contents}
+  .mega-start{display:none}
+}
+@media (max-width:900px){
+  .mega-tabs{display:flex;justify-content:center;gap:22px;padding:14px 0 0;border-bottom:1px solid var(--line);
+    --fdgut:clamp(24px,3vw,54px);width:calc(100% - 2*var(--fdgut));max-width:1360px;margin:0 auto}
+  .mega-tabs button{font:inherit;font-size:.72rem;font-weight:800;letter-spacing:.1em;text-transform:uppercase;color:var(--label);
+    background:none;border:0;border-bottom:2px solid transparent;padding:6px 2px 12px;cursor:pointer;font-family:inherit}
+  .mega-tabs button.on{color:var(--blue);border-bottom-color:var(--blue)}
+  .mega-grid{display:flex;gap:0;padding:0;width:100%;max-width:none;overflow-x:auto;scroll-snap-type:x mandatory;scrollbar-width:none;-webkit-overflow-scrolling:touch}
+  .mega-grid::-webkit-scrollbar{display:none}
+  .mega-pane{flex:0 0 100%;min-width:0;scroll-snap-align:start;scroll-snap-stop:always;box-sizing:border-box;
+    padding:18px clamp(24px,3vw,54px) 70px;display:flex;flex-direction:column;gap:10px}
+  .mega-pane>div{min-width:0}
+  .mega-brand{display:none}
+  .mega-cta-start{gap:10px;margin:6px 0 6px}
+  .mega-cta-start .btn{justify-content:center;width:100%;box-sizing:border-box}
+  .mega-cta-start .btn-o{padding:12px 24px}
+}

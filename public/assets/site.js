@@ -190,12 +190,36 @@ if (/estatelandscapers\.com\.au$/.test(location.hostname)) {
     document.body.style.overflow = open ? 'hidden' : '';
     if (open) close.focus(); else btn.focus();
   }
-  btn.addEventListener('click', function () { setOpen(true); });
+  btn.addEventListener('click', function () { setOpen(true); showPane(0); });
   close.addEventListener('click', function () { setOpen(false); });
+  // On phones the menu is three windows: Start, Residential, Commercial & company. It always
+  // opens on Start; swipe, or tap a name, to move. The names follow the scroll position.
+  var grid = document.getElementById('megagrid'), tabs = document.getElementById('megatabs');
+  function showPane(i) { if (!grid) return; grid.scrollTo({ left: i * grid.clientWidth, behavior: i === 0 ? 'auto' : 'smooth' }); markPane(i); }
+  function markPane(i) { if (!tabs) return; [].forEach.call(tabs.children, function (b, k) { b.classList.toggle('on', k === i); }); }
+  if (grid && tabs) {
+    [].forEach.call(tabs.children, function (b, k) { b.addEventListener('click', function () { showPane(k); }); });
+    grid.addEventListener('scroll', function () { if (grid.clientWidth) markPane(Math.round(grid.scrollLeft / grid.clientWidth)); }, { passive: true });
+  }
   document.addEventListener('keydown', function (e) {
     if (e.key === 'Escape' && mega.classList.contains('on')) setOpen(false);
   });
   mega.addEventListener('click', function (e) { if (e.target.closest('a')) setOpen(false); });
+})();
+
+// The floating "Online estimate" button stays out of the way while the page's own estimate
+// button is on screen (the home page hero, the residential hero), so there is only ever one.
+(function () {
+  var fab = document.querySelector('.fab'); if (!fab || !('IntersectionObserver' in window)) return;
+  var own = [].filter.call(document.querySelectorAll('a.btn[href="/residential/quote/"]'), function (a) { return !a.closest('#mega') && !a.closest('.foot'); });
+  if (!own.length) return;
+  var seen = 0;
+  var io = new IntersectionObserver(function (es) {
+    es.forEach(function (e) { seen += e.isIntersecting ? 1 : -1; });
+    if (seen < 0) seen = 0;
+    fab.style.visibility = seen > 0 ? 'hidden' : '';
+  }, { threshold: 0.2 });
+  own.forEach(function (a) { io.observe(a); });
 })();
 
 // Hero project slider: fades between slides every 5s when there's more than one,

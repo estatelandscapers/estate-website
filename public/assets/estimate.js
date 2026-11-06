@@ -8,11 +8,14 @@
   var root = document.getElementById('estimator'); if (!root) return;
   var app = document.getElementById('estApp');
   var API = root.dataset.endpoint;
+  // 'start' = the quote page: details first, then straight into the questions, no code needed.
+  // 'code' = /estimate/: the code from the email, for coming back.
+  var MODE = root.dataset.mode === 'start' ? 'start' : 'code';
   var qs = new URLSearchParams(location.search);
 
   // ---- state --------------------------------------------------------------------------
   var S = { token: null, vk: null, first: '', steps: [], sizes: [], answers: {}, reactions: [], expires: null,
-    completed: false, booked: false, i: 0, screen: 'gate', result: null, slots: null, email: qs.get('e') || '' };
+    completed: false, booked: false, i: 0, screen: 'gate', result: null, slots: null, email: qs.get('e') || '', uploaded: 0 };
   try { S.vk = localStorage.getItem('el_vk'); if (!S.vk) { S.vk = 'v' + Date.now().toString(36) + Math.random().toString(36).slice(2, 10); localStorage.setItem('el_vk', S.vk); } } catch (e) { S.vk = 'v' + Date.now().toString(36); }
   try { S.token = sessionStorage.getItem('el_est_token'); } catch (e) {}
 
@@ -28,7 +31,8 @@
     setScreen('paused');
     h(frame({ body: '<p class="eyebrow">Free online estimate</p><h1>The estimator is taking a short break.</h1>' +
       '<p class="est-hint">' + esc(msg || 'It will be back shortly.') + '</p>' +
-      '<div class="btn-row"><a class="btn" href="/residential/quote/">Get a quote</a><a class="btn btn-o" href="/contact/">Contact us</a></div>' }));
+      '<p class="est-hint">Call us on <a href="tel:0414147008">0414 147 008</a> or email enquiry@estatelandscapers.com.au and we will take it from there.</p>' +
+      '<div class="btn-row"><a class="btn" href="tel:0414147008">Call 0414 147 008</a><a class="btn btn-o" href="/contact/">Contact us</a></div>' }));
   }
   function esc(s) { return String(s == null ? '' : s).replace(/[&<>"]/g, function (c) { return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]; }); }
   function ga(name, p) { try { if (window.gtag) window.gtag('event', name, p || {}); } catch (e) {} }
@@ -110,7 +114,7 @@
           .catch(function (e) { if (!e.paused) gate(e.message, 'get'); });
       });
     } else {
-      document.getElementById('gNo').addEventListener('click', function (e) { e.preventDefault(); gate(null, 'get'); });
+      document.getElementById('gNo').addEventListener('click', function (e) { e.preventDefault(); location.href = '/residential/quote/'; });
       document.getElementById('gResend').addEventListener('click', function (e) {
         e.preventDefault(); var em = document.getElementById('gEmail').value.trim();
         if (!em) return gate('Enter your email first, then tap Resend.');
@@ -140,6 +144,79 @@
       '<div class="btn-row"><button type="button" class="btn" id="sBack">I have the code</button></div>' }));
     document.getElementById('sBack').addEventListener('click', function () { gate(null, 'code'); });
   }
+
+  // ---- start mode: the quote page ----------------------------------------------------------
+  // Thank-you note and the accuracy line, then details, then the questions on the same visit.
+  function intro(msg) {
+    setScreen('intro');
+    var body = '<p class="eyebrow">Online estimate · under 10 minutes</p><h1>Thank you for taking the time. It gets you a better quote.</h1>' +
+      '<p class="est-hint">You answer a few plain questions about your yard and what you want done, and see a ballpark range at the end, from Basic to Premium finishes.</p>' +
+      '<div class="est-note">The estimate is only as good as the details you give it. Put in as much as you know, even rough numbers. We check everything on site before your quote, so there is nothing to get wrong. We have your back.</div>' +
+      '<ol class="est-steps est-steps-in"><li><b>Your details</b>, so we can save your answers</li><li><b>Your property</b> and what you want done</li><li><b>Roughly how much</b> of each, in paces or metres</li><li><b>Your ballpark</b>, then pick a Friday for the site visit</li></ol>' +
+      (msg ? '<p class="est-err">' + esc(msg) + '</p>' : '') +
+      '<div class="btn-row">' + BTN('iGo', 'Let\'s start') + '</div>' +
+      '<p class="est-links"><a href="#" id="iGuide">How to size up your yard</a> · <a href="/estimate/">I already have a code</a></p>';
+    h(frame({ body: body }));
+    document.getElementById('iGo').addEventListener('click', function () { details(); });
+    document.getElementById('iGuide').addEventListener('click', function (e) { e.preventDefault(); guide(function () { intro(); }); });
+  }
+  function details(msg, keep) {
+    setScreen('details');
+    keep = keep || {};
+    var body = '<p class="est-sec">Your details</p><h2 class="est-q">Who are we quoting for?</h2>' +
+      (msg ? '<p class="est-err">' + esc(msg) + '</p>' : '') +
+      '<div class="field"><label for="dName">Your name</label><input id="dName" autocomplete="name" value="' + esc(keep.name || '') + '"></div>' +
+      '<div class="field"><label for="dPhone">Phone</label><input id="dPhone" type="tel" inputmode="tel" autocomplete="tel" value="' + esc(keep.phone || '') + '"><span class="est-fine">We call to confirm the details before your quote.</span></div>' +
+      '<div class="field"><label for="dEmail">Email</label><input id="dEmail" type="email" inputmode="email" autocomplete="email" value="' + esc(keep.email || S.email) + '"><span class="est-fine">Your ballpark and your quote go here.</span></div>' +
+      '<div class="field"><label for="dSuburb">Suburb</label><input id="dSuburb" autocomplete="address-level2" value="' + esc(keep.suburb || '') + '"></div>' +
+      '<div class="field"><label for="dAddr">Site address <span class="opt">optional</span></label><input id="dAddr" autocomplete="street-address" value="' + esc(keep.address || '') + '" placeholder="If you have it"></div>' +
+      '<input type="text" name="website" id="dWeb" tabindex="-1" autocomplete="off" style="position:absolute;left:-9999px" aria-hidden="true">' +
+      '<p class="est-fine">By continuing you agree to be contacted about your enquiry. Details go to our team only, see the <a href="/privacy/">privacy policy</a>.</p>';
+    h(frame({ count: 'Your details', pct: 4, body: body, foot: BTN('dBack', 'Back', true) + BTN('dGo', 'Start the questions') }));
+    document.getElementById('dBack').addEventListener('click', function () { intro(); });
+    document.getElementById('dName').focus();
+    document.getElementById('dGo').addEventListener('click', function () {
+      var b = { name: document.getElementById('dName').value.trim(), phone: document.getElementById('dPhone').value.trim(), email: document.getElementById('dEmail').value.trim(),
+        suburb: document.getElementById('dSuburb').value.trim(), address: document.getElementById('dAddr').value.trim(), website: document.getElementById('dWeb').value, vk: S.vk, touch: 'ontouchstart' in window };
+      if (!b.name || !b.phone || !/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(b.email) || !b.suburb) return details('Your name, phone, a valid email and your suburb are needed so we can save your answers and call you back.', b);
+      var btn = this; btn.disabled = true; btn.textContent = 'One moment…';
+      api('/start-now', b).then(function (r) {
+        S.token = r.token; try { sessionStorage.setItem('el_est_token', r.token); } catch (x) {}
+        S.email = r.email || b.email; S.first = r.first || ''; S.steps = r.steps; S.sizes = r.sizes; S.answers = r.answers || {}; S.reactions = r.reactions; S.expires = r.expires;
+        S.completed = !!r.completed; S.booked = !!r.booked; S.saved = r.saved || 0;
+        ga('estimate_started', { via: 'quote_page' });
+        if (S.completed || S.saved > 1) return welcome();
+        S.i = 0; preUpload();
+      }).catch(function (e) { if (!e.paused) details(e.message, b); });
+    });
+  }
+  // Optional, straight after the details: plans and photos while they are handy.
+  function preUpload() {
+    setScreen('preupload');
+    var body = '<p class="est-sec">Before the questions</p><h2 class="est-q">Have plans or photos handy?</h2><p class="est-hint">Optional. Builder drawings, a landscape plan, or photos of the front, back and side access. You can also add them at the end.</p>' +
+      '<label class="est-drop"><input type="file" id="fIn" multiple accept=".pdf,.jpg,.jpeg,.png,.heic,.heif,.webp,.dwg,.doc,.docx,.xls,.xlsx,.zip"><span>+ Choose files</span></label><div id="fList" class="est-flist"></div><div id="fMsg" class="est-hint"></div>';
+    h(frame({ count: 'Files', pct: 8, body: body, foot: BTN('fSkip', 'Skip for now', true) + BTN('fUp', 'Upload and continue') }));
+    wireUpload(function () { question(); });
+  }
+  // ---- the "not sure" guide ----------------------------------------------------------------------
+  function guide(back) {
+    setScreen('guide');
+    var body = '<p class="est-sec">Quick guide · 1 minute</p><h2 class="est-q">Not sure what you need? Walk the yard with your phone.</h2>' +
+      '<p class="est-hint">You do not need the right words. Tell us what you see and we turn it into the scope.</p>' +
+      '<div class="est-guide">' +
+      '<div><b>Bare dirt or dead grass</b>That is turf. Pace it out: one big step is about a metre, so 10 steps by 8 steps is roughly 80 m².</div>' +
+      '<div><b>A drop or slope between two levels</b>That is a retaining wall. Count the steps along it for the length.</div>' +
+      '<div><b>Cars park on dirt or old concrete</b>Concrete / driveway. Steps across and along.</div>' +
+      '<div><b>Gaps in the boundary, or no fence</b>Fencing and gates. Count the gates.</div>' +
+      '<div><b>Beds you want planted or mulched</b>Garden beds and mulch, or planting. Pace the bed.</div>' +
+      '<div><b>Water pooling after rain</b>Drainage. Just tick it, we size it on site.</div>' +
+      '</div>' +
+      '<div class="est-note">A rough guess is far more useful than "not sure". We measure everything properly on the site visit before your quote.</div>' +
+      '<p class="est-fine">Rather talk it through? Call <a href="tel:0414147008">0414 147 008</a>.</p>';
+    h(frame({ count: 'Guide', body: body, foot: BTN('gBack', 'Got it, back to the list') }));
+    document.getElementById('gBack').addEventListener('click', function () { back(); });
+  }
+  var NUDGE = 'Even a guess gets you a ballpark. "Not sure" leaves this out of the range, and we would need to call you before we can give a figure.';
 
   // ---- welcome / resume -----------------------------------------------------------------
   function welcome() {
@@ -178,7 +255,9 @@
         (s.other ? '<button type="button" class="est-opt" data-other="1" aria-pressed="' + (v && !s.options.some(function (o) { return o.v === v; })) + '">Someone else…</button><div class="field" id="qOtherWrap" style="' + (v && !s.options.some(function (o) { return o.v === v; }) ? '' : 'display:none') + '"><input id="qOther" value="' + esc(v && !s.options.some(function (o) { return o.v === v; }) ? v : '') + '" placeholder="Type the name"></div>' : '') + '</div>';
     } else if (s.type === 'multi') {
       var arr = Array.isArray(v) ? v : [];
-      body += '<div class="chips est-chips">' + s.options.map(function (o) { return '<button type="button" class="chip" data-v="' + esc(o.v) + '" aria-pressed="' + (arr.indexOf(o.v) >= 0) + '">' + esc(o.label) + '</button>'; }).join('') + '</div>';
+      var isScope = s.id === 'scope';
+      body += '<div class="chips est-chips">' + s.options.filter(function (o) { return !(isScope && o.v === 'unsure'); }).map(function (o) { return '<button type="button" class="chip" data-v="' + esc(o.v) + '" aria-pressed="' + (arr.indexOf(o.v) >= 0 && o.v !== 'unsure') + '">' + esc(o.label) + '</button>'; }).join('') + '</div>' +
+        (isScope ? '<button type="button" class="est-opt est-opt-grey est-guide-btn" id="qGuide">I\'m not sure what I need → show me how to tell</button>' : '');
     } else if (s.type === 'sizes') {
       var scope = (S.answers.scope || []).filter(function (id) { return S.sizes.some(function (z) { return z.id === id; }); });
       if (!scope.length) { S.answers.sizes = S.answers.sizes || {}; S.i++; return question(); }
@@ -186,23 +265,24 @@
       body += scope.map(function (id) {
         var z = S.sizes.find(function (x) { return x.id === id; });
         var cur = sz[id], unk = cur === 'unknown', val = unk || cur == null ? Math.round(z.max / 4 / z.step) * z.step : cur;
-        return '<div class="est-size" data-id="' + id + '"><h3>' + esc(z.ask) + '</h3>' + (z.typical ? '<p class="est-hint">' + esc(z.typical) + '</p>' : '') +
+        var pace = /m/.test(z.unit) ? ' Pace it: one big step is about a metre.' : '';
+        return '<div class="est-size" data-id="' + id + '"><h3>' + esc(z.ask) + '</h3>' + ((z.typical || pace) ? '<p class="est-hint">' + esc((z.typical || '') + pace) + '</p>' : '') +
           '<div class="est-slider' + (unk ? ' is-unk' : '') + '"><div class="est-val"><b>' + val + '</b> ' + esc(z.unit) + '</div>' +
           '<input type="range" min="' + z.step + '" max="' + z.max + '" step="' + z.step + '" value="' + val + '" aria-label="' + esc(z.label) + '">' +
           '<div class="est-ends"><span>' + z.step + '</span><span>' + z.max + ' ' + esc(z.unit) + '</span></div></div>' +
-          '<button type="button" class="est-unk" aria-pressed="' + unk + '">Not sure</button></div>';
+          '<button type="button" class="est-unk" aria-pressed="' + unk + '">Not sure</button><div class="est-nudge"' + (unk ? '' : ' hidden') + '>' + NUDGE + '</div></div>';
       }).join('');
     } else if (s.type === 'slider') {
       var unk2 = v === 'unknown', val2 = unk2 || v == null ? s.def : v;
       body += '<div class="est-slider' + (unk2 ? ' is-unk' : '') + '" id="qSlider"><div class="est-val"><b>' + val2 + '</b> ' + esc(s.unit) + (s.id === 'access' ? ' <span class="est-bin">' + binHint(val2) + '</span>' : '') + '</div>' +
         '<input type="range" min="' + s.min + '" max="' + s.max + '" step="' + s.step + '" value="' + val2 + '"><div class="est-ends"><span>' + s.min + '</span><span>' + s.max + ' ' + esc(s.unit) + '</span></div></div>' +
-        (s.unknown ? '<button type="button" class="est-unk" id="qUnk" aria-pressed="' + unk2 + '">Not sure</button>' : '');
+        (s.unknown ? '<button type="button" class="est-unk" id="qUnk" aria-pressed="' + unk2 + '">Not sure</button><div class="est-nudge"' + (unk2 ? '' : ' hidden') + '>' + NUDGE + '</div>' : '');
     } else if (s.type === 'scale') {
       var dir = S.answers.fallDir || '';
       body += '<div class="est-scale">' + s.scale.map(function (o) { return '<button type="button" class="est-opt est-opt-sm" data-v="' + o.v + '" aria-pressed="' + (v === o.v) + '">' + esc(o.label) + '</button>'; }).join('') + '</div>' +
         '<div class="est-dir" id="qDir" style="' + (v > 0 ? '' : 'display:none') + '"><p class="est-hint">And is the back boundary higher or lower than the front?</p>' +
         '<div class="est-opts est-two"><button type="button" class="est-opt" data-dir="higher" aria-pressed="' + (dir === 'higher') + '">Higher</button><button type="button" class="est-opt" data-dir="lower" aria-pressed="' + (dir === 'lower') + '">Lower</button></div></div>' +
-        '<button type="button" class="est-unk" id="qUnk" aria-pressed="' + (v === 'unknown') + '">Not sure</button>';
+        '<button type="button" class="est-unk" id="qUnk" aria-pressed="' + (v === 'unknown') + '">Not sure</button><div class="est-nudge"' + (v === 'unknown' ? '' : ' hidden') + '>' + NUDGE + '</div>';
     }
     var foot = BTN('qBack', 'Back', true) + BTN('qNext', s.optional && !answered(s) ? 'Skip' : 'Next');
     h(frame({ count: (S.i + 1) + ' of ' + list.length, pct: 100 * S.i / list.length, body: body, foot: foot }));
@@ -211,7 +291,7 @@
   function binHint(mm) { mm = +mm; return mm < 600 ? 'narrower than a wheelie bin' : mm < 700 ? 'about a wheelie bin' : mm < 1000 ? 'a bin and a bit' : mm < 1500 ? 'a wheelbarrow passes easily' : 'a small machine fits'; }
   function wire(s) {
     var next = document.getElementById('qNext'), unknownTapped = false;
-    document.getElementById('qBack').addEventListener('click', function () { if (S.i === 0) return welcome(); S.i--; question(); });
+    document.getElementById('qBack').addEventListener('click', function () { if (S.i === 0) return MODE === 'start' && !S.completed ? preUpload() : welcome(); S.i--; question(); });
     if (s.type === 'text') {
       var t = document.getElementById('qText'); t.focus();
       t.addEventListener('keydown', function (e) { if (e.key === 'Enter') next.click(); });
@@ -228,6 +308,8 @@
       });
     }
     if (s.type === 'multi') {
+      var gb = document.getElementById('qGuide');
+      if (gb) gb.addEventListener('click', function () { ga('estimate_guide'); guide(function () { question(); }); });
       app.querySelectorAll('.chip').forEach(function (b) {
         b.addEventListener('click', function () {
           var on = b.getAttribute('aria-pressed') === 'true';
@@ -245,6 +327,7 @@
           wrap.querySelector('.est-val b').textContent = r.value;
           var bin = wrap.querySelector('.est-bin'); if (bin) bin.textContent = binHint(r.value);
           var u = wrap.parentElement.querySelector('.est-unk'); if (u) u.setAttribute('aria-pressed', 'false');
+          var nd = wrap.parentElement.querySelector('.est-nudge'); if (nd) nd.hidden = true;
         });
       });
       app.querySelectorAll('.est-unk').forEach(function (u) {
@@ -252,6 +335,7 @@
           var on = u.getAttribute('aria-pressed') === 'true';
           u.setAttribute('aria-pressed', on ? 'false' : 'true');
           var wrap = u.parentElement.querySelector('.est-slider'); if (wrap) wrap.classList.toggle('is-unk', !on);
+          var nd = u.parentElement.querySelector('.est-nudge'); if (nd) nd.hidden = on;
           unknownTapped = !on;
         });
       });
@@ -261,6 +345,7 @@
         b.addEventListener('click', function () {
           app.querySelectorAll('.est-scale .est-opt').forEach(function (x) { x.setAttribute('aria-pressed', 'false'); });
           b.setAttribute('aria-pressed', 'true'); document.getElementById('qUnk').setAttribute('aria-pressed', 'false');
+          var nd0 = app.querySelector('.est-nudge'); if (nd0) nd0.hidden = true;
           S.answers.fallMm = +b.dataset.v;
           var d = document.getElementById('qDir'); d.style.display = S.answers.fallMm > 0 ? '' : 'none';
           if (S.answers.fallMm === 0) { S.answers.fallDir = ''; setTimeout(function () { next.click(); }, 180); }
@@ -276,6 +361,7 @@
         app.querySelectorAll('.est-scale .est-opt').forEach(function (x) { x.setAttribute('aria-pressed', 'false'); });
         this.setAttribute('aria-pressed', 'true'); S.answers.fallMm = 'unknown'; S.answers.fallDir = ''; unknownTapped = true;
         document.getElementById('qDir').style.display = 'none';
+        var nd1 = app.querySelector('.est-nudge'); if (nd1) nd1.hidden = false;
       });
     }
     next.addEventListener('click', function () {
@@ -290,7 +376,7 @@
       }
       if (s.type === 'multi') {
         var sel = [].map.call(app.querySelectorAll('.chip[aria-pressed="true"]'), function (b) { return b.dataset.v; });
-        if (!sel.length) { if (s.optional) { S.i++; return question(); } return shake(); }
+        if (!sel.length) { if (s.optional) { S.i++; return question(); } if (s.id === 'scope') { var gb2 = document.getElementById('qGuide'); if (gb2) gb2.classList.add('est-pulse'); } return shake(); }
         patch[s.key] = sel;
       }
       if (s.type === 'sizes') {
@@ -436,14 +522,18 @@
     var lead = booking ? '<p class="est-sec">Booked</p><h2 class="est-q">' + esc(booking.label) + ', ' + (booking.half === 'AM' ? 'morning' : 'afternoon') + '.</h2><p class="est-hint">We will confirm the day before with an ETA. A confirmation is on its way to your email.</p>'
       : why === 'nofri' ? '<p class="est-sec">No problem</p><h2 class="est-q">We will call to find a day that works.</h2>'
       : '<p class="est-sec">Whenever you are ready</p><h2 class="est-q">Your code keeps working, so come back any time.</h2>';
-    var body = lead + '<h3 class="est-h3">Add photos or drawings <span class="opt">optional</span></h3><p class="est-hint">Front, back and the side access help most. Builder drawings or a landscape plan mean a tighter number on the day.</p>' +
+    var body = lead + '<h3 class="est-h3">' + (S.uploaded ? 'Add more photos or drawings' : 'You have not added any photos yet') + ' <span class="opt">optional</span></h3><p class="est-hint">Front, back and the side access help most. Builder drawings or a landscape plan mean a tighter number on the day.</p>' +
       '<label class="est-drop"><input type="file" id="fIn" multiple accept=".pdf,.jpg,.jpeg,.png,.heic,.heif,.webp,.dwg,.doc,.docx,.xls,.xlsx,.zip"><span>+ Choose files</span></label><div id="fList" class="est-flist"></div><div id="fMsg" class="est-hint"></div>';
     h(frame({ count: 'Last step', body: body, foot: BTN('fSkip', 'Finish', true) + BTN('fUp', 'Upload and finish') }));
+    wireUpload(function (ok, bad) { done(booking, ok, bad); });
+  }
+  // The file picker, the chunked upload and the "done" callback, shared by both upload screens.
+  function wireUpload(then) {
     var picked = [];
     document.getElementById('fIn').addEventListener('change', function () { picked = [].slice.call(this.files, 0, 20); document.getElementById('fList').innerHTML = picked.map(function (f) { return '<div>' + esc(f.name) + ' <span class="est-fine">' + (f.size / 1e6).toFixed(1) + ' MB</span></div>'; }).join(''); });
-    document.getElementById('fSkip').addEventListener('click', function () { done(booking); });
+    document.getElementById('fSkip').addEventListener('click', function () { then(); });
     document.getElementById('fUp').addEventListener('click', function () {
-      if (!picked.length) return done(booking);
+      if (!picked.length) return then();
       var btn = this; btn.disabled = true; btn.textContent = 'Uploading…'; var msg = document.getElementById('fMsg');
       api('/files', { files: picked.map(function (f) { return { name: f.name, size: f.size }; }) }).then(function (r) {
         var ok = [], bad = [], total = picked.reduce(function (a, f) { return a + f.size; }, 0), sent = 0;
@@ -453,7 +543,7 @@
             return putFile(f, u.uploadUrl, function (n) { sent += n; msg.textContent = 'Uploading… ' + Math.round(100 * sent / total) + '%'; }).then(function () { ok.push(u.name || f.name); }, function () { bad.push(f.name); });
           });
         }, Promise.resolve()).then(function () {
-          return api('/files/complete', { uploaded: ok }).catch(function () {}).then(function () { ga('estimate_files', { n: ok.length }); done(booking, ok, bad); });
+          return api('/files/complete', { uploaded: ok }).catch(function () {}).then(function () { S.uploaded += ok.length; ga('estimate_files', { n: ok.length }); then(ok, bad); });
         });
       }).catch(function (e) { msg.innerHTML = '<span class="est-err">' + esc(e.message) + '</span>'; btn.disabled = false; btn.textContent = 'Try again'; });
     });
@@ -471,9 +561,10 @@
   }
 
   // ---- boot ----------------------------------------------------------------------------------
+  function first() { if (MODE === 'start') return intro(); gate(null, qs.get('get') ? 'get' : 'code'); }
   if (S.token) {
     // A token from this browser session: try to resume without the code screen.
     api('/auth-resume', {}).then(function (r) { S.first = r.first || ''; S.steps = r.steps; S.sizes = r.sizes; S.answers = r.answers || {}; S.reactions = r.reactions; S.expires = r.expires; S.completed = !!r.completed; S.booked = !!r.booked; S.saved = r.saved || 0; S.email = r.email || S.email; welcome(); })
-      .catch(function (e) { S.token = null; if (!e.paused) gate(null, qs.get('get') ? 'get' : 'code'); });
-  } else gate(null, qs.get('get') ? 'get' : 'code');
+      .catch(function (e) { S.token = null; if (!e.paused) first(); });
+  } else first();
 })();
