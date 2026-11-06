@@ -152,10 +152,11 @@
     var body = '<p class="eyebrow">Online estimate · under 10 minutes</p><h1>Thank you for taking the time. It gets you a better quote.</h1>' +
       '<p class="est-hint">You answer a few plain questions about your yard and what you want done, and see a ballpark range at the end, from Basic to Premium finishes.</p>' +
       '<div class="est-note">The estimate is only as good as the details you give it. Put in as much as you know, even rough numbers. We check everything on site before your quote, so there is nothing to get wrong. We have your back.</div>' +
-      '<ol class="est-steps est-steps-in"><li><b>Your details</b>, so we can save your answers</li><li><b>Your property</b> and what you want done</li><li><b>Roughly how much</b> of each, in paces or metres</li><li><b>Your ballpark</b>, then pick a Friday for the site visit</li></ol>' +
+      '<ol class="est-steps est-steps-in"><li><b>Your details</b>, and the code we email you</li><li><b>Your property</b> and what you want done</li><li><b>Roughly how much</b> of each, in paces or metres</li><li><b>Your ballpark</b>, then pick a Friday for the site visit</li></ol>' +
       (msg ? '<p class="est-err">' + esc(msg) + '</p>' : '') +
       '<div class="btn-row">' + BTN('iGo', 'Let\'s start') + '</div>' +
-      '<p class="est-links"><a href="#" id="iGuide">How to size up your yard</a> · <a href="/estimate/">I already have a code</a></p>';
+      '<p class="est-links"><a href="#" id="iGuide">How to size up your yard</a> · <a href="/estimate/">I already have a code</a></p>' +
+      '<p class="est-fine">We email you a 4-digit code on the next screen. It opens the questions and lets you come back any time.</p>';
     h(frame({ body: body }));
     document.getElementById('iGo').addEventListener('click', function () { details(); });
     document.getElementById('iGuide').addEventListener('click', function (e) { e.preventDefault(); guide(function () { intro(); }); });
@@ -172,7 +173,7 @@
       '<div class="field"><label for="dAddr">Site address <span class="opt">optional</span></label><input id="dAddr" autocomplete="street-address" value="' + esc(keep.address || '') + '" placeholder="If you have it"></div>' +
       '<input type="text" name="website" id="dWeb" tabindex="-1" autocomplete="off" style="position:absolute;left:-9999px" aria-hidden="true">' +
       '<p class="est-fine">By continuing you agree to be contacted about your enquiry. Details go to our team only, see the <a href="/privacy/">privacy policy</a>.</p>';
-    h(frame({ count: 'Your details', pct: 4, body: body, foot: BTN('dBack', 'Back', true) + BTN('dGo', 'Start the questions') }));
+    h(frame({ count: 'Your details', pct: 4, body: body, foot: BTN('dBack', 'Back', true) + BTN('dGo', 'Email me the code') }));
     document.getElementById('dBack').addEventListener('click', function () { intro(); });
     document.getElementById('dName').focus();
     document.getElementById('dGo').addEventListener('click', function () {
@@ -181,14 +182,41 @@
       if (!b.name || !b.phone || !/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(b.email) || !b.suburb) return details('Your name, phone, a valid email and your suburb are needed so we can save your answers and call you back.', b);
       var btn = this; btn.disabled = true; btn.textContent = 'One moment…';
       api('/start-now', b).then(function (r) {
-        S.token = r.token; try { sessionStorage.setItem('el_est_token', r.token); } catch (x) {}
-        S.email = r.email || b.email; S.first = r.first || ''; S.steps = r.steps; S.sizes = r.sizes; S.answers = r.answers || {}; S.reactions = r.reactions; S.expires = r.expires;
-        S.completed = !!r.completed; S.booked = !!r.booked; S.saved = r.saved || 0;
-        ga('estimate_started', { via: 'quote_page' });
-        if (S.completed || S.saved > 1) return welcome();
-        S.i = 0; preUpload();
+        S.email = b.email; S.detail = b; ga('estimate_code_requested', { via: 'quote_page' });
+        codeScreen(r.email);
       }).catch(function (e) { if (!e.paused) details(e.message, b); });
     });
+  }
+  // The code we just emailed is the gate: it proves the email is real before the questions start.
+  function codeScreen(masked, msg) {
+    setScreen('code');
+    var body = '<p class="est-sec">Check your email</p><h2 class="est-q">Enter the 4-digit code we just sent you.</h2>' +
+      '<p class="est-hint">It went to <b>' + esc(masked || S.email) + '</b>. It can take a minute; check junk if it is not there. The code also lets you come back later to change your answers.</p>' +
+      (msg ? '<p class="est-err">' + esc(msg) + '</p>' : '') +
+      '<div class="field"><label for="cCode">Access code</label><input id="cCode" type="text" inputmode="numeric" pattern="[0-9]*" maxlength="4" autocomplete="one-time-code" class="est-code" placeholder="0000"></div>' +
+      '<p class="est-links"><a href="#" id="cResend">Resend the code</a> · <a href="#" id="cEdit">Wrong email? Change it</a></p>';
+    h(frame({ count: 'Your code', pct: 6, body: body, foot: BTN('cBack', 'Back', true) + BTN('cGo', 'Start the questions') }));
+    var inp = document.getElementById('cCode'); inp.focus();
+    document.getElementById('cBack').addEventListener('click', function () { details(null, S.detail); });
+    document.getElementById('cEdit').addEventListener('click', function (e) { e.preventDefault(); details(null, S.detail); });
+    document.getElementById('cResend').addEventListener('click', function (e) {
+      e.preventDefault(); api('/resend', { email: S.email }).catch(function () {}).then(function () { codeScreen(masked, 'Sent again. Give it a minute.'); });
+    });
+    var go = function () {
+      var code = inp.value.replace(/\D/g, '');
+      if (code.length !== 4) return codeScreen(masked, 'Enter the 4 digits from the email.');
+      document.getElementById('cGo').disabled = true;
+      api('/auth', { code: code, email: S.email, vk: S.vk, touch: 'ontouchstart' in window }).then(function (r) {
+        S.token = r.token; try { sessionStorage.setItem('el_est_token', r.token); } catch (x) {}
+        S.first = r.first || ''; S.steps = r.steps; S.sizes = r.sizes; S.answers = r.answers || {}; S.reactions = r.reactions; S.expires = r.expires;
+        S.completed = !!r.completed; S.booked = !!r.booked; S.saved = r.saved || 0;
+        ga('estimate_opened', { via: 'quote_page' });
+        if (S.completed || S.saved > 1) return welcome();
+        S.i = 0; preUpload();
+      }).catch(function (e) { if (!e.paused) codeScreen(masked, e.message); });
+    };
+    document.getElementById('cGo').addEventListener('click', go);
+    inp.addEventListener('keydown', function (e) { if (e.key === 'Enter') go(); });
   }
   // Optional, straight after the details: plans and photos while they are handy.
   function preUpload() {
