@@ -848,13 +848,16 @@ body.noform .fab{display:none}
   .fdh-kw-m{display:block;line-height:1.75;margin-top:0}
   .fdh-kw-d{display:none}
   .fdh-main h1.fdh-kw{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}
-  .fdh-hero .fdh-main{padding-top:clamp(18px,4vh,36px);padding-bottom:10px}
+  .fdh-hero .fdh-main{align-items:center;padding-top:0;padding-bottom:0}
+  .fdh-hero .fdh-top img{width:clamp(190px,52vw,240px)}   /* same size and spot as the menu's logo */
+  .fdh-hero .fdh-main .fdh-h1{text-align:left}
+  .fdh-hero .fdh-hintwrap{text-align:center}
+  .fdh-hero .fd-hint{margin-top:0}
   .fdh-main .fdh-slogan{margin-top:10px;font-size:clamp(1.55rem,7.2vw,1.9rem)}
   .fdh-hero .fdh-sub{margin-top:12px;font-size:.9rem;line-height:1.5}
   .fdh-hero .fdh-row{margin-top:18px;gap:0}
   .fdh-hero .fdh-soc{display:none}
   .fdh-hero .fdh-cta .btn-o{display:none}
   .fdh-port{margin-top:14px;text-align:left}
-  .fdh-hero .fd-hint{margin-top:6px}
-  .fdh-hero .fdh-hintwrap{padding-bottom:8px}
+  .fdh-hero .fdh-hintwrap{padding-bottom:14px}
 }
