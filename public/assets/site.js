@@ -72,18 +72,21 @@ if (/estatelandscapers\.com\.au$/.test(location.hostname)) {
   if (y) y.textContent = new Date().getFullYear();
 })();
 
-// GA4 — only on the live domain, so staging never pollutes the data
+// GA4 loader — only on the live domain, so staging never pollutes the data, and only
+// once the page has finished loading, so the 177 KB tag never competes with the hero.
+// Events fired before it arrives sit in dataLayer and are sent when it does.
 (function () {
   var h = location.hostname;
   if (h !== 'www.estatelandscapers.com.au' && h !== 'estatelandscapers.com.au') return;
-  var s = document.createElement('script');
-  s.async = true;
-  s.src = 'https://www.googletagmanager.com/gtag/js?id=G-NWQPY0NXEF';
-  document.head.appendChild(s);
-  window.dataLayer = window.dataLayer || [];
-  function gtag() { dataLayer.push(arguments); }
-  gtag('js', new Date());
-  gtag('config', 'G-NWQPY0NXEF');
+  function inject() {
+    if (document.querySelector('script[src*="googletagmanager.com/gtag/js"]')) return;
+    var s = document.createElement('script');
+    s.async = true;
+    s.src = 'https://www.googletagmanager.com/gtag/js?id=G-NWQPY0NXEF';
+    document.head.appendChild(s);
+  }
+  function soon() { ('requestIdleCallback' in window) ? requestIdleCallback(inject, { timeout: 2500 }) : setTimeout(inject, 1200); }
+  if (document.readyState === 'complete') soon(); else window.addEventListener('load', soon);
 })();
 
 // Precise anchor offset: measure the sticky nav so jumped-to headings land exactly

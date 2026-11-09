@@ -64,3 +64,15 @@ build/deploy setting:
 - Brand: `#1E5BFF` blue, black, white, `#F5F5F5`, Montserrat
 - No stock photography of other people's landscaping; no unverified figures
 - Every page: one `<h1>`, JSON-LD schema, FAQ in visible text where the page warrants it
+
+## Images and page speed (Nov 2026)
+
+Every photo and logo has WebP derivatives in `public/assets/img/r/` (480, 800 and 1200 px wide;
+the home background also 1600 and 1920). `build.js` gives each `<img>` a `srcset` pointing at them,
+so phones download a 480 px WebP instead of a 1,400 px JPEG. After adding or replacing a photo, run:
+
+    npm i sharp && node tools/make-derivatives.js && node tools/responsive-html.js
+
+(or just `node build.js`, which rewrites the pages; `make-derivatives.js` still has to run first.)
+Montserrat is self-hosted from `public/assets/fonts/` (no Google Fonts request). The home page
+inlines its stylesheet. GA loads after the page has finished; the Meta Pixel loads async.

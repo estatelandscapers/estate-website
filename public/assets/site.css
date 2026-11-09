@@ -1,3 +1,8 @@
+/* Montserrat, self-hosted (latin subset): no round trip to Google before text can show */
+@font-face{font-family:"Montserrat";font-style:normal;font-weight:400;font-display:swap;src:url("/assets/fonts/montserrat-400.woff2") format("woff2");unicode-range:U+0000-00FF,U+0131,U+0152-0153,U+02BB-02BC,U+02C6,U+02DA,U+02DC,U+0304,U+0308,U+0329,U+2000-206F,U+20AC,U+2122,U+2191,U+2193,U+2212,U+2215,U+FEFF,U+FFFD}
+@font-face{font-family:"Montserrat";font-style:normal;font-weight:600;font-display:swap;src:url("/assets/fonts/montserrat-600.woff2") format("woff2");unicode-range:U+0000-00FF,U+0131,U+0152-0153,U+02BB-02BC,U+02C6,U+02DA,U+02DC,U+0304,U+0308,U+0329,U+2000-206F,U+20AC,U+2122,U+2191,U+2193,U+2212,U+2215,U+FEFF,U+FFFD}
+@font-face{font-family:"Montserrat";font-style:normal;font-weight:700;font-display:swap;src:url("/assets/fonts/montserrat-700.woff2") format("woff2");unicode-range:U+0000-00FF,U+0131,U+0152-0153,U+02BB-02BC,U+02C6,U+02DA,U+02DC,U+0304,U+0308,U+0329,U+2000-206F,U+20AC,U+2122,U+2191,U+2193,U+2212,U+2215,U+FEFF,U+FFFD}
+@font-face{font-family:"Montserrat";font-style:normal;font-weight:800;font-display:swap;src:url("/assets/fonts/montserrat-800.woff2") format("woff2");unicode-range:U+0000-00FF,U+0131,U+0152-0153,U+02BB-02BC,U+02C6,U+02DA,U+02DC,U+0304,U+0308,U+0329,U+2000-206F,U+20AC,U+2122,U+2191,U+2193,U+2212,U+2215,U+FEFF,U+FFFD}
 /* Estate Landscapers — shared stylesheet
    Brand: #1E5BFF blue · black · white · #F5F5F5 · Montserrat
    Sections: tokens / base / bars / nav / buttons / front door / hero /
@@ -13,7 +18,7 @@
   --mist:#F5F5F5;
   --line:#E4E7EC;
   --body:#5A6068;
-  --label:#8A8A8A;
+  --label:#6B7280;
   --shell:min(1180px, 100% - 44px);
   --r:16px;
 }
@@ -249,6 +254,10 @@ a.card:hover{border-color:var(--blue);transform:translateY(-2px)}
 /* ---------------- motion ---------------- */
 @media (prefers-reduced-motion:no-preference){
   .rise{animation:rise .6s cubic-bezier(.2,.7,.3,1) backwards}
+  /* The hero text is the page's largest element: it slides in but never starts invisible,
+     so the browser can count it as painted the moment it is drawn. */
+  .fdh-hero .fdh-tx .rise,.fdh-hero .fdh-row.rise,.fdh-hero .fdh-port.rise{animation-name:riseT}
+  @keyframes riseT{from{transform:translateY(13px)}to{transform:none}}
   .d1{animation-delay:.04s}.d2{animation-delay:.13s}.d3{animation-delay:.22s}.d4{animation-delay:.3s}
   @keyframes rise{from{opacity:0;transform:translateY(13px)}to{opacity:1;transform:none}}
 }
@@ -488,7 +497,9 @@ html.js .rv.v{opacity:1;transform:none}
   color:#fff;overflow:hidden;background:#0B1220;
   background-image:radial-gradient(ellipse 70% 60% at 30% 30%,rgba(30,91,255,.28),transparent 65%),
     radial-gradient(ellipse 60% 70% at 85% 85%,rgba(45,65,90,.5),transparent 60%)}
-.fdh-hero .bg{position:absolute;inset:0;background:url('/assets/img/hero-bg.jpg?v=202609100316') center 45%/cover no-repeat}
+.fdh-hero .bg{position:absolute;inset:0;background:url('/assets/img/r/hero-bg-1600.webp') center 45%/cover no-repeat}
+@media (max-width:760px){.fdh-hero .bg{background-image:url('/assets/img/r/hero-bg-800.webp')}}
+@media (min-width:1601px),(min-width:761px) and (min-resolution:2dppx){.fdh-hero .bg{background-image:url('/assets/img/r/hero-bg-1920.webp')}}
 .fdh-hero .glow{position:absolute;inset:0;pointer-events:none;
   background:linear-gradient(90deg,rgba(11,18,32,.25) 0%,rgba(11,18,32,.55) 45%,rgba(11,18,32,.88) 100%),
              linear-gradient(180deg,rgba(11,18,32,.5),transparent 30%,transparent 70%,rgba(11,18,32,.6))}
@@ -792,13 +803,13 @@ body.noform .fab{display:none}
    One button everywhere: "Online estimate" with "under 10 min" beneath. */
 .btn-two{flex-direction:column;align-items:center;justify-content:center;gap:2px;line-height:1.1;padding:8px 24px}
 .fdh-cta{align-items:stretch}.fdh-cta .btn{justify-content:center}
-.btn-two small{display:block;font-size:8.5px;font-weight:700;letter-spacing:.08em;opacity:.85;text-transform:none}
-.fab small{display:block;font-size:8px;font-weight:700;letter-spacing:.06em;opacity:.85;text-transform:none;text-align:center}
+.btn-two small{display:block;font-size:8.5px;font-weight:700;letter-spacing:.08em;text-transform:none}
+.fab small{display:block;font-size:8px;font-weight:700;letter-spacing:.06em;text-transform:none;text-align:center}
 @media (max-width:760px){.fab{flex-direction:column;line-height:1.15;padding:10px 18px}}
 .mega-brand .mega-cta a small{font-weight:600;font-size:.78rem;color:var(--body)}
 .mega-grid .mega-cta-start a.btn{display:flex;font-size:11.5px;color:#fff;padding:9px 24px}
 .mega-grid .mega-cta-start a.btn-o{color:var(--blue);padding:12px 24px}
-.mega-grid .mega-cta-start a.btn small{font-size:8.5px;color:#fff;opacity:.85}
+.mega-grid .mega-cta-start a.btn small{font-size:8.5px;color:#fff}
 /* the estimator: thank-you note, the guide, the "not sure" nudge */
 .est-note{background:#FFF6E0;color:#8A5A00;border-radius:10px;padding:11px 13px;font-size:.86rem;font-weight:600;line-height:1.5;margin:0 0 14px}
 .est-steps-in{margin:0 0 6px;padding-left:20px}

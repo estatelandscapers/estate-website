@@ -229,14 +229,19 @@ for (const f of walk(path.join(SRC, 'pages'))) {
   if (c.path === '/') html = heroVideo(html);
   html = addCrumbs(html, c.path);
   html = swapPhotos(html, c.path);
+  html = require('./tools/responsive-html').responsiveImages(html);   // WebP srcset where derivatives exist
   html = html.replace(/<span class="ctile" data-logo="([^"]+)">([^<]+)<\/span>/g, (m, slug, name) => {
     const ext = ['svg', 'png', 'webp'].find(e => fs.existsSync(path.join(OUT, 'assets', 'img', 'councils', slug + '.' + e)));
     return ext ? '<span class="ctile"><img src="/assets/img/councils/' + slug + '.' + ext + '" alt="' + name + '" loading="lazy"></span>' : m;
   });
   // Cache-busting: assets carry the build stamp, so a deploy is visible instantly
   // even though assets themselves are cached for speed.
-  html = html.replace(/\/assets\/(site\.css|site\.js|enquiry\.js)(?!\?)/g,
+  html = html.replace(/\/assets\/(site\.css|site\.js|enquiry\.js|estimate\.js|meta-pixel\.js)(?!\?)/g,
     '/assets/$1?v=' + STAMP.replace(/[^0-9]/g, ''));
+  // The home page is the one Google measures: inline its stylesheet so the first paint
+  // needs no second request. Every other page keeps the cached /assets/site.css link.
+  if (c.path === '/') html = html.replace(/<link rel="stylesheet" href="\/assets\/site\.css[^"]*">/,
+    () => '<style>' + fs.readFileSync(path.join(OUT, 'assets', 'site.css'), 'utf8') + '</style>');
   html = html.replace('</html>', '<!-- estate build ' + STAMP + ' · ' + c.path + ' -->\n</html>');
   if (!global.__built) global.__built = new Set();
   if (global.__built.has(c.path)) throw new Error('DUPLICATE PAGE PATH: ' + c.path + ' built twice (second source: ' + f + ')');
