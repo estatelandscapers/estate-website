@@ -7,9 +7,9 @@ window.gtag = function () { dataLayer.push(arguments); };
 // Google Ads conversion tracking. Copy these from Google Ads → Goals → Conversions →
 // the conversion action → "Use Google tag" event snippet, where send_to looks like
 // 'AW-123456789/AbCdEfGhIj' (ID before the slash, label after). Blank = switched off.
-var ADS_ID = '';            // e.g. 'AW-123456789'
-var ADS_LEAD_LABEL = '';    // "Estimator lead": name, phone, email and suburb submitted
-var ADS_BOOKED_LABEL = '';  // "Site visit booked": a Friday visit picked in the estimator
+var ADS_ID = 'AW-18484005972';
+var ADS_LEAD_LABEL = 'ye1tCOeAqrUdENSY7u1E';  // "Estimator lead": name, phone, email and suburb submitted
+var ADS_BOOKED_LABEL = '';  // off: "Site visit booked" is imported from GA4 (estimate_visit_booked) instead
 
 var LIVE = /estatelandscapers\.com\.au$/.test(location.hostname);
 if (LIVE) {
@@ -36,7 +36,7 @@ window.estateConversion = function (kind, user) {
       if (/^\+\d{8,15}$/.test(p)) d.phone_number = p;
       gtag('set', 'user_data', d);
     }
-    gtag('event', 'conversion', { send_to: ADS_ID + '/' + label });
+    gtag('event', 'conversion', { send_to: ADS_ID + '/' + label, value: 1.0, currency: 'AUD' });
   } catch (e) {}
 };
 
