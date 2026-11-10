@@ -3,10 +3,42 @@
 // globally either way so form events can call it safely.
 window.dataLayer = window.dataLayer || [];
 window.gtag = function () { dataLayer.push(arguments); };
-if (/estatelandscapers\.com\.au$/.test(location.hostname)) {
+
+// Google Ads conversion tracking. Copy these from Google Ads → Goals → Conversions →
+// the conversion action → "Use Google tag" event snippet, where send_to looks like
+// 'AW-123456789/AbCdEfGhIj' (ID before the slash, label after). Blank = switched off.
+var ADS_ID = '';            // e.g. 'AW-123456789'
+var ADS_LEAD_LABEL = '';    // "Estimator lead": name, phone, email and suburb submitted
+var ADS_BOOKED_LABEL = '';  // "Site visit booked": a Friday visit picked in the estimator
+
+var LIVE = /estatelandscapers\.com\.au$/.test(location.hostname);
+if (LIVE) {
   gtag('js', new Date());
   gtag('config', 'G-NWQPY0NXEF');
+  if (ADS_ID) gtag('config', ADS_ID, { allow_enhanced_conversions: true });
 }
+
+// Report a conversion to Google Ads. kind: 'lead' | 'booked'. user (optional):
+// { email, phone } for enhanced conversions; Google hashes it in the browser before
+// sending. Fires at most once per kind per browser session.
+window.estateConversion = function (kind, user) {
+  try {
+    var label = kind === 'lead' ? ADS_LEAD_LABEL : kind === 'booked' ? ADS_BOOKED_LABEL : '';
+    if (!LIVE || !ADS_ID || !label) return;
+    var key = 'est_conv_' + kind;
+    try { if (sessionStorage.getItem(key)) return; sessionStorage.setItem(key, '1'); } catch (e) {}
+    if (user && (user.email || user.phone)) {
+      var d = {};
+      if (user.email) d.email = String(user.email).trim().toLowerCase();
+      var p = String(user.phone || '').replace(/[^\d+]/g, '');
+      if (/^0\d{9}$/.test(p)) p = '+61' + p.slice(1);           // 0414 147 008 → +61414147008
+      else if (/^61\d{9}$/.test(p)) p = '+' + p;
+      if (/^\+\d{8,15}$/.test(p)) d.phone_number = p;
+      gtag('set', 'user_data', d);
+    }
+    gtag('event', 'conversion', { send_to: ADS_ID + '/' + label });
+  } catch (e) {}
+};
 
 // Mobile navigation toggle
 (function () {
