@@ -2,7 +2,7 @@
 
 Save an image as `public/assets/img/<name>.jpg` (or .webp/.png), push, and it
 appears in its slot automatically on the next build. This file regenerates on
-every build and ticks itself: 144 of 207 slots filled.
+every build and ticks itself: 167 of 214 slots filled.
 
 Best size: 1600px wide, JPG/WebP, under 400 KB (squoosh.app does this in-browser).
 Height is flexible — every slot crops to fit, so keep the subject centred.
@@ -33,7 +33,7 @@ added to the image sitemap automatically.
 
 ## /areas/bayside/
 
-- [ ] `areas-bayside-hero.jpg` — A completed Bayside project
+- [x] `areas-bayside-hero.jpg` — A completed Bayside project
 
 ## /areas/eastern-suburbs/
 
@@ -45,11 +45,11 @@ added to the image sitemap automatically.
 
 ## /areas/lower-north-shore/
 
-- [ ] `areas-lower-north-shore-hero.jpg` — A completed Lower North Shore project
+- [x] `areas-lower-north-shore-hero.jpg` — A completed Lower North Shore project
 
 ## /areas/northern-beaches/
 
-- [ ] `areas-northern-beaches-hero.jpg` — A completed Northern Beaches project
+- [x] `areas-northern-beaches-hero.jpg` — A completed Northern Beaches project
 
 ## /areas/ryde-and-parramatta/
 
@@ -69,7 +69,7 @@ added to the image sitemap automatically.
 
 ## /areas/upper-north-shore/
 
-- [ ] `areas-upper-north-shore-hero.jpg` — A completed Upper North Shore project
+- [x] `areas-upper-north-shore-hero.jpg` — A completed Upper North Shore project
 
 ## /commercial/
 
@@ -105,15 +105,39 @@ added to the image sitemap automatically.
 
 ## /insights/easement-stormwater-pit-in-backyard/
 
-- [ ] `insights-easement-stormwater-pit-in-backyard-hero.jpg` — There is an easement and a stormwater pit in my backyard, illustrated on a real Sydney site
+- [x] `insights-easement-stormwater-pit-in-backyard-hero.jpg` — There is an easement and a stormwater pit in my backyard, illustrated on a real Sydney site
+
+## /insights/exempt-development-fence-height-nsw/
+
+- [x] `insights-exempt-development-fence-height-hero.jpg` — How high can a front and side fence be without approval in NSW?
+
+## /insights/exempt-development-pergola-concrete-nsw/
+
+- [x] `insights-exempt-development-pergola-concrete-hero.jpg` — Pergolas, decks, paths and driveways: what is exempt development in NSW?
+
+## /insights/exempt-development-retaining-wall-nsw/
+
+- [x] `insights-exempt-development-retaining-wall-hero.jpg` — Can I build a front retaining wall without approval in NSW?
+
+## /insights/fence-retaining-wall-built-wrong-nsw/
+
+- [x] `insights-fence-retaining-wall-built-wrong-hero.jpg` — The fence or retaining wall was built wrong. Whose problem is it?
+
+## /insights/finished-ground-level-around-house-nsw/
+
+- [x] `insights-finished-ground-level-around-house-hero.jpg` — How high can the garden and paving sit against the house?
 
 ## /insights/landscaping-required-for-occupation-certificate/
 
-- [ ] `insights-landscaping-required-for-occupation-certificate-hero.jpg` — Do I need landscaping to get my Occupation Certificate?, illustrated on a real Sydney site
+- [x] `insights-landscaping-required-for-occupation-certificate-hero.jpg` — Do I need landscaping to get my Occupation Certificate?, illustrated on a real Sydney site
 
 ## /insights/new-build-landscaping-budget-not-in-contract/
 
-- [ ] `insights-new-build-landscaping-budget-not-in-contract-hero.jpg` — Landscaping was not in the build contract. What does it actually cost?, illustrated on a real Sydney site
+- [x] `insights-new-build-landscaping-budget-not-in-contract-hero.jpg` — Landscaping was not in the build contract. What does it actually cost?, illustrated on a real Sydney site
+
+## /insights/pool-fence-requirements-nsw/
+
+- [x] `insights-pool-fence-requirements-nsw-hero.jpg` — Pool fence rules in NSW: heights, gates and the non-climbable zone
 
 ## /insights/retaining-walls/
 
@@ -137,7 +161,7 @@ added to the image sitemap automatically.
 
 ## /insights/retaining-walls/sandstone-log/
 
-- [ ] `insights-retaining-walls-sandstone-log-hero.jpg` — Sandstone log wall, full length, in an established garden
+- [x] `insights-retaining-walls-sandstone-log-hero.jpg` — Sandstone log wall, full length, in an established garden
 
 ## /insights/retaining-walls/split-face-block/
 
@@ -149,7 +173,7 @@ added to the image sitemap automatically.
 
 ## /insights/turf-dying-new-build-first-summer/
 
-- [ ] `insights-turf-dying-new-build-first-summer-hero.jpg` — The new turf is dying in its first summer, illustrated on a real Sydney site
+- [x] `insights-turf-dying-new-build-first-summer-hero.jpg` — The new turf is dying in its first summer, illustrated on a real Sydney site
 
 ## /insights/water-pooling-new-build-yard-drainage/
 
@@ -157,7 +181,11 @@ added to the image sitemap automatically.
 
 ## /insights/who-pays-boundary-retaining-wall-fence/
 
-- [ ] `insights-who-pays-boundary-retaining-wall-fence-hero.jpg` — Who pays for the boundary retaining wall and fence?, illustrated on a real Sydney site
+- [x] `insights-who-pays-boundary-retaining-wall-fence-hero.jpg` — Who pays for the boundary retaining wall and fence?, illustrated on a real Sydney site
+
+## /insights/who-pays-for-retaining-wall-nsw/
+
+- [x] `insights-who-pays-for-retaining-wall-nsw-hero.jpg` — Who pays for a retaining wall, and the fence, in NSW?
 
 ## /projects/
 
@@ -313,7 +341,7 @@ added to the image sitemap automatically.
 - [x] `residential-2.jpg` — Recent post
 - [x] `residential-3.jpg` — Recent post
 - [x] `residential-4.jpg` — Recent post
-- [ ] `residential-5.jpg` — Recent post
+- [x] `residential-5.jpg` — Recent post
 
 ## /residential/artificial-turf/
 
@@ -377,7 +405,7 @@ added to the image sitemap automatically.
 
 ## /residential/fencing-gates/aluminium/
 
-- [ ] `residential-fencing-aluminium-hero.jpg` — Aluminium fence, installed, full run
+- [x] `residential-fencing-aluminium-hero.jpg` — Aluminium fence, installed, full run
 
 ## /residential/fencing-gates/colorbond/
 
@@ -400,8 +428,8 @@ added to the image sitemap automatically.
 - [x] `residential-garden-edging-hero.jpg` — Corten steel edging between turf and a mulched bed
 - [x] `residential-garden-edging-timber.jpg` — Timber edging installed between turf and bed
 - [x] `residential-garden-edging-charcoal-brick.jpg` — Charcoal brick edging installed between turf and bed
-- [ ] `residential-garden-edging-corten-steel.jpg` — Corten steel edging installed between turf and bed
-- [ ] `residential-garden-edging-aluminium.jpg` — Aluminium edging installed between turf and bed
+- [x] `residential-garden-edging-corten-steel.jpg` — Corten steel edging installed between turf and bed
+- [x] `residential-garden-edging-aluminium.jpg` — Aluminium edging installed between turf and bed
 
 ## /residential/irrigation/
 
@@ -417,7 +445,7 @@ added to the image sitemap automatically.
 
 ## /residential/landscape-drainage/
 
-- [ ] `residential-landscape-drainage-hero.jpg` — Ag pipe and gravel in an open trench, the honest shot
+- [x] `residential-landscape-drainage-hero.jpg` — Ag pipe and gravel in an open trench, the honest shot
 
 ## /residential/landscaping-baulkham-hills/
 
@@ -509,7 +537,7 @@ added to the image sitemap automatically.
 
 ## /residential/pools/
 
-- [ ] `residential-pools-hero.jpg` — Finished pool with paved surrounds, fencing and planting, shot from the house
+- [x] `residential-pools-hero.jpg` — Finished pool with paved surrounds, fencing and planting, shot from the house
 
 ## /residential/retaining-walls/
 

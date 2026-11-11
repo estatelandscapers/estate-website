@@ -232,8 +232,10 @@
       if (tl.length) body.timeline = ((body.timeline || '') + ' \u00b7 ' + tl.join(' \u00b7 ')).replace(/^ \u00b7 /, '');
     }
     try {
-      body.page = sessionStorage.getItem('el_landing') || location.pathname;
-      body.utm = JSON.parse(sessionStorage.getItem('el_utm') || '{}');
+      var at = window.elAttribution ? window.elAttribution() : { utm: JSON.parse(sessionStorage.getItem('el_utm') || '{}'), page: sessionStorage.getItem('el_landing') || location.pathname };
+      body.page = at.page; body.utm = at.utm;
+      if (at.utm.gclid) body.gclid = at.utm.gclid;
+      if (at.utm.fbclid) body.fbclid = at.utm.fbclid;
     } catch (err) { body.page = location.pathname; }
 
     var meter = document.getElementById('upmeter');

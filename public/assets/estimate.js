@@ -19,7 +19,22 @@
   try { S.vk = localStorage.getItem('el_vk'); if (!S.vk) { S.vk = 'v' + Date.now().toString(36) + Math.random().toString(36).slice(2, 10); localStorage.setItem('el_vk', S.vk); } } catch (e) { S.vk = 'v' + Date.now().toString(36); }
   try { S.token = sessionStorage.getItem('el_est_token'); } catch (e) {}
 
+  // Where this visitor came from (ad click id, campaign tags, landing page) goes with the
+  // request that creates the enquiry, so the quote tool can tell an ad lead from a direct one.
+  function attrib(b) {
+    try {
+      var at = window.elAttribution ? window.elAttribution() : null;
+      if (!at) { var q = new URLSearchParams(location.search), u = {}; ['utm_source','utm_medium','utm_campaign','utm_term','utm_content','gclid','gbraid','wbraid','fbclid'].forEach(function (k) { if (q.get(k)) u[k] = q.get(k); });
+        try { var s = JSON.parse(sessionStorage.getItem('el_utm') || '{}'); if (Object.keys(s).length) u = s; } catch (e1) {}
+        at = { utm: u, page: location.pathname }; }
+      b.utm = at.utm; b.page = at.page;
+      if (at.utm.gclid) b.gclid = at.utm.gclid;
+      if (at.utm.fbclid) b.fbclid = at.utm.fbclid;
+    } catch (e) {}
+    return b;
+  }
   function api(path, body, method) {
+    if (body && (path === '/start' || path === '/start-now')) attrib(body);
     var h = { 'Content-Type': 'application/json', 'X-Est-Visitor': S.vk };
     if (S.token) h['X-Est-Token'] = S.token;
     return fetch(API + path, { method: method || (body ? 'POST' : 'GET'), headers: h, body: body ? JSON.stringify(body) : undefined })

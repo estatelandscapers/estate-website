@@ -143,15 +143,32 @@ window.estateConversion = function (kind, user) {
   }, { passive: true });
 })();
 
+// What to send with an enquiry: this visit's tags, else the last ad click within 30 days.
+window.elAttribution = function () {
+  var out = { utm: {}, page: location.pathname };
+  try {
+    out.page = sessionStorage.getItem('el_landing') || location.pathname;
+    var s = JSON.parse(sessionStorage.getItem('el_utm') || '{}');
+    if (!Object.keys(s).length) { var k = JSON.parse(localStorage.getItem('el_utm_keep') || 'null'); if (k && k.utm && Date.now() - k.at < 30 * 864e5) s = k.utm; }
+    out.utm = s;
+  } catch (e) {}
+  return out;
+};
+
 // First-touch attribution: remember the landing page and any campaign tags, so the
 // enquiry that happens three pages later still knows where the visit came from.
 (function () {
   try {
     var q = new URLSearchParams(location.search), utm = {}, has = false;
-    ['utm_source','utm_medium','utm_campaign','utm_term','utm_content','gclid'].forEach(function (k) {
+    // Campaign tags plus the ad click ids Google and Meta append on their own
+    // (gclid / gbraid / wbraid with auto-tagging, fbclid from Facebook and Instagram).
+    ['utm_source','utm_medium','utm_campaign','utm_term','utm_content','gclid','gbraid','wbraid','fbclid'].forEach(function (k) {
       if (q.get(k)) { utm[k] = q.get(k); has = true; }
     });
     if (has && !sessionStorage.getItem('el_utm')) sessionStorage.setItem('el_utm', JSON.stringify(utm));
+    // Also kept for 30 days, so someone who clicks an ad today and enquires next week
+    // (new tab, new session) is still credited to the ad.
+    if (has) { try { localStorage.setItem('el_utm_keep', JSON.stringify({ at: Date.now(), utm: utm })); } catch (e2) {} }
     if (!sessionStorage.getItem('el_landing')) sessionStorage.setItem('el_landing', location.pathname + location.search);
   } catch (e) {}
 })();
