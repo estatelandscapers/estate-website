@@ -132,6 +132,7 @@ export default {
     // Production: apex → www (one canonical host for search engines).
     if (url.hostname === 'estatelandscapers.com.au') {
       url.hostname = 'www.estatelandscapers.com.au';
+      url.protocol = 'https:';
       return Response.redirect(url.toString(), 301);
     }
 

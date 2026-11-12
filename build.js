@@ -36,6 +36,9 @@ function pageSlug(p) { return p === '/' ? 'home' : p.replace(/^\/|\/$/g, '').rep
 // BreadcrumbList already exists on most; this is the human-readable half.
 const CRUMB_LABEL = { residential: 'Residential', turf: 'Turfing', 'decorative-pebbles': 'Decorative pebbles', 'concrete-driveways': 'Concrete works', commercial: 'Commercial', projects: 'Projects',
   insights: 'Insights', areas: 'Service areas', 'retaining-walls': 'Retaining walls' };
+// Folders whose landing page lives at a different URL: link the crumb straight
+// there rather than through a redirect (Google flags "page with redirect").
+const CRUMB_HREF = { '/residential/turf': '/residential/turf-soft-landscaping' };
 function titleise(seg) {
   return CRUMB_LABEL[seg] || seg.replace(/-/g, ' ').replace(/^\w/, ch => ch.toUpperCase());
 }
@@ -47,7 +50,7 @@ function addCrumbs(html, cpath) {
     href += '/' + s;
     items.push(i === segs.length - 1
       ? '<span aria-current="page">' + titleise(s) + '</span>'
-      : '<a href="' + href + '/">' + titleise(s) + '</a>');
+      : '<a href="' + (CRUMB_HREF[href] || href) + '/">' + titleise(s) + '</a>');
   });
   const nav = '<nav class="crumbs" aria-label="Breadcrumb"><div class="shell">' +
     items.join('<span class="sep" aria-hidden="true">›</span>') + '</div></nav>\n';
