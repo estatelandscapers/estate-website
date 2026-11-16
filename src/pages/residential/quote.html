@@ -9,7 +9,7 @@
 -->
 <section class="est" id="estimator" data-mode="start" data-endpoint="https://quotes.estatelandscapers.com.au/api/public/estimate">
   <div class="shell est-shell">
-    <div class="est-app" id="estApp" aria-live="polite">
+    <div class="est-app is-intro" id="estApp" aria-live="polite">
       <noscript>
         <div class="est-card">
           <p class="eyebrow">Online estimate</p>
@@ -18,6 +18,24 @@
           <div class="btn-row"><a class="btn" href="tel:0414147008">Call 0414 147 008</a></div>
         </div>
       </noscript>
+      <!-- First view, written into the page so it paints at once (estimate.js keeps a copy for "Back"). -->
+      <div class="est-intro">
+        <div class="ei-hero">
+          <img class="ei-bg" src="/assets/img/r/project-rydalmere-new-home-landscaping-g6--charcoal-brick-mowing-strip-between-lawn-and-cordyline-bed-rydalmere-800.webp" srcset="/assets/img/r/project-rydalmere-new-home-landscaping-g6--charcoal-brick-mowing-strip-between-lawn-and-cordyline-bed-rydalmere-800.webp 800w, /assets/img/r/project-rydalmere-new-home-landscaping-g6--charcoal-brick-mowing-strip-between-lawn-and-cordyline-bed-rydalmere-1200.webp 1200w" sizes="(min-width:1200px) 1180px, 100vw" width="1200" height="900" alt="A finished garden bed of red cordyline edged in charcoal brick beside a new lawn in Rydalmere" fetchpriority="high">
+          <div class="ei-in">
+            <h1><span class="ei-k">Estate Landscapers</span>Your estimate in<br>under <span class="ei-m">10 minutes.</span></h1>
+            <p class="ei-sub">Skip the wait for a quote. Answer a few plain questions about your Sydney yard and see your price range straight away.</p>
+            <div class="ei-go"><button type="button" class="btn" id="iGo">Let's start <span class="ei-arr" aria-hidden="true">→</span></button><a class="ei-code" href="/estimate/">I already have a code</a></div>
+          </div>
+        </div>
+        <ol class="ei-steps">
+          <li><em>01</em><b>Tell us about your yard</b><span>A few plain questions. Rough numbers are fine.</span></li>
+          <li><em>02</em><b>See your price range</b><span>From Basic to Premium finishes, straight away.</span></li>
+          <li><em>03</em><b>Book a free site visit</b><span>We measure up and send an itemised quote within 48 hours.</span></li>
+        </ol>
+        <p class="ei-quiet">We check everything on site before your quote. <a href="#" id="iGuide">How to size up your yard</a></p>
+        <p class="ei-lic">Licensed landscapers · LIC 487076C · $20M public liability · Landscape Association 41219</p>
+      </div>
     </div>
   </div>
 </section>
