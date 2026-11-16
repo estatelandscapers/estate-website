@@ -14,7 +14,7 @@ var ADS_BOOKED_LABEL = '';  // off: "Site visit booked" is imported from GA4 (es
 // middle of the range as its value. Create it in Google Ads → Goals → Conversions → New conversion
 // action → Website → "Use Google tag" event snippet, then paste the label (the part after the slash).
 // Blank = switched off, so nothing fires until the label is set.
-var ADS_QUALIFIED_LABEL = '';
+var ADS_QUALIFIED_LABEL = 'eIgTCMz8qLkdENSY7u1E';
 
 var LIVE = /estatelandscapers\.com\.au$/.test(location.hostname);
 if (LIVE) {
