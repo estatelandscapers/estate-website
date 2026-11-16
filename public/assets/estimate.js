@@ -88,7 +88,7 @@
   }
 
   // ---- render ---------------------------------------------------------------------------
-  function h(html) { app.innerHTML = html; window.scrollTo({ top: Math.max(0, app.getBoundingClientRect().top + window.scrollY - 90), behavior: 'smooth' }); }
+  function h(html) { app.innerHTML = html; app.classList.toggle('is-intro', !!app.querySelector('.est-intro')); window.scrollTo({ top: Math.max(0, app.getBoundingClientRect().top + window.scrollY - 90), behavior: 'smooth' }); }
   function frame(opts) {
     var pct = opts.pct == null ? null : Math.round(opts.pct);
     return '<div class="est-card">' +
@@ -164,17 +164,66 @@
 
   // ---- start mode: the quote page ----------------------------------------------------------
   // Thank-you note and the accuracy line, then details, then the questions on the same visit.
+  // Landing-page slideshow: each step lights up as the photo behind it changes.
+  var EI = [
+    { f: 'project-north-kellyville-boutique-home-landscaping-g3--corten-steel-tree-rings-set-into-lawn-beside-the-house-north-kellyville', w: 1, p: '50% 92%', n: 'North Kellyville', d: 'Corten tree rings set into the lawn', a: 'Corten steel tree rings set into a new lawn beside the house in North Kellyville' },
+    { f: 'residential-decking-outdoor-structures-hero--composite-deck-and-pergola-with-festoon-lighting-at-dusk', w: 1, n: 'Decks and pergolas', d: 'Composite deck with festoon lighting', a: 'Composite deck and pergola with festoon lighting at dusk' },
+    { f: 'project-rydalmere-new-home-landscaping-g6--charcoal-brick-mowing-strip-between-lawn-and-cordyline-bed-rydalmere', w: 1, n: 'Rydalmere', d: 'Cordyline bed edged in charcoal brick', a: 'Red cordyline bed edged with charcoal brick beside a new lawn in Rydalmere' },
+    { f: 'project-newtown-duplex-raised-planter-landscaping-g3--curved-mulched-bed-meeting-lawn-with-new-native-shrubs', w: 1, n: 'Newtown', d: 'Curved mulched bed meeting the lawn', a: 'Curved mulched garden bed with new native shrubs meeting a lawn in Newtown' }
+  ];
+  var EI_STEPS = [['<s>Your </s>details', 'We email you a 4-digit code.'], ['<s>Your </s>yard', 'Tell us what you want done.'], ['Rough sizes', 'In paces or metres, rough is fine.'], ['<s>Your </s>ballpark', 'Then pick a Friday for a free site visit.']];
+  function eiPlay() {
+    var st = app.querySelector('.ei-stage'); if (!st) return;
+    var slides = st.querySelectorAll('.ei-slide'), tabs = app.querySelectorAll('.ei-tab'), cur = 0, timer = null;
+    var reduce = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    function show(n) {
+      cur = n;
+      [].forEach.call(slides, function (el, k) { el.classList.toggle('on', k === n); });
+      [].forEach.call(tabs, function (el, k) { el.classList.toggle('on', k === n); el.classList.toggle('done', k < n); });
+      document.getElementById('eiNo').textContent = '0' + (n + 1) + ' / 04';
+      document.getElementById('eiName').textContent = EI[n].n;
+      document.getElementById('eiWhat').textContent = EI[n].d;
+      document.getElementById('eiCap').textContent = EI_STEPS[n][1];
+    }
+    function start() {
+      clearInterval(timer); if (reduce) return;
+      timer = setInterval(function () { if (!document.body.contains(st)) return clearInterval(timer); show((cur + 1) % slides.length); }, 5200);
+    }
+    [].forEach.call(tabs, function (el) { el.addEventListener('click', function () { show(+el.getAttribute('data-i')); start(); }); });
+    start();
+    var cue = document.getElementById('eiScroll');
+    if (cue) {
+      var onScroll = function () {
+        if (!document.body.contains(cue)) return window.removeEventListener('scroll', onScroll);
+        cue.classList.toggle('gone', window.scrollY > 80);
+      };
+      window.addEventListener('scroll', onScroll, { passive: true });
+      cue.addEventListener('click', function (e) { var t = document.getElementById('what-we-build'); if (t) { e.preventDefault(); t.scrollIntoView({ behavior: 'smooth' }); } });
+    }
+  }
   function intro(msg) {
     setScreen('intro');
-    var body = '<p class="eyebrow">Sydney landscapers · online estimate</p><h1>Sydney landscapers: your estimate in under 10 minutes.</h1>' +
-      '<p class="est-hint">Thank you for taking the time: it gets you a better quote. Answer a few plain questions about your yard and what you want done, and see a ballpark range at the end, from Basic to Premium finishes.</p>' +
-      '<div class="est-note">The estimate is only as good as the details you give it. Put in as much as you know, even rough numbers. We check everything on site before your quote, so there is nothing to get wrong. We have your back.</div>' +
-      '<ol class="est-steps est-steps-in"><li><b>Your details</b>, and the code we email you</li><li><b>Your property</b> and what you want done</li><li><b>Roughly how much</b> of each, in paces or metres</li><li><b>Your ballpark</b>, then pick a Friday for the site visit</li></ol>' +
+    var body = '<div class="est-intro">' +
+      '<h1><span class="ei-k">Estate Landscapers</span>Your estimate in<br>under <span class="ei-m">10 minutes.</span></h1>' +
+      '<p class="ei-sub">Skip the wait for a quote. Answer a few plain questions about your Sydney yard and see your price range straight away.</p>' +
       (msg ? '<p class="est-err">' + esc(msg) + '</p>' : '') +
-      '<div class="btn-row">' + BTN('iGo', 'Let\'s start') + '</div>' +
-      '<p class="est-links"><a href="#" id="iGuide">How to size up your yard</a> · <a href="/estimate/">I already have a code</a></p>' +
-      '<p class="est-fine">We email you a 4-digit code on the next screen. It opens the questions and lets you come back any time.</p>';
-    h(frame({ body: body }));
+      '<div class="ei-go">' + BTN('iGo', 'Let\'s start <span class="ei-arr" aria-hidden="true">→</span>') + '<a class="ei-code" href="/estimate/">I already have a code <span aria-hidden="true">›</span></a></div>' +
+      '<div class="ei-stage" aria-label="Recent Estate Landscapers yards">' +
+      EI.map(function (x, k) {
+        var u = '/assets/img/r/' + x.f;
+        return '<div class="ei-slide' + (k ? '' : ' on') + '"><img src="' + u + '-800.webp" srcset="' + u + '-800.webp 800w' + (x.w ? ', ' + u + '-1200.webp 1200w' : '') + '" sizes="(min-width:1200px) 1180px, 100vw" width="1200" height="900" alt="' + esc(x.a) + '"' + (x.p ? ' style="object-position:' + x.p + '"' : '') + (k ? ' loading="lazy"' : '') + '></div>';
+      }).join('') +
+      '<span class="ei-cm a"></span><span class="ei-cm b"></span><span class="ei-cm c"></span><span class="ei-cm d"></span>' +
+      '<div class="ei-tag"><em id="eiNo">01 / 04</em><b id="eiName">' + EI[0].n + '</b><span id="eiWhat">' + EI[0].d + '</span></div></div>' +
+      '<div class="ei-tabs">' + EI_STEPS.map(function (x, k) {
+        return '<button type="button" class="ei-tab' + (k ? '' : ' on') + '" data-i="' + k + '"><i></i><em>0' + (k + 1) + '</em><b>' + x[0] + '</b><span>' + x[1] + '</span></button>';
+      }).join('') + '</div>' +
+      '<p class="ei-cap" id="eiCap">' + EI_STEPS[0][1] + '</p>' +
+      '<p class="ei-quiet">Rough numbers are fine. We check everything on site before your quote. <a href="#" id="iGuide">How to size up your yard</a></p>' +
+      '<p class="ei-lic">Licensed landscapers · LIC 487076C · $20M public liability · Landscape Association 41219</p>' +
+      '<a class="ei-scroll" href="#what-we-build" id="eiScroll"><span>Find out more</span><svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6 9l6 6 6-6"/></svg></a></div>';
+    h(body);
+    eiPlay();
     document.getElementById('iGo').addEventListener('click', function () { details(); });
     document.getElementById('iGuide').addEventListener('click', function (e) { e.preventDefault(); guide(function () { intro(); }); });
   }
