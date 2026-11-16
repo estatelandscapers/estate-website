@@ -877,3 +877,8 @@ body.noform .fab{display:none}
   .fdh-port{margin-top:14px;text-align:left}
   .fdh-hero .fdh-hintwrap{padding-bottom:14px}
 }
+/* Link grids: services and areas on the estimator page */
+.linkgrid{display:grid;grid-template-columns:repeat(4,1fr);gap:10px}
+.linkgrid a{display:block;padding:15px 16px;border:1px solid var(--line);border-radius:var(--r);background:#fff;font-weight:700;font-size:.9rem;color:var(--ink);text-decoration:none;transition:border-color .15s,color .15s}
+.linkgrid a:hover{border-color:var(--blue);color:var(--blue)}
+@media (max-width:900px){.linkgrid{grid-template-columns:1fr 1fr}}

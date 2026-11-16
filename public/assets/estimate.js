@@ -166,8 +166,8 @@
   // Thank-you note and the accuracy line, then details, then the questions on the same visit.
   function intro(msg) {
     setScreen('intro');
-    var body = '<p class="eyebrow">Online estimate · under 10 minutes</p><h1>Thank you for taking the time. It gets you a better quote.</h1>' +
-      '<p class="est-hint">You answer a few plain questions about your yard and what you want done, and see a ballpark range at the end, from Basic to Premium finishes.</p>' +
+    var body = '<p class="eyebrow">Sydney landscapers · online estimate</p><h1>Sydney landscapers: your estimate in under 10 minutes.</h1>' +
+      '<p class="est-hint">Thank you for taking the time: it gets you a better quote. Answer a few plain questions about your yard and what you want done, and see a ballpark range at the end, from Basic to Premium finishes.</p>' +
       '<div class="est-note">The estimate is only as good as the details you give it. Put in as much as you know, even rough numbers. We check everything on site before your quote, so there is nothing to get wrong. We have your back.</div>' +
       '<ol class="est-steps est-steps-in"><li><b>Your details</b>, and the code we email you</li><li><b>Your property</b> and what you want done</li><li><b>Roughly how much</b> of each, in paces or metres</li><li><b>Your ballpark</b>, then pick a Friday for the site visit</li></ol>' +
       (msg ? '<p class="est-err">' + esc(msg) + '</p>' : '') +

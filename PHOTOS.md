@@ -2,7 +2,7 @@
 
 Save an image as `public/assets/img/<name>.jpg` (or .webp/.png), push, and it
 appears in its slot automatically on the next build. This file regenerates on
-every build and ticks itself: 167 of 214 slots filled.
+every build and ticks itself: 169 of 216 slots filled.
 
 Best size: 1600px wide, JPG/WebP, under 400 KB (squoosh.app does this in-browser).
 Height is flexible — every slot crops to fit, so keep the subject centred.
@@ -538,6 +538,11 @@ added to the image sitemap automatically.
 ## /residential/pools/
 
 - [x] `residential-pools-hero.jpg` — Finished pool with paved surrounds, fencing and planting, shot from the house
+
+## /residential/quote/
+
+- [x] `project-north-ryde-duplex-landscaping-g1.jpg` — Sandstone steppers and turf to the entry, North Ryde
+- [x] `project-dural-acreage-landscaping-native-planting-g3.jpg` — Hedge planting above a sandstone wall, Dural
 
 ## /residential/retaining-walls/
 
