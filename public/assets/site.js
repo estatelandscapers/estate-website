@@ -111,21 +111,32 @@ window.estateConversion = function (kind, user, value) {
   if (y) y.textContent = new Date().getFullYear();
 })();
 
-// GA4 loader — only on the live domain, so staging never pollutes the data, and only
-// once the page has finished loading, so the 177 KB tag never competes with the hero.
-// Events fired before it arrives sit in dataLayer and are sent when it does.
+// Tracker loader (GA4 + Google Ads tag, Meta Pixel) — live domain only, so staging never
+// pollutes the data. The tags weigh ~600 KB and block the main thread for half a second,
+// so they load on the visitor's first scroll, tap, key or mouse move, or after 10 seconds,
+// whichever comes first. Events fired before that wait in dataLayer / the fbq queue and
+// are sent when the tags arrive, so no conversion is lost.
 (function () {
   var h = location.hostname;
   if (h !== 'www.estatelandscapers.com.au' && h !== 'estatelandscapers.com.au') return;
-  function inject() {
-    if (document.querySelector('script[src*="googletagmanager.com/gtag/js"]')) return;
-    var s = document.createElement('script');
-    s.async = true;
-    s.src = 'https://www.googletagmanager.com/gtag/js?id=G-NWQPY0NXEF';
-    document.head.appendChild(s);
+  var done = false, evs = ['scroll', 'pointerdown', 'keydown', 'touchstart', 'mousemove'];
+  function go(e) {
+    // Browsers fire a mousemove with no movement when the layout shifts under a resting
+    // cursor; only a real move counts.
+    if (e && e.type === 'mousemove' && !e.movementX && !e.movementY) return;
+    if (done) return; done = true;
+    evs.forEach(function (e) { window.removeEventListener(e, go, { passive: true }); });
+    window.__elTrackersGo = true;
+    if (!document.querySelector('script[src*="googletagmanager.com/gtag/js"]')) {
+      var s = document.createElement('script');
+      s.async = true;
+      s.src = 'https://www.googletagmanager.com/gtag/js?id=G-NWQPY0NXEF';
+      document.head.appendChild(s);
+    }
+    if (typeof window.elLoadPixel === 'function') window.elLoadPixel();
   }
-  function soon() { ('requestIdleCallback' in window) ? requestIdleCallback(inject, { timeout: 2500 }) : setTimeout(inject, 1200); }
-  if (document.readyState === 'complete') soon(); else window.addEventListener('load', soon);
+  evs.forEach(function (e) { window.addEventListener(e, go, { passive: true }); });
+  setTimeout(go, 10000);
 })();
 
 // Precise anchor offset: measure the sticky nav so jumped-to headings land exactly
