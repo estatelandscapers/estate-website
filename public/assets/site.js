@@ -10,6 +10,11 @@ window.gtag = function () { dataLayer.push(arguments); };
 var ADS_ID = 'AW-18484005972';
 var ADS_LEAD_LABEL = 'ye1tCOeAqrUdENSY7u1E';  // "Estimator lead": name, phone, email and suburb submitted
 var ADS_BOOKED_LABEL = '';  // off: "Site visit booked" is imported from GA4 (estimate_visit_booked) instead
+// "Qualified estimate": fires when the online ballpark is $10k or more (not a small job), with the
+// middle of the range as its value. Create it in Google Ads → Goals → Conversions → New conversion
+// action → Website → "Use Google tag" event snippet, then paste the label (the part after the slash).
+// Blank = switched off, so nothing fires until the label is set.
+var ADS_QUALIFIED_LABEL = '';
 
 var LIVE = /estatelandscapers\.com\.au$/.test(location.hostname);
 if (LIVE) {
@@ -18,12 +23,13 @@ if (LIVE) {
   if (ADS_ID) gtag('config', ADS_ID, { allow_enhanced_conversions: true });
 }
 
-// Report a conversion to Google Ads. kind: 'lead' | 'booked'. user (optional):
+// Report a conversion to Google Ads. kind: 'lead' | 'booked' | 'qualified'. user (optional):
 // { email, phone } for enhanced conversions; Google hashes it in the browser before
-// sending. Fires at most once per kind per browser session.
-window.estateConversion = function (kind, user) {
+// sending. value (optional, AUD): the conversion value; defaults to 1. Fires at most once per
+// kind per browser session.
+window.estateConversion = function (kind, user, value) {
   try {
-    var label = kind === 'lead' ? ADS_LEAD_LABEL : kind === 'booked' ? ADS_BOOKED_LABEL : '';
+    var label = kind === 'lead' ? ADS_LEAD_LABEL : kind === 'booked' ? ADS_BOOKED_LABEL : kind === 'qualified' ? ADS_QUALIFIED_LABEL : '';
     if (!LIVE || !ADS_ID || !label) return;
     var key = 'est_conv_' + kind;
     try { if (sessionStorage.getItem(key)) return; sessionStorage.setItem(key, '1'); } catch (e) {}
@@ -36,7 +42,8 @@ window.estateConversion = function (kind, user) {
       if (/^\+\d{8,15}$/.test(p)) d.phone_number = p;
       gtag('set', 'user_data', d);
     }
-    gtag('event', 'conversion', { send_to: ADS_ID + '/' + label, value: 1.0, currency: 'AUD' });
+    var v = +value; if (!(v > 0)) v = 1.0;
+    gtag('event', 'conversion', { send_to: ADS_ID + '/' + label, value: v, currency: 'AUD' });
   } catch (e) {}
 };
 

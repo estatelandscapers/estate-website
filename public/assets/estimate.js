@@ -52,7 +52,7 @@
   function esc(s) { return String(s == null ? '' : s).replace(/[&<>"]/g, function (c) { return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]; }); }
   function ga(name, p) { try { if (window.gtag) window.gtag('event', name, p || {}); } catch (e) {} }
   // Google Ads conversion (no-op until the Ads IDs are set in site.js).
-  function conv(kind, b) { try { if (window.estateConversion) window.estateConversion(kind, b ? { email: b.email, phone: b.phone } : null); } catch (e) {} }
+  function conv(kind, b, value) { try { if (window.estateConversion) window.estateConversion(kind, b ? { email: b.email, phone: b.phone } : null, value); } catch (e) {} }
 
   // ---- heartbeat: seconds on each screen, every 15 s while the page is in front of them ----
   var hb = { screen: 'gate', since: Date.now(), acc: {} };
@@ -143,7 +143,7 @@
         document.getElementById('gGo').disabled = true;
         api('/auth', { code: code, email: em, vk: S.vk, touch: 'ontouchstart' in window }).then(function (r) {
           S.token = r.token; try { sessionStorage.setItem('el_est_token', r.token); } catch (x) {}
-          S.email = em; S.first = r.first || ''; S.steps = r.steps; S.sizes = r.sizes; S.answers = r.answers || {}; S.reactions = r.reactions; S.expires = r.expires;
+          S.email = em; S.first = r.first || ''; S.steps = r.steps; S.sizes = r.sizes; S.answers = r.answers || {}; S.reactions = r.reactions; S.small = !!r.small; S.expires = r.expires;
           S.completed = !!r.completed; S.booked = !!r.booked; S.saved = r.saved || 0;
           ga('estimate_opened');
           welcome();
@@ -223,7 +223,7 @@
       document.getElementById('cGo').disabled = true;
       api('/auth', { code: code, email: S.email, vk: S.vk, touch: 'ontouchstart' in window }).then(function (r) {
         S.token = r.token; try { sessionStorage.setItem('el_est_token', r.token); } catch (x) {}
-        S.first = r.first || ''; S.steps = r.steps; S.sizes = r.sizes; S.answers = r.answers || {}; S.reactions = r.reactions; S.expires = r.expires;
+        S.first = r.first || ''; S.steps = r.steps; S.sizes = r.sizes; S.answers = r.answers || {}; S.reactions = r.reactions; S.small = !!r.small; S.expires = r.expires;
         S.completed = !!r.completed; S.booked = !!r.booked; S.saved = r.saved || 0;
         ga('estimate_opened', { via: 'quote_page' });
         if (S.completed || S.saved > 1) return welcome();
@@ -478,7 +478,18 @@
     setScreen('ballpark');
     h(frame({ count: 'Your ballpark', body: '<p class="est-hint">Working it out…</p>' }));
     api('/complete', {}).then(function (r) {
-      S.result = r; S.completed = true; ga('estimate_ballpark', { lo: r.lo, hi: r.hi });
+      S.result = r; S.completed = true;
+      // Size tier: the server decides (the $10k line is a Settings value); the fallback only
+      // covers a server that has not been updated yet.
+      var tier = r.tier || tierOf(r), val = r.value || (r.lo && r.hi ? Math.round((r.lo + r.hi) / 2) : 0);
+      S.small = tier === 'small';
+      ga('estimate_ballpark', { lo: r.lo, hi: r.hi, tier: tier });
+      if (S.small) ga('estimate_small_job', { lo: r.lo, hi: r.hi });
+      else if (tier === 'standard' || tier === 'priority') {
+        // A real project with a real number. This is the conversion Google Ads should learn from.
+        ga('estimate_qualified', { value: val, currency: 'AUD', tier: tier });
+        conv('qualified', S.detail || { email: S.email }, val);
+      }
       var range = rangeBox(r);
       var inc = r.included.map(function (i) { return '<li class="i"><span>' + esc(i.name) + ', ' + esc(i.qty) + '</span><span>included</span></li>'; }).join('') +
         r.allowed.map(function (a) { return '<li class="i"><span>' + esc(a) + '</span><span>allowed for</span></li>'; }).join('') +
@@ -487,14 +498,22 @@
         '<h2 class="est-q" style="font-size:1.05rem">' + esc(r.headline) + '</h2>' + r.body.split('\n\n').map(function (p) { return '<p class="est-hint">' + esc(p) + '</p>'; }).join('') +
         (inc ? '<ul class="est-inc">' + inc + '</ul>' : '') +
         (r.askReaction ? '' : '<p class="est-fine">A copy of this is on its way to ' + esc(S.email) + '.</p>');
-      h(frame({ count: 'Your ballpark', body: body, foot: BTN('bEdit', 'Change answers', true) + BTN('bNext', r.decline ? 'Book a visit anyway' : 'Next') }));
+      // A small job is told plainly and politely: no "Next", no Friday. The range stays visible
+      // and the answers stay editable, so a bigger scope simply gives a bigger number.
+      var foot = S.small
+        ? BTN('bEdit', 'Change answers', true) + '<a class="btn" href="mailto:enquiry@estatelandscapers.com.au?subject=Advice%20on%20my%20project">Email us</a>'
+        : BTN('bEdit', 'Change answers', true) + BTN('bNext', r.decline ? 'Book a visit anyway' : 'Next');
+      h(frame({ count: 'Your ballpark', body: body, foot: foot }));
       document.getElementById('bEdit').addEventListener('click', review);
-      document.getElementById('bNext').addEventListener('click', function () { if (!r.askReaction) return book(); reaction(); });
+      var bn = document.getElementById('bNext');
+      if (bn) bn.addEventListener('click', function () { if (!r.askReaction) return book(); reaction(); });
     }).catch(function (e) { if (e.paused) return; if (e.status === 401) return expired(); h(frame({ body: '<p class="est-err">' + esc(e.message) + '</p><div class="btn-row">' + BTN('bRetry', 'Try again') + '</div>' })); document.getElementById('bRetry').addEventListener('click', complete); });
   }
   function fmt(n) { return (n || 0).toLocaleString('en-AU'); }
-  function isFit() { var r = S.answers.priceReaction; return !r || r === 'works' || r === 'low'; }
-  function rangeBox(r) { return (r && !r.decline && !r.tooUnknown) ? '<div class="est-range"><div class="l">Based on your answers</div><div class="n">$' + fmt(r.lo) + ' <em>to</em> $' + fmt(r.hi) + '</div><p>Including GST. Basic finishes on the low side, Premium on the high side. Subject to the site visit, final measurements and the finishes you choose.</p></div>' : ''; }
+  function isFit() { if (S.small) return false; var r = S.answers.priceReaction; return !r || r === 'works' || r === 'low'; }
+  // Only used when the server does not send a tier: the HIGH end under $10k is a small job.
+  function tierOf(r) { if (!r || r.decline || r.tooUnknown || !r.hi) return 'unknown'; if (r.hi < 10000) return 'small'; return (r.lo + r.hi) / 2 >= 25000 ? 'priority' : 'standard'; }
+  function rangeBox(r) { return (r && !r.decline && !r.tooUnknown) ? '<div class="est-range"><div class="l">Based on your answers</div><div class="n">$' + fmt(r.lo) + ' <em>to</em> $' + fmt(r.hi) + '</div><p>' + (S.small ? 'Including GST. A ballpark from your answers, with Basic finishes on the low side and Premium on the high side.' : 'Including GST. Basic finishes on the low side, Premium on the high side. Subject to the site visit, final measurements and the finishes you choose.') + '</p></div>' : ''; }
   function reaction() {
     setScreen('reaction');
     var body = '<p class="est-sec">Your ballpark</p>' + rangeBox(S.result) +
@@ -614,7 +633,7 @@
   function first() { if (MODE === 'start') { holdTop(); return intro(); } gate(null, qs.get('get') ? 'get' : 'code'); }
   if (S.token) {
     // A token from this browser session: try to resume without the code screen.
-    api('/auth-resume', {}).then(function (r) { S.first = r.first || ''; S.steps = r.steps; S.sizes = r.sizes; S.answers = r.answers || {}; S.reactions = r.reactions; S.expires = r.expires; S.completed = !!r.completed; S.booked = !!r.booked; S.saved = r.saved || 0; S.email = r.email || S.email; welcome(); })
+    api('/auth-resume', {}).then(function (r) { S.first = r.first || ''; S.steps = r.steps; S.sizes = r.sizes; S.answers = r.answers || {}; S.reactions = r.reactions; S.small = !!r.small; S.expires = r.expires; S.completed = !!r.completed; S.booked = !!r.booked; S.saved = r.saved || 0; S.email = r.email || S.email; welcome(); })
       .catch(function (e) { S.token = null; if (!e.paused) first(); });
   } else first();
 })();
