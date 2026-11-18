@@ -47,6 +47,30 @@ window.estateConversion = function (kind, user, value) {
   } catch (e) {}
 };
 
+// Report the same three estimator steps to the Meta pixel, so Facebook and Instagram ads
+// can be aimed and judged the way Google Ads is. kind: 'lead' -> Lead (name, phone, email
+// and suburb submitted); 'qualified' -> QualifiedEstimate, a custom event sent only for
+// estimates of $10k or more, with the middle of the range as its value (AUD); 'booked' ->
+// Schedule (a Friday site visit picked). Fires at most once per kind per browser session.
+// Events wait in the fbq queue until the pixel library has loaded.
+window.estateMeta = function (kind, value, tier) {
+  try {
+    if (!LIVE || !window.fbq) return;
+    var key = 'est_meta_' + kind;
+    try { if (sessionStorage.getItem(key)) return; sessionStorage.setItem(key, '1'); } catch (e) {}
+    if (kind === 'lead') {
+      fbq('track', 'Lead', { content_name: 'Estimator details submitted' });
+    } else if (kind === 'qualified') {
+      var p = { currency: 'AUD', content_name: 'Estimate of $10k or more' };
+      var v = +value; if (v > 0) p.value = v;
+      if (tier) p.tier = tier;
+      fbq('trackCustom', 'QualifiedEstimate', p);
+    } else if (kind === 'booked') {
+      fbq('track', 'Schedule', { content_name: 'Estimator Friday visit booked' });
+    }
+  } catch (e) {}
+};
+
 // Mobile navigation toggle
 (function () {
   var btn = document.querySelector('.nav-toggle');

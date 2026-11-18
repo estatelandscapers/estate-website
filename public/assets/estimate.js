@@ -53,6 +53,8 @@
   function ga(name, p) { try { if (window.gtag) window.gtag('event', name, p || {}); } catch (e) {} }
   // Google Ads conversion (no-op until the Ads IDs are set in site.js).
   function conv(kind, b, value) { try { if (window.estateConversion) window.estateConversion(kind, b ? { email: b.email, phone: b.phone } : null, value); } catch (e) {} }
+  // The same step reported to the Meta pixel (Lead / QualifiedEstimate / Schedule; see site.js).
+  function meta(kind, value, tier) { try { if (window.estateMeta) window.estateMeta(kind, value, tier); } catch (e) {} }
 
   // ---- heartbeat: seconds on each screen, every 15 s while the page is in front of them ----
   var hb = { screen: 'gate', since: Date.now(), acc: {} };
@@ -127,7 +129,7 @@
         var b = { name: document.getElementById('sName').value.trim(), email: document.getElementById('sEmail').value.trim(), phone: document.getElementById('sPhone').value.trim(), suburb: document.getElementById('sSuburb').value.trim(), website: document.getElementById('sWeb').value };
         if (!b.name || !/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(b.email)) return gate('Your name and a valid email are needed: the code is emailed to you.', 'get');
         this.disabled = true; this.textContent = 'Sending…';
-        api('/start', b).then(function (r) { S.email = b.email; ga('estimate_code_requested'); conv('lead', b); sent(r.email); })
+        api('/start', b).then(function (r) { S.email = b.email; ga('estimate_code_requested'); conv('lead', b); meta('lead'); sent(r.email); })
           .catch(function (e) { if (!e.paused) gate(e.message, 'get'); });
       });
     } else {
@@ -197,7 +199,7 @@
       if (!b.name || !b.phone || !/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(b.email) || !b.suburb) return details('Your name, phone, a valid email and your suburb are needed so we can save your answers and call you back.', b);
       var btn = this; btn.disabled = true; btn.textContent = 'One moment…';
       api('/start-now', b).then(function (r) {
-        S.email = b.email; S.detail = b; ga('estimate_code_requested', { via: 'quote_page' }); conv('lead', b);
+        S.email = b.email; S.detail = b; ga('estimate_code_requested', { via: 'quote_page' }); conv('lead', b); meta('lead');
         codeScreen(r.email);
       }).catch(function (e) { if (!e.paused) details(e.message, b); });
     });
@@ -489,6 +491,7 @@
         // A real project with a real number. This is the conversion Google Ads should learn from.
         ga('estimate_qualified', { value: val, currency: 'AUD', tier: tier });
         conv('qualified', S.detail || { email: S.email }, val);
+        meta('qualified', val, tier);
       }
       var range = rangeBox(r);
       var inc = r.included.map(function (i) { return '<li class="i"><span>' + esc(i.name) + ', ' + esc(i.qty) + '</span><span>included</span></li>'; }).join('') +
@@ -557,7 +560,7 @@
       app.querySelectorAll('[data-date]').forEach(function (b) {
         b.addEventListener('click', function () {
           b.disabled = true; b.textContent = 'Booking…';
-          api('/book', { date: b.dataset.date, half: b.dataset.half }).then(function (res) { S.booked = true; ga('estimate_visit_booked'); conv('booked'); try { if (window.fbq) window.fbq('track', 'Lead', { content_name: 'Estimator Friday visit booked' }); } catch (e) {} files(res); })
+          api('/book', { date: b.dataset.date, half: b.dataset.half }).then(function (res) { S.booked = true; ga('estimate_visit_booked'); conv('booked'); meta('booked'); files(res); })
             .catch(function (e) { if (e.paused) return; if (e.status === 401) return expired(); alert(e.message); book(); });
         });
       });
