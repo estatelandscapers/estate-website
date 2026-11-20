@@ -230,7 +230,7 @@ for (const f of walk(path.join(SRC, 'pages'))) {
   let html = c.raw ? render(body, vars) : render(layout, vars);
   const bodyCls = [];
   if (['/residential/quote/', '/commercial/tender/', '/contact/', '/estimate/'].includes(c.path)) bodyCls.push('noform');
-  if (c.theme === 'noir') bodyCls.push('noir');
+  if (c.theme) bodyCls.push(c.theme);
   if (bodyCls.length) html = html.replace('<body>', '<body class="' + bodyCls.join(' ') + '">');
   if (c.path.startsWith('/projects/'))
     html = html.replace(/\s*<a class="hd-switch hd-portfolio"[\s\S]*?<\/a>/, '');
