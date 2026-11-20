@@ -2,7 +2,7 @@
 
 Save an image as `public/assets/img/<name>.jpg` (or .webp/.png), push, and it
 appears in its slot automatically on the next build. This file regenerates on
-every build and ticks itself: 169 of 216 slots filled.
+every build and ticks itself: 158 of 205 slots filled.
 
 Best size: 1600px wide, JPG/WebP, under 400 KB (squoosh.app does this in-browser).
 Height is flexible — every slot crops to fit, so keep the subject centred.
@@ -14,22 +14,6 @@ SEO NAMING: keep the slot key, then add real words after a double dash:
   home-2--engineered-retaining-wall-piers-kellyville.jpg
 The words become the alt text and travel into Google Images. Filled slots are
 added to the image sitemap automatically.
-
-## /
-
-- [x] `home-hero.jpg` — Supervisor checking levels or set-out against the plan, the standard in action
-- [x] `home-2.jpg` — Engineered retaining wall: piers and steel before the pour
-- [x] `home-3.jpg` — Finished landscape: ideally photographed months after handover
-- [x] `home-4.jpg` — Commercial site in progress: machinery, scale
-- [x] `home-5.jpg` — Finished residential landscape: turf, retaining, planting
-
-## /about/
-
-- [x] `about-hero.jpg` — Crew on site: working shot, no captions or names required
-
-## /areas/
-
-- [x] `areas-hero.jpg` — The service area map
 
 ## /areas/bayside/
 
@@ -70,10 +54,6 @@ added to the image sitemap automatically.
 ## /areas/upper-north-shore/
 
 - [x] `areas-upper-north-shore-hero.jpg` — A completed Upper North Shore project
-
-## /commercial/
-
-- [x] `commercial-hero.jpg` — Commercial site mid-build: plant on site, works in progress
 
 ## /commercial/builders-developers/
 
@@ -186,10 +166,6 @@ added to the image sitemap automatically.
 ## /insights/who-pays-for-retaining-wall-nsw/
 
 - [x] `insights-who-pays-for-retaining-wall-nsw-hero.jpg` — Who pays for a retaining wall, and the fence, in NSW?
-
-## /projects/
-
-- [x] `projects-hero.jpg` — A completed project, the strongest single image you have
 
 ## /projects/caringbah-south-duplex-landscaping/
 
@@ -337,7 +313,6 @@ added to the image sitemap automatically.
 
 ## /residential/
 
-- [x] `residential-hero.jpg` — Finished residential landscape: the strongest single image you have
 - [x] `residential-2.jpg` — Recent post
 - [x] `residential-3.jpg` — Recent post
 - [x] `residential-4.jpg` — Recent post
@@ -579,6 +554,5 @@ added to the image sitemap automatically.
 
 ## /the-estate-standard/
 
-- [x] `the-estate-standard-hero.jpg` — Set-out or drainage in progress, the work this page is about
 - [x] `the-estate-standard-2.jpg` — Base preparation or underlay detail, the line items made visible
 

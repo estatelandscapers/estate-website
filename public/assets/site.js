@@ -237,11 +237,11 @@ window.elAttribution = function () {
     requestAnimationFrame(chase);
   })();
   document.addEventListener('mouseover', function (e) {
-    if (e.target.closest('a, button, .chip, .card, .fd-door, input, select, textarea, .filebox'))
+    if (e.target.closest('a, button, summary, .chip, .card, .fd-door, .gn-door, .gn-tile, input, select, textarea, .filebox'))
       document.documentElement.classList.add('cur-hover');
   }, { passive: true });
   document.addEventListener('mouseout', function (e) {
-    if (e.target.closest('a, button, .chip, .card, .fd-door, input, select, textarea, .filebox'))
+    if (e.target.closest('a, button, summary, .chip, .card, .fd-door, .gn-door, .gn-tile, input, select, textarea, .filebox'))
       document.documentElement.classList.remove('cur-hover');
   }, { passive: true });
 })();
@@ -305,7 +305,7 @@ window.elAttribution = function () {
 // button is on screen (the home page hero, the residential hero), so there is only ever one.
 (function () {
   var fab = document.querySelector('.fab'); if (!fab || !('IntersectionObserver' in window)) return;
-  var own = [].filter.call(document.querySelectorAll('a.btn[href="/residential/quote/"]'), function (a) { return !a.closest('#mega') && !a.closest('.foot'); });
+  var own = [].filter.call(document.querySelectorAll('a.btn[href="/residential/quote/"], a.gn-btn[href="/residential/quote/"]'), function (a) { return !a.closest('#mega') && !a.closest('.foot'); });
   if (!own.length) return;
   var seen = 0;
   var io = new IntersectionObserver(function (es) {
@@ -587,4 +587,16 @@ window.elAttribution = function () {
   q.addEventListener('input', function () { clearTimeout(timer); timer = setTimeout(run, 160); });
   q.addEventListener('focus', function () { load(); });
   form.addEventListener('submit', function (e) { e.preventDefault(); run(); });
+})();
+
+// Glass Noir: sections fade up as they come into view (content stays visible without JS
+// or with reduced motion, because .gn-reveal only hides when the html has the "js" class).
+(function () {
+  var els = document.querySelectorAll('.gn-reveal');
+  if (!els.length) return;
+  if (!('IntersectionObserver' in window)) { els.forEach(function (e) { e.classList.add('in'); }); return; }
+  var io = new IntersectionObserver(function (es) {
+    es.forEach(function (e) { if (e.isIntersecting) { e.target.classList.add('in'); io.unobserve(e.target); } });
+  }, { rootMargin: '0px 0px -8% 0px' });
+  els.forEach(function (e) { io.observe(e); });
 })();

@@ -35,7 +35,7 @@ function pageSlug(p) { return p === '/' ? 'home' : p.replace(/^\/|\/$/g, '').rep
 // Visible breadcrumb trail on pages two or more levels deep. The JSON-LD
 // BreadcrumbList already exists on most; this is the human-readable half.
 const CRUMB_LABEL = { residential: 'Residential', turf: 'Turfing', 'decorative-pebbles': 'Decorative pebbles', 'concrete-driveways': 'Concrete works', commercial: 'Commercial', projects: 'Projects',
-  insights: 'Insights', areas: 'Service areas', 'retaining-walls': 'Retaining walls' };
+  insights: 'Insights', areas: 'Service areas', 'retaining-walls': 'Retaining walls', 'driveways-fencing': 'Driveways & fencing', quote: 'Online estimate' };
 // Folders whose landing page lives at a different URL: link the crumb straight
 // there rather than through a redirect (Google flags "page with redirect").
 const CRUMB_HREF = { '/residential/turf': '/residential/turf-soft-landscaping' };
@@ -169,7 +169,9 @@ function videoTag(file, alt) {
 function swapPhotos(html, cpath) {
   html = cardHeroes(html);
   const slug = pageSlug(cpath);
-  let i = 0;
+  // A Glass Noir hero replaces the page's old first (hero) slot, so numbering starts
+  // after it and every other slot keeps the photo it had before the redesign.
+  let i = /class="gn-hero/.test(html) ? 1 : 0;
   return html.replace(/<div class="slot"(?:\s+data-key="([^"]+)")?>([\s\S]*?)<\/div>/g, (m, key, inner) => {
     i++;
     const legacy = slug + '-' + i;
@@ -222,11 +224,14 @@ for (const f of walk(path.join(SRC, 'pages'))) {
     NAV: c.nav ? '{{include nav-' + c.nav + '}}' : '',
     ROBOTS: c.noindex ? '<meta name="robots" content="noindex">' : '',
     FOOTER: c.footer ? '{{include footer-' + c.footer + '}}' : '',
-    BODY: body
+    BODY: body,
+    HEAD: c.head || ''
   };
   let html = c.raw ? render(body, vars) : render(layout, vars);
-  if (['/residential/quote/', '/commercial/tender/', '/contact/', '/estimate/'].includes(c.path))
-    html = html.replace('<body', '<body class="noform"');
+  const bodyCls = [];
+  if (['/residential/quote/', '/commercial/tender/', '/contact/', '/estimate/'].includes(c.path)) bodyCls.push('noform');
+  if (c.theme === 'noir') bodyCls.push('noir');
+  if (bodyCls.length) html = html.replace('<body>', '<body class="' + bodyCls.join(' ') + '">');
   if (c.path.startsWith('/projects/'))
     html = html.replace(/\s*<a class="hd-switch hd-portfolio"[\s\S]*?<\/a>/, '');
   if (c.path === '/') html = heroVideo(html);

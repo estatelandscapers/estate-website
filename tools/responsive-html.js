@@ -25,7 +25,8 @@ function responsiveImages(html) {
     const ws = d[stem]; if (!ws || !ws.length) return m;
     const isLogo = /^logo-/.test(stem);
     const srcset = ws.map(w => `/assets/img/r/${stem}-${w}.webp ${w}w`).join(', ');
-    const sizes = isLogo ? '(max-width: 900px) 52vw, 240px' : '(max-width: 760px) 100vw, (max-width: 1100px) 50vw, 640px';
+    const full = /\bdata-full\b/.test(pre + post), third = /\bdata-third\b/.test(pre + post);
+    const sizes = isLogo ? '(max-width: 900px) 52vw, 240px' : full ? '100vw' : third ? '(max-width: 900px) 100vw, 33vw' : '(max-width: 760px) 100vw, (max-width: 1100px) 50vw, 640px';
     return `<img${pre}src="${src}${q || ''}" srcset="${srcset}" sizes="${sizes}"${post}>`;
   });
 }
